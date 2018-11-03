@@ -1,0 +1,46 @@
+.modal-menu {
+  position: fixed;
+  bottom: 120px;
+  right: 40px;
+  width: 100%;
+  max-width: 384px;
+
+  &__item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 80px;
+    border-radius: 24px;
+    background-color: #ffffff;
+    padding: 16px;
+
+    img {
+      margin-right: 16px;
+    }
+
+    span {
+      font: {
+        size: 20px;
+        weight: 500;
+      };
+      line-height: 1.2;
+      color: #242232;
+    }
+
+    &:hover {
+      text-decoration: none;
+    }
+
+    &:not(:last-child) {
+      margin-bottom: 16px;
+    }
+  }
+
+  & + .close {
+    top: auto;
+    left: auto;
+    bottom: 24px;
+    right: 55px;
+    color: #ff0000;
+  }
+}

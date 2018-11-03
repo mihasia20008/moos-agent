@@ -1,10 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
-import cls from 'classnames/bind';
-import s from './style.css';
-
-const cx = cls.bind(s);
+import cx from 'classnames';
 
 const NotFound = () => {
     return [

@@ -1,0 +1,364 @@
+/* Modal */
+.modal-open {
+
+  .fr-app {
+    background-color: rgba(36, 34, 50, 0.8);
+    filter:blur(4px);
+    -o-filter:blur(4px);
+    -ms-filter:blur(4px);
+    -moz-filter:blur(4px);
+    -webkit-filter:blur(4px);
+  }
+  .close {
+    display: block!important;
+  }
+}
+.modal-backdrop {
+  background-color: rgba(36, 34, 50, 0.8)!important;
+}
+.modal-backdrop.show {
+  opacity: 1!important;
+}
+
+.modal-custom {
+
+  .close {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: none;
+    width: 48px;
+    height: 48px;
+    font-size: 2.7rem;
+    font-weight: normal;
+    text-shadow: none;
+    border-radius: 32px;
+    background-color: #fff;
+    z-index: 99999;
+    opacity: 1;
+    transition: all 0.3s 0s;
+  }
+}
+
+.modal-custom {
+
+  .modal-lg {
+    max-width: 800px;
+  }
+  .modal-custom-header {
+    font-size: 24px;
+    font-weight: 500;
+    font-style: normal;
+    line-height: 1;
+    letter-spacing: normal;
+    color: #000
+  }
+  .modal-content {
+    padding: 32px;
+  }
+
+  .modal-dialog {
+    max-width: 380px;
+
+    &--medium {
+      max-width: 500px;
+    }
+    &--lg {
+      max-width: 800px;
+    }
+    &--xl {
+      width: auto;
+      max-width: 1040px;
+      margin: 32px auto;
+    }
+  }
+
+  &--with-help-block {
+    .modal-lg {
+      max-width: 1008px;
+      padding-right: 208px;
+    }
+  }
+}
+
+/* modal-custom--empty */
+.modal-custom--empty {
+
+  .modal-content {
+    border: none;
+    background: transparent;
+
+    &__p-0 {
+      padding: 0;
+    }
+  }
+}
+
+.restore-pass {
+
+  &__title {
+    margin-bottom: 30px;
+    font-size: 24px;
+    font-weight: 500;
+    font-style: normal;
+    line-height: 1;
+    letter-spacing: normal;
+    text-align: center;
+    color: #fff;
+  }
+  &__description {
+    font-weight: 500;
+    font-style: normal;
+    line-height: 1.33;
+    letter-spacing: normal;
+    text-align: center;
+    color: #fff;
+  }
+}
+
+/* restore-pass-form */
+.restore-pass-form {
+
+  .btn-white {
+    height: 48px;
+    font-size: 16px;
+    font-weight: 500;
+    font-style: normal;
+    line-height: 1.5;
+    letter-spacing: normal;
+    text-align: center;
+    color: #000;
+  }
+}
+
+.modal-content {
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+
+    &-info {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 24px;
+    }
+  }
+  &__title {
+    display: flex;
+    align-items: center;
+
+    span {
+      display: inline-block;
+      font: {
+        size: 24px;
+        weight: 500;
+      };
+      color: $color-black;
+
+      &:not(.icon) {
+        max-width: 430px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+
+    .icon {
+      font-size: 18px;
+      color: #242232;
+      opacity: 0.48;
+      margin-right: 5px;
+    }
+
+    &:not(:last-child) {
+      margin-bottom: 10px;
+    }
+  }
+  &__posted-time {
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    font-size: 18px;
+    color: #4a4a4a;
+
+    &--green {
+      svg {
+        path {
+          fill: $color-green;
+        }
+      }
+    }
+
+    svg {
+      margin-right: 4px;
+    }
+
+    span {
+      &:not(:last-child) {
+        margin-right: 16px;
+      }
+    }
+  }
+  &__footer {
+    .btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+  &__text {
+    font: {
+      size: 24px;
+      weight: 500;
+    };
+    line-height: 1.33;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  &__buttons {
+
+    .btn {
+      width: 100%;
+      font-weight: 500;
+
+      &:not(:last-child) {
+        margin-bottom: 16px;
+      }
+    }
+  }
+  &__inner {
+    padding: 32px;
+    background-color: #fff;
+    border-radius: 16px;
+    margin-bottom: 40px;
+  }
+  &__card-new-item {
+
+    .btn {
+      max-width: 376px;
+      margin: 0 auto;
+    }
+  }
+  &__icon {
+    display: flex;
+    width: 80px;
+    margin: auto auto 32px;
+
+    svg {
+      max-width: 100%;
+    }
+  }
+  &__chart-stats {
+    
+  }
+}
+
+/* modal-search */
+.modal-search {
+
+  .modal-dialog {
+    width: 800px;
+    max-width: 800px;
+    height: 100%;
+    margin: 0 auto;
+    padding: 70px;
+    display: flex;
+
+    .modal-content {
+      padding: 0;
+      height: 100%;
+      display: flex;
+    }
+
+    .form-search {
+      position: relative;
+      max-height: 85px;
+      top: 50%;
+      margin: 0 auto;
+      transform: translateY(-50%);
+      transition: all 0.5s 0s;
+
+      &__row {
+        position: relative;
+        height: 85px;
+        border-bottom: 4px solid #fff;
+
+        .form-control{
+          padding: 0 60px 0 95px;
+          font-size: 64px;
+          font-weight: normal;
+          font-style: normal;
+          letter-spacing: normal;
+          color: #ff3900;
+          text-shadow: 0 0 0 #fff;
+          -webkit-text-fill-color: transparent;
+          background: transparent;
+          height: 72px;
+          line-height: 72px;
+          vertical-align: middle;
+          border: none;
+
+          &:focus{
+            outline: none;
+            box-shadow: none;
+          }
+          &::placeholder{
+            color: #fff;
+          }
+        }
+        .icon-search {
+          position: absolute;
+          left: 20px;
+          top: 16px;
+        }
+        .icon-prelouder {
+          position: absolute;
+          top: 30px;
+          right: 10px;
+        }
+      }
+
+      .autocomplete, .button-container {
+        visibility: hidden;
+        opacity: 0;
+        transition: all 0.5s 0s;
+      }
+
+      .button-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 64px;
+      }
+
+      &.filled {
+        max-height: 1000px;
+        top: 0;
+        transform: translateX(0);
+
+        .autocomplete,
+        .button-container {
+          visibility: visible;
+          opacity: 1;
+        }
+      }
+    }
+  }
+}
+
+.modal-dialog {
+
+  &--transparent {
+    background-color: transparent;
+
+
+  }
+}
+

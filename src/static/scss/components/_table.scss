@@ -1,0 +1,36 @@
+.table {
+
+  &__default {
+
+    tr {
+      th, td {
+        border-top: none;
+        padding: 2px;
+      }
+      th {
+        font: {
+          size: 11px;
+          weight: 500;
+        };
+        color: #bbb;
+        line-height: 2.18;
+      }
+      td {
+        font: {
+          size: 14px;
+          weight: 500;
+        };
+        color: #4a4a4a;
+        line-height: 1.71;
+      }
+    }
+  }
+
+  &__text-left {
+    text-align: left;
+  }
+
+  &__text-right {
+    text-align: right;
+  }
+}

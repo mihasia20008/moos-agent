@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 
-import './style.css';
+import './static/scss/style.scss';
 
 import routes from './routes.js';
 

@@ -1,0 +1,36 @@
+.credit-info {
+
+  &__title,
+  &__date-from,
+  &__responsible {
+    display: inline-flex;
+  }
+
+  &__date-from,
+  &__responsible {
+    font: {
+      size: 18px;
+      weight: 500;
+    };
+    line-height: 1.33;
+  }
+
+  &__title {
+    font: {
+      size: 20px;
+      weight: 500;
+    };
+    color: #000;
+    line-height: 1.2;
+  }
+
+  &__date-from {
+    color: #9b9b9b;
+  }
+
+  &__responsible {
+    width: 100%;
+    color: #4a4a4a;
+    margin-top: 11px;
+  }
+}

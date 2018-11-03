@@ -1,0 +1,187 @@
+.fr-app.fr-login{
+  display: flex;
+  width: 100%;
+  height: 100%;
+  background-color: #242232;
+
+  .fr-login-sidebar{
+    position: relative;
+    width: 60%;
+    min-width: 34rem;
+
+    &__logo{
+      position: absolute;
+      top: 85px;
+      left: 20%;
+    }
+
+    .form-login{
+      padding: 55% 19% 0;
+
+      input:-webkit-autofill,
+      input:-webkit-autofill:hover,
+      input:-webkit-autofill:focus,
+      input:-webkit-autofill:active {
+        transition: background-color 5000s ease-in-out 0s;
+      }
+      .form-group__row-input{
+        position: relative;
+
+        .icon{
+          position: absolute;
+          font-size: 16px;
+          color: #7e7c86;
+        }
+        .icon-user-1{
+          top: 12px;
+          left: 12px;
+        }
+        .icon-locker{
+          top: 11px;
+          left: 12px;
+        }
+        .icon-eye{
+          top: 13px;
+          right: 12px;
+          color: #616065;
+          cursor: pointer;
+        }
+      }
+
+      .form-control{
+        height: 40px;
+        background-color: rgba(255, 255, 255, 0.08);
+        outline: none;
+        border: none;
+        font-size: 12px;
+        font-weight: 500;
+        line-height: 2;
+        padding: 0 2.75rem;
+        letter-spacing: 0.5px;
+        text-align: center;
+        color: $white;
+
+        &:focus, &:active{
+          outline: none;
+          box-shadow: none;
+        }
+
+        &:-webkit-autofill{
+          -webkit-animation-name: autofill;
+          -webkit-animation-fill-mode: both;
+        }
+
+        &::-webkit-input-placeholder{
+          color: $white;
+        }
+        ::-moz-placeholder{
+          color: $white;
+        }
+        :-ms-input-placeholder{
+          color: $white;
+        }
+        :-moz-placeholder{
+          color: $white;
+        }
+
+        &--login{
+          border-radius: 12px 12px 0 0;
+          margin-bottom: 1px;
+        }
+        &--password{
+          border-radius: 0 0 12px 12px;
+        }
+      }
+
+      .form-login-bottom{
+        margin-top: 2rem;
+        opacity: 0.8;
+        font-size: 0.75rem;
+        font-weight: 500;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: 2;
+        letter-spacing: 0.5px;
+        color: $white;
+        text-align: center;
+
+        & > a{
+          display: inline-block;
+          padding-right: 17px;
+          color: $white;
+          text-decoration: none;
+
+          &:hover{
+            text-decoration: underline;
+          }
+        }
+      }
+      .btn{
+        height: 3rem;
+        border-radius: 1rem;
+
+        .icon{
+          font-size: 0.625rem;
+          position: relative;
+          top: 1px;
+          left: 2px;
+        }
+      }
+      .btn-danger{
+        font-size: 0.875rem;
+        line-height: 1.5;
+        font-weight: 500;
+        background-color: #ff0000;
+      }
+      .btn-dark{
+        margin-top: 1rem;
+        font-size: 12px;
+        line-height: 1.33;
+        font-weight: 500;
+        background-color: rgba(255, 255, 255, 0.08);
+      }
+    }
+    &__bottom{
+      position: absolute;
+      bottom: 1rem;
+      padding: 0 19%;
+
+      & > span, & > a{
+        font-size: 11px;
+        font-weight: 500;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: 2.18;
+        letter-spacing: normal;
+        color: rgba(255, 255, 255, 0.32);
+      }
+      & > a{
+        display: inline-block;
+        margin-left: 17px;
+        text-decoration: none;
+
+        &:hover{
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+  .fr-login-block{
+    width: 100%;
+    padding: 0 100px 0 60px;
+    display: flex;
+    align-items: center;
+    background: url("../img/login-bg.jpg") no-repeat;
+    background-size: cover;
+
+    & > h1{
+      margin-top: -10%;
+      font-size: 3rem;
+      font-weight: 900;
+      font-style: normal;
+      font-stretch: normal;
+      line-height: 1.33;
+      color: $white;
+    }
+  }
+}

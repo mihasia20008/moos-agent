@@ -1,0 +1,115 @@
+.stages-progress {
+  display: flex;
+  align-items: center;
+
+  $r: &;
+
+  &__item {
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+    padding: 4px;
+
+    #{$r}__icon {
+      width: 16px;
+      height: 16px;
+    }
+    #{$r}__text {
+      font: {
+        size: 12px;
+        weight: 500;
+      };
+      color: #fff;
+    }
+
+    &:nth-child(1) {
+      #{$r}__icon {
+        color: $color-purple;
+      }
+    }
+    &:nth-child(2) {
+      #{$r}__icon {
+        color: $color-red;
+      }
+    }
+    &:nth-child(3) {
+      #{$r}__icon {
+        color: $color-yellow;
+      }
+    }
+    &:nth-child(4) {
+      #{$r}__icon {
+        color: $color-yellow;
+      }
+    }
+    &:nth-child(5) {
+      #{$r}__icon {
+        color: $color-green;
+      }
+    }
+    &:nth-child(6) {
+      #{$r}__icon {
+        color: $color-green;
+      }
+    }
+
+    &--confirmed {
+      #{$r}__icon {
+        display: inline-flex;
+      }
+      #{$r}__text {
+        display: none;
+      }
+    }
+    &--active {
+      padding: {
+        left: 12px;
+        right: 12px;
+      };
+
+      &:nth-child(1) {
+        background-color: $color-purple;
+      }
+      &:nth-child(2) {
+        background-color: $color-red;
+      }
+      &:nth-child(3) {
+        background-color: $color-yellow;
+      }
+      &:nth-child(4) {
+        background-color: $color-yellow;
+      }
+      &:nth-child(5) {
+        background-color: $color-green;
+      }
+      &:nth-child(6) {
+        background-color: $color-green;
+      }
+
+      #{$r}__icon {
+        display: none;
+      }
+      #{$r}__text {
+        display: inline-block;
+      }
+    }
+    &--disabled {
+      background-color: #eee;
+      border-radius: 50%;
+      width: 16px;
+      height: 16px;
+
+      #{$r}__icon {
+        display: none;
+      }
+      #{$r}__text {
+        display: none;
+      }
+    }
+
+    &--active,
+    &--disabled {
+      margin: 0 4px;
+    }
+  }
+}

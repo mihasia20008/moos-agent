@@ -1,0 +1,135 @@
+.fr-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 240px;
+  height: 100%;
+  background-color: #242232;
+  z-index: 999;
+
+  $b: &;
+
+  &__logo {
+    position: absolute;
+    top: 24px;
+    left: 20px;
+
+    & > img {
+      width: 4rem;
+    }
+  }
+  &__menu {
+    margin: 128px 0 0;
+    padding: 0;
+
+    &--active {
+      background-color: $white;
+      .icon{
+        color: #242232!important;
+      }
+      a {
+        color: #1c1616!important;
+      }
+    }
+
+    li {
+      padding: 0.5rem 1.125rem;
+
+      .icon {
+        font-size: 0.75rem;
+        margin-right: 18px;
+        color: #fff;
+        opacity: 0.8;
+      }
+
+      &:hover {
+        background-color: $white;
+        cursor: pointer;
+
+        .icon {
+          color: #242232!important;
+        }
+        a {
+          color: #1c1616!important;
+        }
+      }
+      a {
+        display: inline-block;
+        font-size: 0.875rem;
+        font-weight: 500;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: 1.71;
+        letter-spacing: normal;
+        color: $white;
+        text-decoration: none;
+      }
+    }
+  }
+
+  #{$b}-bm {
+    position: fixed;
+    bottom: 1rem;
+    left: 1rem;
+
+    &__statistics {
+      width: 208px;
+      border-radius: 1rem;
+      background-color: rgba(255, 255, 255, 0.08);
+    }
+    &__statistics-cont {
+      padding-top: 1rem;
+    }
+    #{$b}-bm__statistics-btn {
+      height: 40px;
+      text-align: center;
+      padding: 0.5rem 0;
+
+      & > a {
+        font-size: 0.875rem;
+        line-height: 1.71;
+        color: $white;
+        text-decoration: none;
+      }
+    }
+  }
+
+  &--min {
+    width: 76px;
+
+    #{$b}-bm__values,
+    #{$b}-bm__statistics {
+      display: none;
+    }
+    #{$b}__logo {
+      width: 54px;
+      left: 10px;
+
+      img {
+        width: 100%;
+      }
+    }
+    #{$b}__menu {
+
+      li {
+        padding: 12px 5px;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+
+        .icon {
+          font-size: 24px;
+          margin-right: 0;
+          margin-bottom: 4px;
+        }
+
+        a {
+          font-size: 10px;
+        }
+      }
+    }
+    #{$b}-bm {
+      left: 5px;
+    }
+  }
+}
