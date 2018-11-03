@@ -5,7 +5,7 @@ import cx from 'classnames';
 const NotFound = () => {
     return [
         <Link key={0} className={cx('logo')} to="/">
-            <img className={cx('logo__img')} src="img/logo-min.svg" alt="logo" />
+            <img className={cx('logo__img')} src="static/media/logo-min.svg" alt="logo" />
         </Link>,
         <div key={1} className={cx('error-message')}>
             <p className={cx('error-message__title')}>Ошибка 404: страница не найдена</p>

@@ -20,6 +20,17 @@
   opacity: 1!important;
 }
 
+
+.modal .close.show {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal.show {
+  display: block;
+}
+
 .modal-custom {
 
   .close {
