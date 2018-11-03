@@ -1,0 +1,15 @@
+.fr-app{
+    height: 100%;
+}
+  
+.fr-container {
+    height: 100%;
+    margin: 0 auto;
+    width: 900px;
+}
+
+.fr-container--error {
+    width: 100%;
+    display: flex;
+    background-color: #242232;
+}

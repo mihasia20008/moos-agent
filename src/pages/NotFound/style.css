@@ -1,0 +1,63 @@
+.logo {
+    width: 65px;
+    height: 44px;
+    position: absolute;
+    top: 24px;
+    left: 20px;
+}
+
+.logo__img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.btn {
+    border-radius: 16px;
+    height: 48px;
+    font-size: 16px;
+}
+
+.btn-secondary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    border-color: #fff;
+    color: #000;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.error-message {
+    margin: auto;
+}
+
+.error-message__title,
+.error-message__text {
+    color: #fff;
+}
+
+.error-message__title {
+    margin-bottom: 32px;
+    font-size: 24px;
+    font-weight: 500;
+}
+
+.error-message__text {
+    display: block;
+    line-height: 2;
+    margin-top: 16px;
+    text-align: center;
+    opacity: 0.8;
+}
+
+.error-message__btn {
+    max-width: 376px;
+    margin: auto;
+    text-decoration: none;
+}
+
+.error-message__phone {
+    color: inherit;
+    text-decoration: none;
+}
