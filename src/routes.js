@@ -3,15 +3,13 @@ import { Switch, Route } from 'react-router-dom';
 
 import Layout from './containers/Layout';
 import Login from './pages/Login';
+import Tasks from './pages/Tasks';
 import NotFound from './pages/NotFound';
 
 export default (
     <Switch>
         <Route exact path="/" component={Login} />
-        {/* <Layout path="/catalog/:name/" component={CatalogSectionPage} image="/assets/img/Catalog/bg-img.jpg" />
-        <Layout path="/dealers/" component={DealersPage} image="/assets/img/Catalog/bg-img.jpg" />
-        {/*<Layout path="/catalog/" component={CatalogSectionPage} />*/}
-        {/*<Layout path="/products/:name/" component={DetailPage} image="/assets/img/Detail/bg-img.jpg" /> */}
+        <Layout path="/tasks" component={Tasks} />
         <Layout component={NotFound} isNotFound />
     </Switch>
 );
