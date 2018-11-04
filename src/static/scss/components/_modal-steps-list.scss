@@ -1,0 +1,26 @@
+.modal-steps-list {
+  padding-bottom: 5px;
+
+  &__item {
+    padding: 8px 32px 8px 12px;
+  }
+
+  &__title,
+  &__text {
+    color: #fff;
+  }
+
+  &__title {
+    display: inline-block;
+    font-size: 8px;
+    line-height: 1.5;
+    margin-bottom: 5px;
+  }
+
+  &__text {
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1;
+    margin-bottom: 0;
+  }
+}

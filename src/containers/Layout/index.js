@@ -1,13 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Route } from 'react-router-dom';
+import cx from 'classnames';
 
 import Overlay from '../../components/Overlay';
 
-import cls from 'classnames/bind';
-import s from './style.css';
-
-const cx = cls.bind(s);
 
 const Layout = ({ component: Component, isFetching, isNotFound, ...rest }) => {
   return (

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="208px" height="96px" viewBox="0 0 208 96" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>stat</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="main_view1" transform="translate(-16.000000, -676.000000)">
+            <g id="menu">
+                <g id="Group-4" transform="translate(16.000000, 660.000000)">
+                    <g id="stat" transform="translate(0.000000, 16.000000)">
+                        <g id="Group-3">
+                            <g id="Group-8" opacity="0.48" fill="#FA6A47">
+                                <rect id="Input" x="0" y="0" width="208" height="24"></rect>
+                            </g>
+                            <polygon id="Input" fill="#FA6A47" points="0 0 116 0 116 24 0 24"></polygon>
+                            <text id="20" style="mix-blend-mode: overlay;" font-family="Montserrat-SemiBold, Montserrat" font-size="12" font-weight="500" line-spacing="16" fill="#FFFFFF">
+                                <tspan x="8" y="16">20</tspan>
+                            </text>
+                            <text id="Отказано" style="mix-blend-mode: overlay;" font-family="Montserrat-Medium, Montserrat" font-size="9" font-weight="400" line-spacing="16" fill="#000000">
+                                <tspan x="159.153" y="13">Отказано</tspan>
+                            </text>
+                        </g>
+                        <g id="Group-3-Copy" transform="translate(0.000000, 24.000000)">
+                            <g id="Group-10" opacity="0.48" fill="#22C7B5">
+                                <rect id="Input" x="0" y="0" width="208" height="24"></rect>
+                            </g>
+                            <rect id="Input" fill="#22C7B5" x="0" y="0" width="67" height="24"></rect>
+                            <text id="8" style="mix-blend-mode: overlay;" font-family="Montserrat-SemiBold, Montserrat" font-size="12" font-weight="500" line-spacing="16" fill="#FFFFFF">
+                                <tspan x="8" y="16">8</tspan>
+                            </text>
+                            <text id="Одобрено" style="mix-blend-mode: overlay;" font-family="Montserrat-Medium, Montserrat" font-size="9" font-weight="400" line-spacing="16" fill="#000000">
+                                <tspan x="154.923" y="13">Одобрено</tspan>
+                            </text>
+                        </g>
+                        <g id="Group-3-Copy-2" transform="translate(0.000000, 48.000000)">
+                            <g id="Group-11" opacity="0.48" fill="#FFBE00">
+                                <rect id="Input" x="0" y="0" width="208" height="24"></rect>
+                            </g>
+                            <polygon id="Input" fill="#FFBE00" points="0 0 145 0 145 24 0 24"></polygon>
+                            <text id="34" style="mix-blend-mode: overlay;" font-family="Montserrat-SemiBold, Montserrat" font-size="12" font-weight="500" line-spacing="16" fill="#FFFFFF">
+                                <tspan x="8" y="16">34</tspan>
+                            </text>
+                            <text id="В-процессе" style="mix-blend-mode: overlay;" font-family="Montserrat-Medium, Montserrat" font-size="9" font-weight="400" line-spacing="16" fill="#000000">
+                                <tspan x="149.01" y="13">В процессе</tspan>
+                            </text>
+                        </g>
+                        <g id="Group-3-Copy-3" transform="translate(0.000000, 72.000000)">
+                            <g id="Group-13" opacity="0.48" fill="#B060EF">
+                                <rect id="Input" x="0" y="0" width="208" height="24"></rect>
+                            </g>
+                            <rect id="Input" fill="#B060EF" x="0" y="0" width="27" height="24"></rect>
+                            <text id="2" style="mix-blend-mode: overlay;" font-family="Montserrat-SemiBold, Montserrat" font-size="12" font-weight="500" line-spacing="16" fill="#FFFFFF">
+                                <tspan x="8" y="16">2</tspan>
+                            </text>
+                            <text id="Подано" style="mix-blend-mode: overlay;" font-family="Montserrat-Medium, Montserrat" font-size="9" font-weight="400" line-spacing="16" fill="#000000">
+                                <tspan x="167.667" y="13">Подано</tspan>
+                            </text>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

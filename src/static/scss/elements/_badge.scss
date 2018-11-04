@@ -1,0 +1,21 @@
+.badge {
+  font: {
+    size: 12px;
+    weight: 500;
+  };
+  line-height: 1.33;
+  color: #000;
+  background-color: #9b9b9b;
+  border-radius: 8px;
+  padding: 4px 12px;
+
+  &--purple {
+    background-color: #b060ef;
+  }
+  &--yellow {
+    background-color: #ffbe00;
+  }
+  &--green {
+    background-color: #22c7b5;
+  }
+}

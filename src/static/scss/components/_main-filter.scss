@@ -1,0 +1,146 @@
+.main-filter{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 115px;
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0);
+  transition: all 0.3s 0s;
+  z-index: 10;
+
+  &--fixed {
+    position: fixed;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.16);
+  }
+
+  &:before{
+    position: absolute;
+    display: block;
+    top: -25px;
+    left: 0;
+    content: '';
+    width: 100%;
+    height: calc(100% + 25px);
+    background-color: rgba(248, 248, 248, 0.83);
+  }
+
+  &__container{
+    margin: 0 auto;
+    width: 930px;
+    padding: 16px 0;
+    position: relative;
+    z-index: 100;
+  }
+  &__content{
+    width: 930px;
+    margin: 0 auto;
+    margin-left: 120px;
+  }
+
+  &--fixed-width{
+   .main-filter__content{
+     max-width: 690px;
+   }
+  }
+
+  &__row {
+    display: flex;
+    margin-bottom: 16px;
+
+    &--disabled {
+      position: relative;
+      opacity: 0.5;
+
+      &:before {
+        display: block;
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(#fff, 0.2);
+        z-index: 9;
+      }
+    }
+  }
+
+  &__control {
+    position: relative;
+    flex: 1 1 25%;
+
+    &:not(:last-child) {
+      margin-right: 8px;
+    }
+
+    &--button {
+      flex: none;
+      width: 40px;
+
+      .btn {
+        border-radius: 12px;
+        background-color: #ffffff;
+        border: 1px solid #fff;
+      }
+    }
+
+    select {
+      appearance: none;
+      line-height: 1;
+      text-align: center;
+
+      &::-ms-expand {
+        display: none;
+      }
+    }
+
+    .icon {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #9b9b9b;
+
+      &.icon-chevron-down {
+        font-size: 10px;
+      }
+    }
+
+    &--icon-left {
+      .icon {
+        left: 12px;
+      }
+    }
+    &--icon-right {
+      .icon {
+        right: 12px;
+      }
+    }
+  }
+
+  &__control-field {
+    width: 100%;
+    height: 40px;
+    border-radius: 12px;
+    background-color: #ffffff;
+    border: 1px solid #fff;
+    outline: none;
+    font: {
+      weight: 500;
+      size: 12px;
+    };
+    color: #4a4a4a;
+    line-height: 40px;
+    padding: 5px 10px;
+    letter-spacing: 0.5px;
+    text-align: center;
+    transition: all 0.3s 0s;
+
+    &:focus {
+      border-color: #a8a6b6;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+    }
+  }
+}

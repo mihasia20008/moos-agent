@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>icons8-clock</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="main_view1" transform="translate(-1074.000000, -408.000000)" fill="#22C7B5">
+            <g id="item2" transform="translate(272.000000, 372.000000)">
+                <g id="icons8-clock" transform="translate(802.000000, 36.000000)">
+                    <path d="M8,0 C3.5816,0 0,3.5816 0,8 C0,12.4184 3.5816,16 8,16 C12.4184,16 16,12.4184 16,8 C16,3.5816 12.4184,0 8,0 Z M10.6344,11.7656 L7.2,8.3312 L7.2,3.2 L8.8,3.2 L8.8,7.6688 L11.7656,10.6344 L10.6344,11.7656 Z" id="Shape"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
