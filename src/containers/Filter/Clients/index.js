@@ -1,0 +1,80 @@
+import React, { PureComponent } from 'react';
+import cx from 'classnames';
+
+import ReactBootstrapSlider from 'react-bootstrap-slider';
+
+class ClientsFilter extends PureComponent {
+    changeValue = (event) => console.log(event);
+
+    render() {
+        return (
+            <div className={cx('main-filter main-filter--fixed-width')}>
+                <div className={cx('main-filter__container')}>
+                    <div className={cx('main-filter__content')}>
+                        <div className={cx('main-filter__row')}>
+                            <div className={cx('main-filter__control main-filter__control--icon-right')}>
+                                <div className={cx('dropdown')}>
+                                    <button type="button" className={cx('btn btn-dropdown dropdown-toggle')} data-toggle="dropdown">
+                                        Индивидуальные предприятия
+                                    </button>
+                                    <div className={cx('dropdown-menu')}>
+                                        <span className={cx('dropdown-item')}>Предприятие 1</span>
+                                        <span className={cx('dropdown-item')}>Предприятие 2</span>
+                                        <span className={cx('dropdown-item')}>Предприятие 3</span>
+                                    </div>
+                                </div>
+                                <i className={cx('icon icon-chevron-down')} />
+                            </div>
+                            <div className={cx('main-filter__control main-filter__control--icon-right')}>
+                                <div className={cx('dropdown')}>
+                                    <button type="button" className={cx('btn btn-dropdown dropdown-toggle')} data-toggle="dropdown">
+                                        Я→А
+                                    </button>
+                                    <div className={cx('dropdown-menu')}>
+                                        <span className={cx('dropdown-item')}>А→Я</span>
+                                        <span className={cx('dropdown-item')}>Я→А</span>
+                                    </div>
+                                </div>
+                                <i className={cx('icon icon-chevron-down')} />
+                            </div>
+                            <div className={cx('main-filter__control main-filter__control--icon-right')}>
+                                <div className={cx('dropdown')}>
+                                    <button type="button" className={cx('btn btn-dropdown dropdown-toggle')} data-toggle="dropdown">
+                                        По дате последнего платежа
+                                    </button>
+                                    <div className={cx('dropdown-menu')}>
+                                        <span className={cx('dropdown-item')}>По дате последнего платежа 1</span>
+                                        <span className={cx('dropdown-item')}>По дате последнего платежа 2</span>
+                                        <span className={cx('dropdown-item')}>По дате последнего платежа 3</span>
+                                    </div>
+                                </div>
+                                <i className={cx('icon icon-chevron-down')} />
+                            </div>
+                            <div className={cx('main-filter__control main-filter__control--button')}>
+                                <button className={cx('btn btn-search')} data-toggle="modal" data-target="#modal-search">
+                                    <i className={cx('icon icon-seacrh-m')} />
+                                </button>
+                            </div>
+                        </div>
+                        <div className={cx('main-filter__row')}>
+                            <div className={cx('filter-slider filter-slider--full-size')}>
+                                <span>От 30К ₽</span>
+                                <ReactBootstrapSlider
+                                    className={cx('filter-slider__control')}
+                                    value={[45000, 5900000]}
+                                    change={this.changeValue}
+                                    slideStop={this.changeValue}
+                                    step={10}
+                                    max={6900000}
+                                    min={30000} />
+                                <span>До 6.9М ₽</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+}
+
+export default ClientsFilter;
