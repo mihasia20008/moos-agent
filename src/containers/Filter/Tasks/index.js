@@ -5,18 +5,41 @@ import cx from 'classnames';
 import ReactBootstrapSlider from 'react-bootstrap-slider';
 
 class TasksFilter extends PureComponent {
-    state = { isDropdownOpen: false };
+    state = { 
+        isDropdownOpen: false,
+        isFixed: false,
+    };
 
+    componentDidMount = () => {
+      window.addEventListener('scroll', this.handleScroll);
+    }
+
+    componentWillUnmount = () => {
+      window.removeEventListener('scroll', this.handleScroll);
+    }
+
+    handleScroll = () => {
+        if (!this.state.isFixed && window.scrollY > 0) {
+            this.setState({ isFixed: true });
+            return;
+        }
+        if (this.state.isFixed && window.scrollY === 0) {
+            this.setState({ isFixed: false });
+        }
+    }
+    
     changeValue = (event) => console.log(event);
 
     handleToggleDropdown = ({ target }) => this.setState({ isDropdownOpen: !this.state.isDropdownOpen });
 
     render() {
-        const { isDropdownOpen } = this.state;
+        const { isDropdownOpen, isFixed } = this.state;
         const { isDisable } = this.props;
 
         return (
-            <div className={cx('main-filter')}>
+            <div className={cx('main-filter', {
+                'main-filter--fixed': isFixed,
+            })}>
                 <div className={cx('main-filter__container')}>
                     <div className={cx('main-filter__content')}>
                         <div className={cx('main-filter__row', {
