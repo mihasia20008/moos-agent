@@ -29,12 +29,12 @@ const Login = () => {
                 </div>
             </div>
             <div className={cx('form-group mr-tp2')}>
-                <button className={cx('btn btn-danger btn-block')}>
+                <Link to="/tasks" className={cx('btn btn-danger btn-block')}>
                     Вход <span className={cx('icon icon-chevron-right')} />
-                </button>
-                <Link className={cx('btn btn-dark btn-block')} to="?e-login">
-                    Вход с помощью Электронной подписи <span className={cx('icon icon-chevron-right')} />
                 </Link>
+                {/* <Link className={cx('btn btn-dark btn-block')} to="?e-login">
+                    Вход с помощью Электронной подписи <span className={cx('icon icon-chevron-right')} />
+                </Link> */}
             </div>
             <div className={cx('form-login-bottom')}>
                 <Link to="?restore-password">Забыл пароль?</Link>
