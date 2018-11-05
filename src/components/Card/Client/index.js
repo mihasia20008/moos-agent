@@ -3,7 +3,7 @@ import cx from 'classnames';
 
 const ClientCard = () => {
     return (
-        <div className={cx('block-list__item')} data-toggle="modal" data-target="#clientModal">
+        <div className={cx('block-list__item')}>
             <div className={cx('block-list__row')}>
                 <div>
                     <div className={cx('block-list__info block-list__info--with-icon')}>
@@ -33,16 +33,18 @@ const ClientCard = () => {
                 </ul>
                 <div>
                     <table className={cx('table block-list__table')}>
-                        <tr>
-                            <th>Общая сумма</th>
-                            <th>КПП</th>
-                            <th>ОГРН</th>
-                        </tr>
-                        <tr>
-                            <td>7 896 124 ₽</td>
-                            <td>771001001</td>
-                            <td>771375236257</td>
-                        </tr>
+                        <tbody>
+                            <tr>
+                                <th>Общая сумма</th>
+                                <th>КПП</th>
+                                <th>ОГРН</th>
+                            </tr>
+                            <tr>
+                                <td>7 896 124 ₽</td>
+                                <td>771001001</td>
+                                <td>771375236257</td>
+                            </tr>
+                        </tbody>
                     </table>
                 </div>
             </div>

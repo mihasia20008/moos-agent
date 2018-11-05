@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { Link } from 'react-router-dom';
 import cx from 'classnames';
 
 import ReactBootstrapSlider from 'react-bootstrap-slider';
@@ -12,12 +13,15 @@ class TasksFilter extends PureComponent {
 
     render() {
         const { isDropdownOpen } = this.state;
+        const { isDisable } = this.props;
 
         return (
             <div className={cx('main-filter')}>
                 <div className={cx('main-filter__container')}>
                     <div className={cx('main-filter__content')}>
-                        <div className={cx('main-filter__row')}>
+                        <div className={cx('main-filter__row', {
+                            'main-filter__row--disabled': isDisable,
+                        })}>
                             <div className={cx('main-filter__control main-filter__control--icon-right')}>
                                 <div className={cx('dropdown', {
                                     'show': isDropdownOpen
@@ -51,12 +55,14 @@ class TasksFilter extends PureComponent {
                                 <input type="text" className={cx('main-filter__control-field')} placeholder="Клиент" />
                             </div>
                             <div className={cx('main-filter__control main-filter__control--button')}>
-                                <button className={cx('btn btn-search')}>
+                                <Link className={cx('btn btn-search')} to="?search">
                                     <i className={cx('icon icon-seacrh-m')} />
-                                </button>
+                                </Link>
                             </div>
                         </div>
-                        <div className={cx('main-filter__row')}>
+                        <div className={cx('main-filter__row', {
+                            'main-filter__row--disabled': isDisable,
+                        })}>
                             <div className={cx('checkbox-list')}>
                                 <div className={cx('checkbox-list__item checkbox-list__item--purple')}>
                                     <input type="radio" name="main-filter" id="mainFilterCheckbox1" />

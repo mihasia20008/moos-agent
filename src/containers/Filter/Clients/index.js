@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { Link } from 'react-router-dom';
 import cx from 'classnames';
 
 import ReactBootstrapSlider from 'react-bootstrap-slider';
@@ -51,9 +52,9 @@ class ClientsFilter extends PureComponent {
                                 <i className={cx('icon icon-chevron-down')} />
                             </div>
                             <div className={cx('main-filter__control main-filter__control--button')}>
-                                <button className={cx('btn btn-search')} data-toggle="modal" data-target="#modal-search">
+                                <Link className={cx('btn btn-search')} to="?search">
                                     <i className={cx('icon icon-seacrh-m')} />
-                                </button>
+                                </Link>
                             </div>
                         </div>
                         <div className={cx('main-filter__row')}>
