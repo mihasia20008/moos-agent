@@ -16,6 +16,7 @@
   }
 
   .slider {
+    position: relative;
     flex: 1;
 
     &-handle {
@@ -48,11 +49,14 @@
       margin: 0 8px;
 
       .slider-track {
+        display: flex;
         height: 4px;
         margin-top: -2px;
       }
       .slider-handle {
-        margin: 2px 0 0 -8px;
+        margin: 0 0 0 -8px;
+        position: absolute;
+        top: calc(50% - 8px);
       }
     }
   }

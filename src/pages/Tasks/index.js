@@ -1,11 +1,17 @@
 import React from 'react';
+import cx from 'classnames';
 
 import Sidebar from '../../containers/Sidebar';
+import TasksFilter from '../../containers/Filter/Tasks';
+import TasksList from '../../containers/List/Tasks';
 
 const Tasks = () => {
     return [
         <Sidebar key={0} />,
-        <div key={1}>Tasks</div>
+        <section key={1} className={cx('fr-content')}>
+            <TasksFilter />
+            <TasksList />
+        </section>
     ];
 };
 
