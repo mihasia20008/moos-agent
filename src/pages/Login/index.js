@@ -11,7 +11,7 @@ import * as CONTENT from '../../contentConstants';
 class Login extends PureComponent {
     renderELogin() {
         return (
-            <LoginModal key={2} topPosition>
+            <LoginModal key={2} topPosition onCloseModal={this.props.history.goBack}>
                 <div className={cx('modal-custom-header')}>Банковская гарантия 101-ЭГБ/17</div>
             </LoginModal>
         );
@@ -19,7 +19,7 @@ class Login extends PureComponent {
 
     renderRestorePassword() {
         return (
-            <LoginModal key={1} centerPosition>
+            <LoginModal key={1} centerPosition onCloseModal={this.props.history.goBack}>
                 <FormRestore />
             </LoginModal>
         );

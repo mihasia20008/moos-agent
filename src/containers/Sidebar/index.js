@@ -54,7 +54,7 @@ class Sidebar extends PureComponent {
                             statistics.map((statistic, index) => <ProgressStatistic key={index} {...statistic} />)
                         }</div>
                         <div className={cx('fr-sidebar-bm__statistics-btn')}>
-                            <Link to="?show-statistic" data-toggle="modal" data-target="#statsModal">
+                            <Link to="?show-statistic">
                                 Смотреть статистику
                             </Link>
                         </div>
@@ -62,7 +62,7 @@ class Sidebar extends PureComponent {
                     <div className={cx('fr-user-menu')}>
                         <div className={cx('fr-user-menu__dropdown')}>
                             <div className={cx('fr-user-menu__list')}>
-                                <Link className={cx('fr-user-menu__item')} to="?settings">
+                                <Link className={cx('fr-user-menu__item')} to="?restore-password">
                                     <i className={cx('icon icon-settings')} />
                                     Настройки
                                 </Link>
