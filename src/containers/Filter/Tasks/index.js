@@ -4,10 +4,19 @@ import cx from 'classnames';
 
 import ReactBootstrapSlider from 'react-bootstrap-slider';
 
+import Dropdown from '../../../components/Dropdown';
+
 class TasksFilter extends PureComponent {
-    state = { 
-        isDropdownOpen: false,
+    state = {
         isFixed: false,
+        taskFilter: {
+            active: 1,
+            list: [
+                { key: 'all', value: 'Все заявки' },
+                { key: 'current', value: 'Текущие заявки' },
+                { key: 'closed', value: 'Завершенные заявки' },
+            ],
+        },
     };
 
     componentDidMount = () => {
@@ -30,10 +39,12 @@ class TasksFilter extends PureComponent {
     
     changeValue = (event) => console.log(event);
 
-    handleToggleDropdown = ({ target }) => this.setState({ isDropdownOpen: !this.state.isDropdownOpen });
+    handleSelectDropdown = (name, key) => {
+        console.log(name, key);
+    }
 
     render() {
-        const { isDropdownOpen, isFixed } = this.state;
+        const { isFixed, taskFilter } = this.state;
         const { isDisable } = this.props;
 
         return (
@@ -45,28 +56,12 @@ class TasksFilter extends PureComponent {
                         <div className={cx('main-filter__row', {
                             'main-filter__row--disabled': isDisable,
                         })}>
-                            <div className={cx('main-filter__control main-filter__control--icon-right')}>
-                                <div className={cx('dropdown', {
-                                    'show': isDropdownOpen
-                                })}>
-                                    <button
-                                        onClick={this.handleToggleDropdown}
-                                        className={cx('btn btn-dropdown dropdown-toggle btn-dropdown--hidden-border')}
-                                        type="button"
-                                        data-toggle="dropdown"
-                                    >
-                                        Текущие заявки
-                                    </button>
-                                    <div className={cx('dropdown-menu', {
-                                        'show': isDropdownOpen
-                                    })}>
-                                        <span className={cx('dropdown-item')}>Все заявки</span>
-                                        <span className={cx('dropdown-item')}>Текущие заявки</span>
-                                        <span className={cx('dropdown-item')}>Завершенные заявки</span>
-                                    </div>
-                                </div>
-                                <i className={cx('icon icon-chevron-down')} />
-                            </div>
+                            <Dropdown
+                                name="taskFilter"
+                                defaultActive={taskFilter.active}
+                                list={taskFilter.list}
+                                onSelectItem={this.handleSelectDropdown}
+                            />
                             <div className={cx('main-filter__control main-filter__control--icon-left')}>
                                 <i className={cx('icon icon-calendar')} />
                                 <input type="text" className={cx('main-filter__control-field')} placeholder="Даты" />
