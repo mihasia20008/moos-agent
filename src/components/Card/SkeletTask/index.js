@@ -1,7 +1,9 @@
 import React from 'react';
 import cx from 'classnames';
 
-const SkeletTask = () => {
+import Overlay from '../../Overlay';
+
+const SkeletTask = ({ showLoader = false }) => {
     return (
         <div className={cx('block-list__item')}>
             <div className={cx('block-list__row')}>
@@ -63,6 +65,7 @@ const SkeletTask = () => {
                     <i className={cx('icon icon-chevron-right')} />
                 </button>
             </div>
+            {showLoader && <Overlay />}
         </div>
     );
 };

@@ -39,11 +39,11 @@ class Sidebar extends PureComponent {
                     <img src="static/media/logo-min.svg" alt="logo" />
                 </Link>
                 <div className={cx('fr-sidebar__menu')}>
-                    <NavLink to="/tasks" activeClassName={cx('fr-sidebar__menu--active')}>
+                    <NavLink to="/tasks" activeClassName={cx('active')}>
                         <span className={cx('icon icon-ok')} />
                         Задачи
                     </NavLink>
-                    <NavLink to="/clients" activeClassName={cx('fr-sidebar__menu--active')}>
+                    <NavLink to="/clients" activeClassName={cx('active')}>
                         <span className={cx('icon icon-user')} />
                         Клиенты
                     </NavLink>

@@ -22,7 +22,7 @@ const Layout = ({ component: Component, isFetching, isNotFound, showAddButton, s
                     'fr-container--error': isNotFound,
                 })}>
                     <Component {...matchProps} />
-                    {isFetching && <Overlay />}
+                    {isFetching && <Overlay size="big" />}
                 </div>
                 {showAddButton && (
                     <div className={cx('btn-options')}>
@@ -92,7 +92,7 @@ const mapStateToProps = (state, ownProps) => {
     return {
         showAddButton: ownProps.path.search('/tasks') !== -1 || ownProps.path.search('/clients') !== -1,
         showAddHelp: ownProps.path.search('/tasks') !== -1 && !state.Tasks.list.length && !state.Tasks.isFetching,
-        // isFetching: Object.keys(state).some(key => state[key].isFetching),
+        isFetching: Object.keys(state).some(key => state[key].isFetching),
     };
 };
 

@@ -21,19 +21,20 @@
   &__menu {
     margin: 128px 0 0;
     padding: 0;
+    display: flex;
+    flex-direction: column;
 
-    &--active {
-      background-color: $white;
-      .icon{
-        color: #242232!important;
-      }
-      a {
-        color: #1c1616!important;
-      }
-    }
-
-    li {
+    a {
+      width: 100%;
       padding: 0.5rem 1.125rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      font-style: normal;
+      font-stretch: normal;
+      line-height: 1.71;
+      letter-spacing: normal;
+      color: $white;
+      text-decoration: none;
 
       .icon {
         font-size: 0.75rem;
@@ -44,25 +45,21 @@
 
       &:hover {
         background-color: $white;
+        color: #1c1616;
         cursor: pointer;
 
         .icon {
-          color: #242232!important;
-        }
-        a {
-          color: #1c1616!important;
+          color: #242232;
         }
       }
-      a {
-        display: inline-block;
-        font-size: 0.875rem;
-        font-weight: 500;
-        font-style: normal;
-        font-stretch: normal;
-        line-height: 1.71;
-        letter-spacing: normal;
-        color: $white;
-        text-decoration: none;
+
+      &.active {
+        background-color: $white;
+        color: #1c1616;
+
+        .icon{
+          color: #242232;
+        }
       }
     }
   }
