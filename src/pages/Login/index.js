@@ -7,21 +7,20 @@ import LoginModal from '../../containers/LoginModal';
 import FormLogin from '../../containers/Form/Login';
 import FormRestore from '../../containers/Form/Restore';
 
-import { loginUser } from '../../redux/User/actions';
+import { loginUser, authenticationUser } from '../../redux/User/actions';
 
 import * as CONTENT from '../../contentConstants';
 
 class Login extends PureComponent {
-
     state = {
-        isAuth: false,
-        username: '',
+        login: '',
         password: '',
     };
 
     componentDidMount() {
-        if (localStorage.isAuth) {
-            this.setState({ isAuth: true });
+        const { session_id, authenticationUser } = this.props;
+        if (typeof session_id !== 'undefined') {
+            authenticationUser();
         }
     }
 
@@ -29,8 +28,8 @@ class Login extends PureComponent {
 
     handleFormSubmit = (event) => {
         event.preventDefault();
-        const { username, password } = this.state;
-        this.props.loginUser(username, password);
+        const { login, password } = this.state;
+        this.props.loginUser(login, password);
     }
 
     renderELogin() {
@@ -76,8 +75,7 @@ class Login extends PureComponent {
     }
 
     render() {
-        const { location: { search } } = this.props;
-        const { isAuth } = this.state;
+        const { location: { search }, isAuth } = this.props;
 
         if (isAuth) {
             return <Redirect to="/tasks" />
@@ -94,12 +92,15 @@ class Login extends PureComponent {
 const mapStateToProps = ({ User }) => {
     return {
         isFetching: User.isFetching,
+        isAuth: User.isAuth,
+        session_id: User.session_id,
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
         loginUser: (username, password) => dispatch(loginUser(username, password)),
+        authenticationUser: () => dispatch(authenticationUser()),
     };
 };
 

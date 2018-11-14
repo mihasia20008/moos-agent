@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import cx from 'classnames';
 
 import Overlay from '../../../components/Overlay';
+import Input from '../../../components/Input';
 
 import * as CONTENT from '../../../contentConstants';
 
@@ -10,27 +11,19 @@ const Login = ({ showLoader, onInputBlur, onFormSubmit }) => {
     return (
         <form className={cx('form-login')} onSubmit={onFormSubmit}>
             <div className={cx('form-group')}>
-                <div className={cx('form-group__row-input')}>
-                    <span className={cx('icon icon-user-1')} />
-                    <input 
-                        type="login"
-                        className={cx('form-control', 'form-control--login')}
-                        aria-describedby="login" 
-                        placeholder="Логин"
-                        onBlur={event => onInputBlur('username', event.target.value)}
-                    />
-                </div>
-                <div className={cx('form-group__row-input')}>
-                    <span className={cx('icon icon-locker')} />
-                    <span className={cx('icon icon-eye')} />
-                    <input
-                        type="password"
-                        className={cx('form-control', 'form-control--password')}
-                        aria-describedby="password" 
-                        placeholder="Пароль"
-                        onBlur={event => onInputBlur('password', event.target.value)}
-                    />
-                </div>
+                <Input
+                    name="login"
+                    onInputBlur={onInputBlur}
+                    placeholder="Логин"
+                    iconClass="icon-user-1"
+                />
+                <Input
+                    name="password"
+                    type="password"
+                    onInputBlur={onInputBlur}
+                    placeholder="Пароль"
+                    iconClass="icon-locker"
+                />
             </div>
             <div className={cx('form-group mr-tp2')}>
                 <button

@@ -2,12 +2,75 @@ import axios from 'axios';
 
 import { SERVER } from '../constants';
 
-export const loginUser = async (authData) => {
-    const res = await axios({
-        method: 'GET',
-        url: `${SERVER.HOST}/login?username=${authData.name}&password=${authData.password}`,
-        mode: 'no-cors'
-    });
-    console.log(res);
-    return { isSuccess: false };
+export const login = async (authData) => {
+    try {
+        const { data: { error_code: status, ...rest } } = await axios({
+            method: 'POST',
+            url: `${SERVER.HOST}/login`,
+            data: authData,
+        });
+        if (status === 0) {
+            return {
+                isSuccess: true,
+                ...rest,
+            };
+        }
+        return {
+            isSuccess: false,
+            message: rest.error,
+        };
+    } catch (err) {
+        console.log(err);
+        return {
+            isSuccess: false,
+            message: err.message,
+        }
+    }
 }
+
+export const auth = async () => {
+    try {
+        const { data: { error_code: status, ...rest } } = await axios({
+            method: 'GET',
+            url: `${SERVER.HOST}/session`,
+        });
+        if (status === 0) {
+            return {
+                isSuccess: true,
+                ...rest,
+            };
+        }
+        return {
+            isSuccess: false,
+            message: rest.error,
+        };
+    } catch (err) {
+        console.log(err);
+        return {
+            isSuccess: false,
+            message: err.message,
+        };
+    }
+}
+
+export const logout = async () => {
+    try {
+        const { data: { error_code: status, ...rest } } = await axios({
+            method: 'GET',
+            url: `${SERVER.HOST}/logout`,
+        });
+        if (status === 0) {
+            return { isSuccess: true };
+        }
+        return {
+            isSuccess: false,
+            message: rest.error,
+        };
+    } catch (err) {
+        console.log(err);
+        return {
+            isSuccess: false,
+            message: err.message,
+        };
+    }
+} 
