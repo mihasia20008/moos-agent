@@ -6,9 +6,9 @@ import Overlay from '../../../components/Overlay';
 
 import * as CONTENT from '../../../contentConstants';
 
-const Login = ({ showLoader }) => {
+const Login = ({ showLoader, onInputBlur, onFormSubmit }) => {
     return (
-        <form className={cx('form-login')}>
+        <form className={cx('form-login')} onSubmit={onFormSubmit}>
             <div className={cx('form-group')}>
                 <div className={cx('form-group__row-input')}>
                     <span className={cx('icon icon-user-1')} />
@@ -17,6 +17,7 @@ const Login = ({ showLoader }) => {
                         className={cx('form-control', 'form-control--login')}
                         aria-describedby="login" 
                         placeholder="Логин"
+                        onBlur={event => onInputBlur('username', event.target.value)}
                     />
                 </div>
                 <div className={cx('form-group__row-input')}>
@@ -27,14 +28,18 @@ const Login = ({ showLoader }) => {
                         className={cx('form-control', 'form-control--password')}
                         aria-describedby="password" 
                         placeholder="Пароль"
+                        onBlur={event => onInputBlur('password', event.target.value)}
                     />
                 </div>
             </div>
             <div className={cx('form-group mr-tp2')}>
-                <Link to="/tasks" className={cx('btn btn-danger btn-block')}>
+                <button
+                    className={cx('btn btn-danger btn-block')}
+                    type="submit"
+                >
                     Вход <span className={cx('icon icon-chevron-right')} />
                     {showLoader && <Overlay size="small" />}
-                </Link>
+                </button>
                 {/* <Link className={cx('btn btn-dark btn-block')} to="?e-login">
                     Вход с помощью Электронной подписи <span className={cx('icon icon-chevron-right')} />
                 </Link> */}
