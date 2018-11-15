@@ -33,6 +33,7 @@ const statistics = [{
 class Sidebar extends PureComponent {
     static propTypes = {
         name: PropTypes.string,
+        session_id: PropTypes.string.isRequired,
         logoutUser: PropTypes.func.isRequired,
     };
 
@@ -40,7 +41,10 @@ class Sidebar extends PureComponent {
         target.closest('.fr-user-menu').classList.toggle('open');
     }
 
-    handleLogout = () => this.props.logoutUser();
+    handleLogout = () => {
+        const { session_id, logoutUser } = this.props;
+        logoutUser(session_id);
+    };
 
     render() {
         const { name } = this.props;
@@ -100,12 +104,13 @@ class Sidebar extends PureComponent {
 const mapStateToProps = ({ User }) => {
     return {
         name: User.fullname,
+        session_id: User.session_id,
     };
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        logoutUser: () => dispatch(logoutUser()),
+        logoutUser: (session_id) => dispatch(logoutUser(session_id)),
     };
 }
 

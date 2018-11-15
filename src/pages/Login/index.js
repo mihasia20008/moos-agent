@@ -19,8 +19,8 @@ class Login extends PureComponent {
 
     componentDidMount() {
         const { session_id, authenticationUser } = this.props;
-        if (typeof session_id !== 'undefined') {
-            authenticationUser();
+        if (session_id) {
+            authenticationUser(session_id);
         }
     }
 
@@ -100,7 +100,7 @@ const mapStateToProps = ({ User }) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         loginUser: (username, password) => dispatch(loginUser(username, password)),
-        authenticationUser: () => dispatch(authenticationUser()),
+        authenticationUser: (session_id) => dispatch(authenticationUser(session_id)),
     };
 };
 

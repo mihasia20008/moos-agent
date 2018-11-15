@@ -28,11 +28,11 @@ export const login = async (authData) => {
     }
 }
 
-export const auth = async () => {
+export const auth = async (session_id) => {
     try {
         const { data: { error_code: status, ...rest } } = await axios({
             method: 'GET',
-            url: `${SERVER.HOST}/session`,
+            url: `${SERVER.HOST}/session?session_id=${session_id}`,
         });
         if (status === 0) {
             return {
@@ -53,11 +53,11 @@ export const auth = async () => {
     }
 }
 
-export const logout = async () => {
+export const logout = async (session_id) => {
     try {
         const { data: { error_code: status, ...rest } } = await axios({
             method: 'GET',
-            url: `${SERVER.HOST}/logout`,
+            url: `${SERVER.HOST}/logout?session_id=${session_id}`,
         });
         if (status === 0) {
             return { isSuccess: true };

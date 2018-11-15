@@ -50,11 +50,12 @@ class Tasks extends PureComponent {
     }
 }
 
-const mapStateToProps = ({ Tasks }) => {
+const mapStateToProps = ({ Tasks, User }) => {
     return {
         isFetching: Tasks.isFetching,
         isFetchingNext: Tasks.isFetchingNext,
-        list: Tasks.list
+        list: Tasks.list,
+        session_id: User.session_id,
     };
 };
 

@@ -18,7 +18,10 @@ export function loginUser(username, password) {
             dispatch({ type: types.LOGIN_SUCCESS, data: Object.assign(
                 {},
                 { ...res.user },
-                { processDefinitionKeys: res.process_definition_keys },
+                { 
+                    processDefinitionKeys: res.process_definition_keys,
+                    session_id: res.session.session_id,
+                },
             ) });
         } catch (err) {
             console.log(err);
@@ -27,11 +30,11 @@ export function loginUser(username, password) {
     };
 }
 
-export function authenticationUser() {
+export function authenticationUser(session_id) {
     return async dispatch => {
         try {
             dispatch({ type: types.AUTH_FETCH });
-            const res = await User.auth();
+            const res = await User.auth(session_id);
             if (!res.isSuccess) {
                 Cookies.remove('session_id');
                 Cookies.remove('JSESSIONID');
@@ -43,7 +46,10 @@ export function authenticationUser() {
             dispatch({ type: types.AUTH_SUCCESS, data: Object.assign(
                 {},
                 { ...res.user },
-                { processDefinitionKeys: res.process_definition_keys },
+                { 
+                    processDefinitionKeys: res.process_definition_keys,
+                    session_id: res.session.session_id,
+                },
             ) });
         } catch (err) {
             console.log(err);
@@ -52,11 +58,11 @@ export function authenticationUser() {
     }
 }
 
-export function logoutUser() {
+export function logoutUser(session_id) {
     return async dispatch => {
         try {
             dispatch({ type: types.LOGOUT_FETCH });
-            const res = await User.logout();
+            const res = await User.logout(session_id);
             if (!res.isSuccess) {
                 alert(res.message);
                 dispatch({ type: types.LOGOUT_ERROR });

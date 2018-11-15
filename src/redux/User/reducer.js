@@ -32,7 +32,10 @@ export default (state = initialState, action) => {
             };
         }
         case types.LOGOUT_SUCCESS: {
-            return { ...initialState };
+            return { 
+                ...initialState,
+                session_id: '',
+            };
         }
         case types.LOGIN_ERROR:
         case types.LOGOUT_ERROR:
