@@ -124,7 +124,7 @@ const mapStateToProps = (state, ownProps) => {
     const { Tasks, User } = state;
     return {
         showAddButton: ownProps.path.search('/tasks') !== -1 || ownProps.path.search('/clients') !== -1,
-        showAddHelp: ownProps.path.search('/tasks') !== -1 && !Tasks.list.length && !Tasks.isFetching,
+        showAddHelp: ownProps.path.search('/tasks') !== -1 && !Tasks.order.length && !Tasks.isFetching,
         isFetching: Object.keys(state).some(key => state[key].isFetching),
         isAuth: User.isAuth,
         session_id: User.session_id,

@@ -3,7 +3,7 @@ import * as types from './actionTypes';
 const initialState = {
   isFetching: false,
   isFetchingNext: false,
-  list: [],
+  order: [],
 };
 
 export default (state = initialState, action) => {

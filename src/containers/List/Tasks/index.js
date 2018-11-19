@@ -9,7 +9,7 @@ const TasksList = ({ list, isLoading, isLoadingNext }) => {
         <div className={cx('block-list block-list--tasks')}>
             {isLoading
                 ? [0, 1, 2, 3].map((item, index) => <SkeketTask key={index} />)
-                : list.map((item, index) => <TaskCard key={index} />) }
+                : list.map((item, index) => <TaskCard key={index} {...item} />) }
             {isLoadingNext && <SkeketTask key={list.length + 10} showLoader />}
         </div>
     );
