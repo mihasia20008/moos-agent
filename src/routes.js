@@ -11,6 +11,7 @@ export default (
     <Switch>
         <Route exact path="/" component={Login} />
         <Layout path="/tasks" component={Tasks} />
+        <Layout path="/clients/:id" component={Clients} />
         <Layout path="/clients" component={Clients} />
         <Layout component={NotFound} isNotFound />
     </Switch>

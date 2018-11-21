@@ -12,6 +12,7 @@ const ClientsList = ({ idsList, list, isLoading, isLoadingNext }) => {
                 : idsList.map(id => (
                     <ClientCard
                         key={id}
+                        id={id}
                         displayName={list[id].displayName}
                         INN={list[id].INN ? list[id].INN : undefined}
                         KPP={list[id].KPP ? list[id].KPP : undefined}

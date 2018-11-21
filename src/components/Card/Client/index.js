@@ -1,7 +1,9 @@
 import React from 'react';
 import cx from 'classnames';
+import { Link } from 'react-router-dom';
 
 const ClientCard = ({
+    id,
     displayName,
     INN,
     KPP,
@@ -53,6 +55,7 @@ const ClientCard = ({
                     </table>
                 </div>
             </div>
+            <Link to={`/clients/${id}`} className="block-list__link" />
         </div>
     );
 };

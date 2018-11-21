@@ -4,11 +4,13 @@ import { connect } from 'react-redux';
 import { Route, Link, Redirect } from 'react-router-dom';
 import cx from 'classnames';
 
-import LoginModal from '../LoginModal';
+import Modal from '../Modal';
 import AddModal from '../AddModal';
 import FormRestore from '../Form/Restore';
 import FormSearch from '../Form/Search';
 import UserStatictics from '../UserStatictics';
+import ClientDetail from '../Detail/Client';
+
 import Overlay from '../../components/Overlay';
 
 import { authenticationUser } from '../../redux/User/actions';
@@ -51,7 +53,7 @@ class Layout extends PureComponent {
                     return <Overlay size="big" />;
                 }
         
-                const { location: { search } } = matchProps;
+                const { location: { search }, match } = matchProps;
         
                 const renderArray = [
                     <div key={0} className={cx('fr-app')}>
@@ -72,45 +74,60 @@ class Layout extends PureComponent {
         
                 if (search === '?restore-password') {
                     renderArray.push(
-                        <LoginModal 
+                        <Modal 
                             key={1}
                             centerPosition
                             modalClass="restore-pass-form"
                             onCloseModal={matchProps.history.goBack}
                         >
                             <FormRestore />
-                        </LoginModal>
+                        </Modal>
                     );
                 }
         
                 if (search === '?search') {
                     renderArray.push(
-                        <LoginModal
+                        <Modal
                             key={2}
                             centerPosition
                             modalClass="modal-search"
-                            onCloseModal={matchProps.history.goBack}>
+                            onCloseModal={matchProps.history.goBack}
+                        >
                             <FormSearch />
-                        </LoginModal>
+                        </Modal>
                     );
                 }
         
                 if (search === '?show-statistic') {
                     renderArray.push(
-                        <LoginModal
+                        <Modal
                             key={3}
                             centerPosition
                             dialogClass="modal-dialog--xl"
                             contentClass="modal-content__p-0 modal-content__chart-stats"
-                            onCloseModal={matchProps.history.goBack}>
+                            onCloseModal={matchProps.history.goBack}
+                        >
                             <UserStatictics />
-                        </LoginModal>
+                        </Modal>
                     );
                 }
         
                 if (search === '?add-modal') {
                     renderArray.push(
                         <AddModal key={4} onCloseModal={matchProps.history.goBack} />
+                    );
+                }
+
+                if (match.path.search('/clients/') !== -1 && typeof match.params.id !== 'undefined') {
+                    renderArray.push(
+                        <Modal
+                            key={5}
+                            topPosition
+                            modalClass="modal-custom--with-help-block"
+                            onCloseModal={matchProps.history.goBack}>
+                        >
+                            <ClientDetail id={match.params.id} />
+                        </Modal>
                     );
                 }
         
@@ -122,8 +139,10 @@ class Layout extends PureComponent {
 
 const mapStateToProps = (state, ownProps) => {
     const { Tasks, Clients, User } = state;
+
     const isTaskEmpty = ownProps.path.search('/tasks') !== -1 && !Tasks.order.length && !Tasks.isFetching;
     const isClientsEmpty = ownProps.path.search('/clients') !== -1 && !Clients.idsList.length && !Clients.isFetching;
+    
     return {
         showAddButton: ownProps.path.search('/tasks') !== -1 || ownProps.path.search('/clients') !== -1,
         showAddHelp: isTaskEmpty || isClientsEmpty,
