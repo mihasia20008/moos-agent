@@ -6,10 +6,13 @@ import { declOfNum } from '../../../services/utility';
 const days = ['день', 'дня', 'дней'];
 
 const TaskCard = ({
+    orderNumber,
     createdDate,
     durationDays,
     principalCompany_displayName,
     principalCompany_INN,
+    purchaseAmount,
+    contract_max_price,
  }) => {
     return (
         <div className={cx('block-list__item')}>
@@ -62,8 +65,8 @@ const TaskCard = ({
                             </tr>
                             <tr>
                                 <td>{durationDays} {declOfNum(durationDays, days)}</td>
-                                <td>5 000 000.00 ₽</td>
-                                <td>2 213 942 123.00 ₽</td>
+                                <td>{purchaseAmount} ₽</td>
+                                <td>{contract_max_price} ₽</td>
                             </tr>
                         </tbody>
                     </table>
@@ -71,7 +74,7 @@ const TaskCard = ({
             </div>
             <div className={cx('block-list__row')}>
                 <div className={cx('block-list__desc')}>
-                    <span>101-ЭГБ/17</span>
+                    <span>{orderNumber}</span>
                     <span className={cx('block-list__date-from')}>от {createdDate}</span>
                 </div>
                 <button className={cx('btn btn-primary btn-primary--with-icon')}>
