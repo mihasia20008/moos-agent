@@ -24,6 +24,15 @@ class Layout extends PureComponent {
         authenticationUser: PropTypes.func.isRequired,
     };
 
+    componentDidUpdate(prevProps) {
+        const { path: pathNow, location: locationNow } = this.props;
+        const { location: locationPrev } = prevProps;
+
+        if (pathNow === locationNow.pathname && locationNow.pathname !== locationPrev.pathname) {
+            window.scrollTo(0, 0)
+        }
+    }
+
     componentDidMount() {
         const { session_id, isAuth, authenticationUser } = this.props;
         if (typeof session_id !== 'undefined' && !isAuth) {
