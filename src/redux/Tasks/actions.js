@@ -5,8 +5,8 @@ export function getTasksList(session_id) {
     return async dispatch => {
         try {
             dispatch({ type: types.TASKS_FETCH });
-            const res = await Tasks.getData(session_id);
-            if (!res.isSuccess) {
+            const { isSuccess, ...res } = await Tasks.getData(session_id);
+            if (!isSuccess) {
                 alert(res.message);
                 dispatch({ type: types.TASKS_ERROR });
                 return;
@@ -23,8 +23,8 @@ export function getNextTasksPage() {
     return async dispatch => {
         try {
             dispatch({ type: types.NEXT_TASKS_FETCH });
-            const res = await Tasks.getNextPage();
-            if (!res.isSuccess) {
+            const { isSuccess, ...res } = await Tasks.getNextPage();
+            if (!isSuccess) {
                 dispatch({ type: types.NEXT_TASKS_ERROR, text: res.text });
                 return;
             }

@@ -2,13 +2,13 @@ import React from 'react';
 import cx from 'classnames';
 
 import TaskCard from '../../../components/Card/Task';
-import SkeketTask from '../../../components/Card/SkeletTask';
+import Skeket from '../../../components/Card/Skelet';
 
 const TasksList = ({ list, isLoading, isLoadingNext }) => {
     return (
         <div className={cx('block-list block-list--tasks')}>
             {isLoading
-                ? [0, 1, 2, 3].map((item, index) => <SkeketTask key={index} />)
+                ? [0, 1, 2, 3].map((item, index) => <Skeket key={index} />)
                 : list.map((item, index) => (
                     <TaskCard
                         key={index}
@@ -21,7 +21,7 @@ const TasksList = ({ list, isLoading, isLoadingNext }) => {
                         contract_max_price={item.contract_max_price}
                     />
                 ))}
-            {isLoadingNext && <SkeketTask key={list.length + 10} showLoader />}
+            {isLoadingNext && <Skeket key={list.length + 10} showLoader />}
         </div>
     );
 };

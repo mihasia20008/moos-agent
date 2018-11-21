@@ -5,3 +5,7 @@ export {
 export {
   default as User,
 } from './User/reducer';
+
+export {
+  default as Clients,
+} from './Clients/reducer';

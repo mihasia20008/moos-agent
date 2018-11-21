@@ -1,16 +1,21 @@
 import React from 'react';
 import cx from 'classnames';
 
-const ClientCard = () => {
+const ClientCard = ({
+    displayName,
+    INN,
+    KPP,
+    OGRN,
+}) => {
     return (
         <div className={cx('block-list__item')}>
             <div className={cx('block-list__row')}>
                 <div>
                     <div className={cx('block-list__info block-list__info--with-icon')}>
                         <span className={cx('icon icon-user')} />
-                        <span>ООО «ОДАС» Сколково</span>
+                        <span dangerouslySetInnerHTML={{ __html: displayName }} />
                     </div>
-                    <div className={cx('block-list__info')}>ИНН: 771375236257</div>
+                    <div className={cx('block-list__info')} dangerouslySetInnerHTML={{ __html: INN }} />
                 </div>
                 <div className={cx('block-list__location')}>
                     г. Ярославль
@@ -41,8 +46,8 @@ const ClientCard = () => {
                             </tr>
                             <tr>
                                 <td>7 896 124 ₽</td>
-                                <td>771001001</td>
-                                <td>771375236257</td>
+                                <td dangerouslySetInnerHTML={{ __html: KPP }} />
+                                <td dangerouslySetInnerHTML={{ __html: OGRN }} />
                             </tr>
                         </tbody>
                     </table>
@@ -51,5 +56,12 @@ const ClientCard = () => {
         </div>
     );
 };
+
+ClientCard.defaultProps = {
+    displayName: '<i style="font-style: italic; color: #ccc;">Название не указано</i>',
+    INN: '<i style="font-style: italic; color: #ccc;">Не указано</i>',
+    KPP: '<i style="font-style: italic; color: #ccc;">Не указано</i>',
+    OGRN: '<i style="font-style: italic; color: #ccc;">Не указано</i>',
+}
 
 export default ClientCard;

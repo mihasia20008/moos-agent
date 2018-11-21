@@ -3,7 +3,7 @@ import cx from 'classnames';
 
 import Overlay from '../../Overlay';
 
-const SkeletTask = ({ showLoader = false }) => {
+const Skelet = ({ showLoader = false }) => {
     return (
         <div className={cx('block-list__item')}>
             <div className={cx('block-list__row')}>
@@ -70,4 +70,4 @@ const SkeletTask = ({ showLoader = false }) => {
     );
 };
 
-export default SkeletTask;
+export default Skelet;

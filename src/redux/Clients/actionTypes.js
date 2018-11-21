@@ -1,0 +1,3 @@
+export const CLIENTS_FETCH = 'CLIENTS_FETCH';
+export const CLIENTS_SUCCESS = 'CLIENTS_SUCCESS';
+export const CLIENTS_ERROR = 'CLIENTS_ERROR';
