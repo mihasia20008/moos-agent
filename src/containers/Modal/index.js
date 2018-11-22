@@ -13,6 +13,8 @@ class Modal extends PureComponent {
         contentClass: PropTypes.string,
     };
     static defaultProps = { 
+        topPosition: false,
+        centerPosition: false,
         modalClass: '',
         dialogClass: '',
         contentClass: '',

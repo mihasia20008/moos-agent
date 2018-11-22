@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import cx from 'classnames';
@@ -12,6 +13,14 @@ import { loginUser, authenticationUser } from '../../redux/User/actions';
 import * as CONTENT from '../../contentConstants';
 
 class Login extends PureComponent {
+    static propTypes = {
+        isFetching: PropTypes.bool.isRequired,
+        isAuth: PropTypes.bool.isRequired,
+        session_id: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.string]),
+        loginUser: PropTypes.func.isRequired,
+        authenticationUser: PropTypes.func.isRequired,
+    };
+
     state = {
         login: '',
         password: '',

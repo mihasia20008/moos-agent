@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cx from 'classnames';
 import { Link } from 'react-router-dom';
 
@@ -60,11 +61,19 @@ const ClientCard = ({
     );
 };
 
+ClientCard.propTypes = {
+    id: PropTypes.string.isRequired,
+    displayName: PropTypes.string,
+    INN: PropTypes.string,
+    KPP: PropTypes.string,
+    OGRN: PropTypes.string,
+};
+
 ClientCard.defaultProps = {
     displayName: '<i style="font-style: italic; color: #ccc;">Название не указано</i>',
     INN: '<i style="font-style: italic; color: #ccc;">Не указано</i>',
     KPP: '<i style="font-style: italic; color: #ccc;">Не указано</i>',
     OGRN: '<i style="font-style: italic; color: #ccc;">Не указано</i>',
-}
+};
 
 export default ClientCard;

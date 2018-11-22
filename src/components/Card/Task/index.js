@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cx from 'classnames';
 
 import { declOfNum } from '../../../services/utility';
@@ -84,6 +85,16 @@ const TaskCard = ({
             </div>
         </div>
     );
+};
+
+TaskCard.propTypes = {
+    orderNumber: PropTypes.string.isRequired,
+    createdDate: PropTypes.string,
+    durationDays: PropTypes.number,
+    principalCompany_displayName: PropTypes.string,
+    principalCompany_INN: PropTypes.string,
+    purchaseAmount: PropTypes.string,
+    contract_max_price: PropTypes.string,
 };
 
 export default TaskCard;

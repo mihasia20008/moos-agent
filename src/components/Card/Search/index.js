@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cx from 'classnames';
 import Highlighter from 'react-highlight-words';
 
@@ -21,6 +22,18 @@ const SearchCard = ({ query, displayName, INN, OGRN, }) => {
             </div>
         </div>
     );
+};
+
+SearchCard.propTypes = {
+    query: PropTypes.string.isRequired,
+    displayName: PropTypes.string.isRequired,
+    INN: PropTypes.string,
+    OGRN: PropTypes.string,
+};
+
+SearchCard.defaultProps = {
+    INN: '<i style="font-style: italic; color: #ccc;">Не указано</i>',
+    OGRN: '<i style="font-style: italic; color: #ccc;">Не указано</i>',
 };
 
 export default SearchCard;

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import cx from 'classnames';
 
@@ -43,6 +44,12 @@ const Login = ({ showLoader, onInputBlur, onFormSubmit }) => {
             </div>
         </form>
     );
+};
+
+Login.propTypes = {
+    showLoader: PropTypes.bool.isRequired,
+    onInputBlur: PropTypes.func.isRequired,
+    onFormSubmit: PropTypes.func.isRequired,
 };
 
 export default Login;

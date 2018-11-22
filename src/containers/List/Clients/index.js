@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cx from 'classnames';
 
 import ClientCard from '../../../components/Card/Client';
@@ -22,6 +23,13 @@ const ClientsList = ({ idsList, list, isLoading, isLoadingNext }) => {
             {isLoadingNext && <Skeket key={idsList.length + 10} showLoader />}
         </div>
     );
+};
+
+ClientsList.propTypes = {
+    idsList: PropTypes.array,
+    list: PropTypes.object,
+    isLoading: PropTypes.bool.isRequired,
+    isLoadingNext: PropTypes.bool.isRequired
 };
 
 export default ClientsList;

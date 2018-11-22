@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import cx from 'classnames';
 
@@ -11,6 +12,14 @@ import EmptyClientsList from '../../components/Empty/ClientsList';
 import { getClientsList } from '../../redux/Clients/actions';
 
 class Clients extends PureComponent {
+    static propTypes = {
+        isFetching: PropTypes.bool.isRequired,
+        isFetchingNext: PropTypes.bool.isRequired,
+        list: PropTypes.object,
+        idsList: PropTypes.array,
+        session_id: PropTypes.string.isRequired,
+        getClientsList: PropTypes.func.isRequired,
+    };
 
     componentDidMount() {
         const { session_id, getClientsList } = this.props;

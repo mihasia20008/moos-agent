@@ -1,10 +1,22 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import cx from 'classnames';
 
 class Dropdown extends PureComponent {
+    static propsTypes = {
+        defaultActive: PropTypes.number,
+        name: PropTypes.string.isRequired,
+        list: PropTypes.arrayOf(PropTypes.shape({
+            key: PropTypes.string,
+            value: PropTypes.string,
+        })),
+        onSelectItem: PropTypes.func.isRequired,
+    };
+    static defaultProps = { defaultActive: 0 };
+
     state = {
         isOpen: false,
-        activeIndex: this.props.defaultActive || 0,
+        activeIndex: this.props.defaultActive,
     };
 
     componentWillUnmount = () => {

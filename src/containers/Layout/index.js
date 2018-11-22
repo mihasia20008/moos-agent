@@ -18,10 +18,16 @@ import { authenticationUser } from '../../redux/User/actions';
 class Layout extends PureComponent {
     static propTypes = {
         component: PropTypes.func.isRequired,
-        isFetching: PropTypes.bool,
+        isFetching: PropTypes.bool.isRequired,
+        isAuth: PropTypes.bool.isRequired,
+        showAddButton: PropTypes.bool.isRequired,
+        showAddHelp: PropTypes.bool.isRequired,
         isNotFound: PropTypes.bool,
-        session_id: PropTypes.string,
+        session_id: PropTypes.string.isRequired,
         authenticationUser: PropTypes.func.isRequired,
+    };
+    static defaultProps = {
+        isNotFound: false,
     };
 
     componentDidUpdate(prevProps) {

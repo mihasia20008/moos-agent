@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import cx from 'classnames';
 
@@ -10,6 +11,16 @@ import EmptyTasksList from '../../components/Empty/TasksList';
 import { getTasksList, getNextTasksPage } from '../../redux/Tasks/actions';
 
 class Tasks extends PureComponent {
+    static propTypes = {
+        isFetching: PropTypes.bool.isRequired,
+        isFetchingNext: PropTypes.bool.isRequired,
+        list: PropTypes.array,
+        nextPage: PropTypes.number.isRequired,
+        hasMorePage: PropTypes.bool.isRequired,
+        session_id: PropTypes.string.isRequired,
+        getTasksList: PropTypes.func.isRequired,
+        getNextTasksPage: PropTypes.func.isRequired,
+    };
 
     componentDidMount() {
         const { session_id, getTasksList } = this.props;

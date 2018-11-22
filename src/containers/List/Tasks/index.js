@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cx from 'classnames';
 
 import TaskCard from '../../../components/Card/Task';
@@ -24,6 +25,12 @@ const TasksList = ({ list, isLoading, isLoadingNext }) => {
             {isLoadingNext && <Skeket key={list.length + 10} showLoader />}
         </div>
     );
+};
+
+TasksList.propTypes = {
+    list: PropTypes.array,
+    isLoading: PropTypes.bool.isRequired,
+    isLoadingNext: PropTypes.bool.isRequired
 };
 
 export default TasksList;
