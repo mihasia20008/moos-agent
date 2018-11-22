@@ -19,16 +19,17 @@ export function getTasksList(session_id) {
     };
 }
 
-export function getNextTasksPage() {
+export function getNextTasksPage(session_id, page) {
     return async dispatch => {
         try {
             dispatch({ type: types.NEXT_TASKS_FETCH });
-            const { isSuccess, ...res } = await Tasks.getNextPage();
+            const { isSuccess, ...res } = await Tasks.getNextPage(session_id, page);
             if (!isSuccess) {
-                dispatch({ type: types.NEXT_TASKS_ERROR, text: res.text });
+                alert(res.message);
+                dispatch({ type: types.NEXT_TASKS_ERROR });
                 return;
             }
-            dispatch({ type: types.NEXT_TASKS_SUCCESS, data: res.data });
+            dispatch({ type: types.NEXT_TASKS_SUCCESS, data: res });
         } catch (err) {
             console.log(err);
             dispatch({ type: types.NEXT_TASKS_ERROR });

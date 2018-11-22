@@ -48,6 +48,7 @@
     "react-bootstrap-slider": "^2.1.5",
     "react-dev-utils": "^6.1.1",
     "react-dom": "^16.6.0",
+    "react-highlight-words": "^0.14.0",
     "react-redux": "^5.1.0",
     "react-router-dom": "^4.3.1",
     "redux": "^4.0.1",

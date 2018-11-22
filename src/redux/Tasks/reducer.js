@@ -4,6 +4,8 @@ const initialState = {
   isFetching: false,
   isFetchingNext: false,
   order: [],
+  page: 0,
+  more: false,
 };
 
 export default (state = initialState, action) => {
@@ -25,10 +27,12 @@ export default (state = initialState, action) => {
       return { ...state, isFetchingNext: true };
     }
     case types.NEXT_TASKS_SUCCESS: {
+      const { order } = action.data;
       return {
         ...state,
         isFetchingNext: false,
-        list: state.list.concat(action.data.list),
+        ...action.data,
+        order: state.order.concat(order),
       };
     }
     case types.NEXT_TASKS_ERROR: {

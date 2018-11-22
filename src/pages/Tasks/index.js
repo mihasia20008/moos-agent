@@ -26,12 +26,19 @@ class Tasks extends PureComponent {
     }
     
     handleScroll = () => {
-        // const { list, isFetchingNext, getNextTasksPage } = this.props;
-        // const { height } = document.querySelector('.block-list.block-list--tasks').getBoundingClientRect();
+        const {
+            session_id,
+            list,
+            isFetchingNext,
+            nextPage,
+            hasMorePage,
+            getNextTasksPage
+        } = this.props;
+        const { height } = document.querySelector('.block-list.block-list--tasks').getBoundingClientRect();
 
-        // if (!isFetchingNext && list.length > 0 && height - window.scrollY < 1000) {
-        //     getNextTasksPage();
-        // }
+        if (!isFetchingNext && list.length > 0 && hasMorePage && height - window.scrollY < 1000) {
+            getNextTasksPage(session_id, nextPage);
+        }
     }
     
     render() {
@@ -54,6 +61,8 @@ const mapStateToProps = ({ Tasks, User }) => {
         isFetching: Tasks.isFetching,
         isFetchingNext: Tasks.isFetchingNext,
         list: Tasks.order,
+        nextPage: Tasks.page + 1,
+        hasMorePage: Tasks.more,
         session_id: User.session_id,
     };
 };
@@ -61,7 +70,7 @@ const mapStateToProps = ({ Tasks, User }) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         getTasksList: (session_id) => dispatch(getTasksList(session_id)),
-        getNextTasksPage: () => dispatch(getNextTasksPage()),
+        getNextTasksPage: (session_id, page) => dispatch(getNextTasksPage(session_id, page)),
     };
 };
 

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import cx from 'classnames';
 
-import LoginModal from '../../containers/LoginModal';
+import Modal from '../../containers/Modal';
 import FormLogin from '../../containers/Form/Login';
 import FormRestore from '../../containers/Form/Restore';
 
@@ -34,17 +34,17 @@ class Login extends PureComponent {
 
     renderELogin() {
         return (
-            <LoginModal key={2} topPosition onCloseModal={this.props.history.goBack}>
+            <Modal key={2} topPosition onCloseModal={this.props.history.goBack}>
                 <div className={cx('modal-custom-header')}>Банковская гарантия 101-ЭГБ/17</div>
-            </LoginModal>
+            </Modal>
         );
     }
 
     renderRestorePassword() {
         return (
-            <LoginModal key={1} centerPosition onCloseModal={this.props.history.goBack}>
+            <Modal key={1} centerPosition onCloseModal={this.props.history.goBack}>
                 <FormRestore />
-            </LoginModal>
+            </Modal>
         );
     }
 

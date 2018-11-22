@@ -93,8 +93,9 @@ class Layout extends PureComponent {
                         </Modal>
                     );
                 }
-        
-                if (search === '?search') {
+                
+                if (search.search(/\?search/) !== -1) {
+                    const query = decodeURIComponent(search).split('=')[1];
                     renderArray.push(
                         <Modal
                             key={2}
@@ -102,7 +103,7 @@ class Layout extends PureComponent {
                             modalClass="modal-search"
                             onCloseModal={matchProps.history.goBack}
                         >
-                            <FormSearch />
+                            <FormSearch defaultSearch={query} />
                         </Modal>
                     );
                 }
