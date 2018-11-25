@@ -154,14 +154,12 @@ class Layout extends PureComponent {
 }
 
 const mapStateToProps = (state, ownProps) => {
-    const { Tasks, Clients, User } = state;
-
-    const isTaskEmpty = ownProps.path.search('/tasks') !== -1 && !Tasks.order.length && !Tasks.isFetching;
-    const isClientsEmpty = ownProps.path.search('/clients') !== -1 && !Clients.idsList.length && !Clients.isFetching;
+    const { Tasks, User } = state;
+    const isTaskEmpty = ownProps.path.search('/tasks') !== -1 && !Tasks.order.length && !Tasks.isFetching;    
     
     return {
-        showAddButton: ownProps.path.search('/tasks') !== -1 || ownProps.path.search('/clients') !== -1,
-        showAddHelp: isTaskEmpty || isClientsEmpty,
+        showAddButton: ownProps.path.search('/tasks') !== -1,
+        showAddHelp: isTaskEmpty,
         isFetching: Object.keys(state).some(key => state[key].isFetching),
         isAuth: User.isAuth,
         session_id: User.session_id,
