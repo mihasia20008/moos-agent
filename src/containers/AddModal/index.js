@@ -38,11 +38,11 @@ class AddModal extends PureComponent {
                 >
                     <div className={cx('modal-menu')} ref={this.setComponentRef.bind(this, 'content')}>
                         <a href="javasctipt::void(0);" className={cx('modal-menu__item')}>
-                            <img src="img/new-garantee.svg" alt="" />
+                            <img src="static/media/new-garantee.svg" alt="" />
                             <span>Новая гарантия</span>
                         </a>
                         <a href="javasctipt::void(0);" className={cx('modal-menu__item')}>
-                            <img src="img/rewrite-garantee.svg" alt="" />
+                            <img src="static/media/rewrite-garantee.svg" alt="" />
                             <span>Перевыпуск гарантии</span>
                         </a>
                     </div>
