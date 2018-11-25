@@ -1,40 +1,39 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import cx from 'classnames';
 
 import Overlay from '../../../components/Overlay';
+import Input from '../../../components/Input';
 
 import * as CONTENT from '../../../contentConstants';
 
-const Login = ({ showLoader }) => {
+const Login = ({ showLoader, onInputBlur, onFormSubmit }) => {
     return (
-        <form className={cx('form-login')}>
+        <form className={cx('form-login')} onSubmit={onFormSubmit}>
             <div className={cx('form-group')}>
-                <div className={cx('form-group__row-input')}>
-                    <span className={cx('icon icon-user-1')} />
-                    <input 
-                        type="login"
-                        className={cx('form-control', 'form-control--login')}
-                        aria-describedby="login" 
-                        placeholder="Логин"
-                    />
-                </div>
-                <div className={cx('form-group__row-input')}>
-                    <span className={cx('icon icon-locker')} />
-                    <span className={cx('icon icon-eye')} />
-                    <input
-                        type="password"
-                        className={cx('form-control', 'form-control--password')}
-                        aria-describedby="password" 
-                        placeholder="Пароль"
-                    />
-                </div>
+                <Input
+                    name="login"
+                    onInputBlur={onInputBlur}
+                    placeholder="Логин"
+                    iconClass="icon-user-1"
+                />
+                <Input
+                    name="password"
+                    type="password"
+                    onInputBlur={onInputBlur}
+                    placeholder="Пароль"
+                    iconClass="icon-locker"
+                />
             </div>
             <div className={cx('form-group mr-tp2')}>
-                <Link to="/tasks" className={cx('btn btn-danger btn-block')}>
+                <button
+                    className={cx('btn btn-danger btn-block')}
+                    type="submit"
+                >
                     Вход <span className={cx('icon icon-chevron-right')} />
                     {showLoader && <Overlay size="small" />}
-                </Link>
+                </button>
                 {/* <Link className={cx('btn btn-dark btn-block')} to="?e-login">
                     Вход с помощью Электронной подписи <span className={cx('icon icon-chevron-right')} />
                 </Link> */}
@@ -45,6 +44,12 @@ const Login = ({ showLoader }) => {
             </div>
         </form>
     );
+};
+
+Login.propTypes = {
+    showLoader: PropTypes.bool.isRequired,
+    onInputBlur: PropTypes.func.isRequired,
+    onFormSubmit: PropTypes.func.isRequired,
 };
 
 export default Login;

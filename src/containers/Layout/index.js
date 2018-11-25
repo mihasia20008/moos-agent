@@ -1,101 +1,180 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Route, Link } from 'react-router-dom';
+import { Route, Link, Redirect } from 'react-router-dom';
 import cx from 'classnames';
 
-import LoginModal from '../LoginModal';
+import Modal from '../Modal';
 import AddModal from '../AddModal';
 import FormRestore from '../Form/Restore';
 import FormSearch from '../Form/Search';
 import UserStatictics from '../UserStatictics';
+import ClientDetail from '../Detail/Client';
+
 import Overlay from '../../components/Overlay';
 
-const Layout = ({ component: Component, isFetching, isNotFound, showAddButton, showAddHelp, ...rest }) => {
-  return (
-    <Route {...rest} render={matchProps => {
-        const { location: { search } } = matchProps;
+import { authenticationUser } from '../../redux/User/actions';
 
-        const renderArray = [
-            <div key={0} className={cx('fr-app')}>
-                <div className={cx('fr-container', {
-                    'fr-container--error': isNotFound,
-                })}>
-                    <Component {...matchProps} />
-                    {isFetching && <Overlay size="big" />}
-                </div>
-                {showAddButton && (
-                    <div className={cx('btn-options')}>
-                        <Link to="?add-modal" className={cx('btn-options__link')} />
-                        {showAddHelp && <span className={cx('btn-options__tooltip')}>Однако, вам стоит подумать о будущем и создать пару задач…</span>}
+class Layout extends PureComponent {
+    static propTypes = {
+        component: PropTypes.func.isRequired,
+        isFetching: PropTypes.bool.isRequired,
+        isAuth: PropTypes.bool.isRequired,
+        showAddButton: PropTypes.bool.isRequired,
+        showAddHelp: PropTypes.bool.isRequired,
+        isNotFound: PropTypes.bool,
+        session_id: PropTypes.string.isRequired,
+        authenticationUser: PropTypes.func.isRequired,
+    };
+    static defaultProps = {
+        isNotFound: false,
+    };
+
+    componentDidUpdate(prevProps) {
+        const { path: pathNow, location: locationNow } = this.props;
+        const { location: locationPrev } = prevProps;
+
+        if (pathNow === locationNow.pathname && locationNow.pathname !== locationPrev.pathname) {
+            window.scrollTo(0, 0)
+        }
+    }
+
+    componentDidMount() {
+        const { session_id, isAuth, authenticationUser } = this.props;
+        if (typeof session_id !== 'undefined' && !isAuth) {
+            authenticationUser(session_id);
+        }
+    }
+    
+    render() {
+        const {
+            component: Component,
+            isFetching,
+            isNotFound,
+            showAddButton,
+            showAddHelp,
+            isAuth,
+            session_id,
+            ...rest
+        } = this.props;
+
+        return (
+            <Route {...rest} render={matchProps => {
+                if (!isAuth && !session_id) {
+                    return <Redirect to="/" />;
+                }
+
+                if (!isAuth) {
+                    return <Overlay size="big" />;
+                }
+        
+                const { location: { search }, match } = matchProps;
+        
+                const renderArray = [
+                    <div key={0} className={cx('fr-app')}>
+                        <div className={cx('fr-container', {
+                            'fr-container--error': isNotFound,
+                        })}>
+                            <Component {...matchProps} />
+                            {isFetching && <Overlay size="big" />}
+                        </div>
+                        {showAddButton && (
+                            <div className={cx('btn-options')}>
+                                <Link to="?add-modal" className={cx('btn-options__link')} />
+                                {showAddHelp && <span className={cx('btn-options__tooltip')}>Однако, вам стоит подумать о будущем и создать пару задач…</span>}
+                            </div>
+                        )}
                     </div>
-                )}
-            </div>
-        ];
+                ];
+        
+                if (search === '?restore-password') {
+                    renderArray.push(
+                        <Modal 
+                            key={1}
+                            centerPosition
+                            modalClass="restore-pass-form"
+                            onCloseModal={matchProps.history.goBack}
+                        >
+                            <FormRestore />
+                        </Modal>
+                    );
+                }
+                
+                if (search.search(/\?search/) !== -1) {
+                    const query = decodeURIComponent(search).split('=')[1];
+                    renderArray.push(
+                        <Modal
+                            key={2}
+                            centerPosition
+                            modalClass="modal-search"
+                            onCloseModal={matchProps.history.goBack}
+                        >
+                            <FormSearch defaultSearch={query} />
+                        </Modal>
+                    );
+                }
+        
+                if (search === '?show-statistic') {
+                    renderArray.push(
+                        <Modal
+                            key={3}
+                            centerPosition
+                            dialogClass="modal-dialog--xl"
+                            contentClass="modal-content__p-0 modal-content__chart-stats"
+                            onCloseModal={matchProps.history.goBack}
+                        >
+                            <UserStatictics />
+                        </Modal>
+                    );
+                }
+        
+                if (search === '?add-modal') {
+                    renderArray.push(
+                        <AddModal key={4} onCloseModal={matchProps.history.goBack} />
+                    );
+                }
 
-        if (search === '?restore-password') {
-            renderArray.push(
-                <LoginModal 
-                    key={1}
-                    centerPosition
-                    modalClass="restore-pass-form"
-                    onCloseModal={matchProps.history.goBack}
-                >
-                    <FormRestore />
-                </LoginModal>
-            );
-        }
-
-        if (search === '?search') {
-            renderArray.push(
-                <LoginModal
-                    key={2}
-                    centerPosition
-                    modalClass="modal-search"
-                    onCloseModal={matchProps.history.goBack}>
-                    <FormSearch />
-                </LoginModal>
-            );
-        }
-
-        if (search === '?show-statistic') {
-            renderArray.push(
-                <LoginModal
-                    key={3}
-                    centerPosition
-                    dialogClass="modal-dialog--xl"
-                    contentClass="modal-content__p-0 modal-content__chart-stats"
-                    onCloseModal={matchProps.history.goBack}>
-                    <UserStatictics />
-                </LoginModal>
-            );
-        }
-
-        if (search === '?add-modal') {
-            renderArray.push(
-                <AddModal key={4} onCloseModal={matchProps.history.goBack} />
-            );
-        }
-
-        return renderArray;
-    }} />
-  );
-};
-
-Layout.propTypes = {
-  component: PropTypes.func.isRequired,
-  isFetching: PropTypes.bool,
-  isNotFound: PropTypes.bool,
-};
+                if (match.path.search('/clients/') !== -1 && typeof match.params.id !== 'undefined') {
+                    renderArray.push(
+                        <Modal
+                            key={5}
+                            topPosition
+                            modalClass="modal-custom--with-help-block"
+                            onCloseModal={matchProps.history.goBack}>
+                        >
+                            <ClientDetail id={match.params.id} />
+                        </Modal>
+                    );
+                }
+        
+                return renderArray;
+            }} />
+        );
+    }
+}
 
 const mapStateToProps = (state, ownProps) => {
+    const { Tasks, Clients, User } = state;
+
+    const isTaskEmpty = ownProps.path.search('/tasks') !== -1 && !Tasks.order.length && !Tasks.isFetching;
+    const isClientsEmpty = ownProps.path.search('/clients') !== -1 && !Clients.idsList.length && !Clients.isFetching;
+    
     return {
         showAddButton: ownProps.path.search('/tasks') !== -1 || ownProps.path.search('/clients') !== -1,
-        showAddHelp: ownProps.path.search('/tasks') !== -1 && !state.Tasks.list.length && !state.Tasks.isFetching,
+        showAddHelp: isTaskEmpty || isClientsEmpty,
         isFetching: Object.keys(state).some(key => state[key].isFetching),
+        isAuth: User.isAuth,
+        session_id: User.session_id,
+    };
+};
+
+const mapDispatcToProps = (dispatch) => {
+    return {
+        authenticationUser: (session_id) => dispatch(authenticationUser(session_id)),
     };
 };
 
 export default connect(
     mapStateToProps,
+    mapDispatcToProps,
 )(Layout);

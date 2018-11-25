@@ -1,9 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cx from 'classnames';
 
 import Overlay from '../../Overlay';
 
-const SkeletTask = ({ showLoader = false }) => {
+const Skelet = ({ showLoader }) => {
     return (
         <div className={cx('block-list__item')}>
             <div className={cx('block-list__row')}>
@@ -70,4 +71,7 @@ const SkeletTask = ({ showLoader = false }) => {
     );
 };
 
-export default SkeletTask;
+Skelet.propTypes = { showLoader: PropTypes.bool };
+Skelet.defaultProps = { showLoader: false };
+
+export default Skelet;

@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 
-class LoginModal extends PureComponent {
+class Modal extends PureComponent {
     static propTypes = {
         children: PropTypes.node.isRequired,
         onCloseModal: PropTypes.func.isRequired,
@@ -13,6 +13,8 @@ class LoginModal extends PureComponent {
         contentClass: PropTypes.string,
     };
     static defaultProps = { 
+        topPosition: false,
+        centerPosition: false,
         modalClass: '',
         dialogClass: '',
         contentClass: '',
@@ -73,4 +75,4 @@ class LoginModal extends PureComponent {
     }
 }
 
-export default LoginModal;
+export default Modal;

@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import cx from 'classnames';
 
@@ -7,6 +8,9 @@ import ReactBootstrapSlider from 'react-bootstrap-slider';
 import Dropdown from '../../../components/Dropdown';
 
 class TasksFilter extends PureComponent {
+    static propTypes = { isDisable: PropTypes.bool };
+    static defaultProps = { isDisable: false };
+
     state = {
         isFixed: false,
         taskFilter: {

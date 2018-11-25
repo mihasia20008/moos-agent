@@ -1,7 +1,20 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cx from 'classnames';
 
-const TaskCard = () => {
+import { declOfNum } from '../../../services/utility';
+
+const days = ['день', 'дня', 'дней'];
+
+const TaskCard = ({
+    orderNumber,
+    createdDate,
+    durationDays,
+    principalCompany_displayName,
+    principalCompany_INN,
+    purchaseAmount,
+    contract_max_price,
+ }) => {
     return (
         <div className={cx('block-list__item')}>
             <div className={cx('block-list__row')}>
@@ -39,9 +52,9 @@ const TaskCard = () => {
                 <div>
                     <div className={cx('block-list__info block-list__info--with-icon')}>
                         <span className={cx('icon icon-user')} />
-                        <span>ООО «ОДАС» Сколково</span>
+                        <span>{principalCompany_displayName}</span>
                     </div>
-                    <div className={cx('block-list__info')}>ИНН: 771375236257</div>
+                    <div className={cx('block-list__info')}>ИНН: {principalCompany_INN}</div>
                 </div>
                 <div>
                     <table className={cx('table block-list__table')}>
@@ -52,9 +65,9 @@ const TaskCard = () => {
                                 <th>Предложеная цена</th>
                             </tr>
                             <tr>
-                                <td>4 дня</td>
-                                <td>5 000 000.00 ₽</td>
-                                <td>2 213 942 123.00 ₽</td>
+                                <td>{durationDays} {declOfNum(durationDays, days)}</td>
+                                <td>{purchaseAmount} ₽</td>
+                                <td>{contract_max_price} ₽</td>
                             </tr>
                         </tbody>
                     </table>
@@ -62,8 +75,8 @@ const TaskCard = () => {
             </div>
             <div className={cx('block-list__row')}>
                 <div className={cx('block-list__desc')}>
-                    <span>101-ЭГБ/17</span>
-                    <span className={cx('block-list__date-from')}>от 19.07.2018</span>
+                    <span>{orderNumber}</span>
+                    <span className={cx('block-list__date-from')}>от {createdDate}</span>
                 </div>
                 <button className={cx('btn btn-primary btn-primary--with-icon')}>
                     Заполнить уведомление об отказе
@@ -72,6 +85,16 @@ const TaskCard = () => {
             </div>
         </div>
     );
+};
+
+TaskCard.propTypes = {
+    orderNumber: PropTypes.string.isRequired,
+    createdDate: PropTypes.string,
+    durationDays: PropTypes.number,
+    principalCompany_displayName: PropTypes.string,
+    principalCompany_INN: PropTypes.string,
+    purchaseAmount: PropTypes.string,
+    contract_max_price: PropTypes.string,
 };
 
 export default TaskCard;

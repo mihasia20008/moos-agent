@@ -1,16 +1,50 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import cx from 'classnames';
 
-class Search extends PureComponent {
-    state = { search: '' };
+import SearchCard from '../../../components/Card/Search';
 
-    handleSearchType = ({ target: { value } }) => this.setState({ search: value });
+import { searchByString } from '../../../redux/Search/actions';
+
+class Search extends PureComponent {
+    static propTypes = {
+        defaultSearch: PropTypes.string,
+        session_id: PropTypes.string.isRequired,
+        searchByString: PropTypes.func.isRequired,
+    };
+    static defaultProps = { defaultSearch: '' }
+
+    state = {
+        search: this.props.defaultSearch,
+        isFilled: this.props.defaultSearch.length > 2,
+    };
+
+    componentDidMount() {
+        const { defaultSearch, session_id, searchByString } = this.props;
+        if (defaultSearch.length > 2) {
+            searchByString(session_id, defaultSearch);
+        }
+    }
+
+    handleSearchType = ({ target: { value } }) => {
+        const { session_id, searchByString } = this.props;
+        this.setState({
+            search: value,
+            isFilled: value.length > 2,
+        });
+        if (value.length > 2) {
+            searchByString(session_id, value);
+        }
+    };
 
     render() {
-        const { search } = this.state;
+        const { search, isFilled } = this.state;
+        const { idsList, list } = this.props;
+
         return (
             <form className={cx('form-search', {
-                'filled': search.length > 2,
+                'filled': isFilled,
             })}>
                 <div className={cx('form-group form-search__row')}>
                     <svg className={cx('icon-search')} xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
@@ -33,39 +67,43 @@ class Search extends PureComponent {
                         </g>
                     </svg>
                 </div>
-                <div className={cx('autocomplete autocomplete--search')}>
-                    <div className={cx('autocomplete__item')}>
-                        <div className={cx('autocomplete__text autocomplete__text--title')}>
-                            ООО «<span className={cx('autocomplete__identity')}>ФАЗУ</span>М»
-                        </div>
-                        <div className={cx('autocomplete__text')}>
-                            <span>ИНН:</span> 771375236257
-                        </div>
-                        <div className={cx('autocomplete__text')}>
-                            <span>ОГРН:</span> 771375236257
-                        </div>
-                    </div>
-                    <div className={cx('autocomplete__item')}>
-                        <div className={cx('autocomplete__text autocomplete__text--title')}>
-                            ООО «<span className={cx('autocomplete__identity')}>ФАЗУ</span>МЛАБ»
-                        </div>
-                        <div className={cx('autocomplete__text')}>
-                            <span>ИНН:</span> 771375236257
-                        </div>
-                        <div className={cx('autocomplete__text')}>
-                            <span>ОГРН:</span> 771375236257
-                        </div>
-                    </div>
-                </div>
-                <div className={cx('button-container')}>
+                <div className={cx('autocomplete autocomplete--search')}>{
+                    idsList.map(id => (
+                        <SearchCard
+                            key={id}
+                            query={search}
+                            displayName={list[id].displayName}
+                            INN={list[id].INN}
+                            OGRN={list[id].OGRN}
+                        />
+                    ))
+                }</div>
+                {/* <div className={cx('button-container')}>
                     <button className={cx('btn btn-light btn-lg')} onClick={() => alert('Клиент был добавлен')}>
                         <i className={cx('icon icon-user')} />
                         Добавить клиента
                     </button>
-                </div>
+                </div> */}
             </form>
         );
     }
 };
 
-export default Search;
+const mapStateToProp = ({ User, Search }) => {
+    return {
+        session_id: User.session_id,
+        idsList: Search.idsList,
+        list: Search.list,
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        searchByString: (session_id, query) => dispatch(searchByString(session_id, query)),
+    };
+};
+
+export default connect(
+    mapStateToProp,
+    mapDispatchToProps,
+)(Search);

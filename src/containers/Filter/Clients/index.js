@@ -1,10 +1,14 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import cx from 'classnames';
 
 import ReactBootstrapSlider from 'react-bootstrap-slider';
 
 class ClientsFilter extends PureComponent {
+    static propTypes = { isDisable: PropTypes.bool };
+    static defaultProps = { isDisable: false };
+    
     state = { isFixed: false };
 
     componentDidMount = () => {
@@ -29,6 +33,7 @@ class ClientsFilter extends PureComponent {
 
     render() {
         const { isFixed } = this.state;
+        const { isDisable } = this.props;
 
         return (
             <div className={cx('main-filter main-filter--fixed-width', {
@@ -36,7 +41,9 @@ class ClientsFilter extends PureComponent {
             })}>
                 <div className={cx('main-filter__container')}>
                     <div className={cx('main-filter__content')}>
-                        <div className={cx('main-filter__row')}>
+                        <div className={cx('main-filter__row', {
+                            'main-filter__row--disabled': isDisable,
+                        })}>
                             <div className={cx('main-filter__control main-filter__control--icon-right')}>
                                 <div className={cx('dropdown')}>
                                     <button type="button" className={cx('btn btn-dropdown dropdown-toggle')} data-toggle="dropdown">
@@ -81,7 +88,9 @@ class ClientsFilter extends PureComponent {
                                 </Link>
                             </div>
                         </div>
-                        <div className={cx('main-filter__row')}>
+                        <div className={cx('main-filter__row', {
+                            'main-filter__row--disabled': isDisable,
+                        })}>
                             <div className={cx('filter-slider filter-slider--full-size')}>
                                 <span>От 30К ₽</span>
                                 <ReactBootstrapSlider

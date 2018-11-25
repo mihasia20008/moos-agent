@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import cx from 'classnames';
 
@@ -10,29 +11,46 @@ import EmptyTasksList from '../../components/Empty/TasksList';
 import { getTasksList, getNextTasksPage } from '../../redux/Tasks/actions';
 
 class Tasks extends PureComponent {
+    static propTypes = {
+        isFetching: PropTypes.bool.isRequired,
+        isFetchingNext: PropTypes.bool.isRequired,
+        list: PropTypes.array,
+        nextPage: PropTypes.number.isRequired,
+        hasMorePage: PropTypes.bool.isRequired,
+        session_id: PropTypes.string.isRequired,
+        getTasksList: PropTypes.func.isRequired,
+        getNextTasksPage: PropTypes.func.isRequired,
+    };
 
-    // componentDidMount = () => {
-    //   this.props.getTasksList();
-    // }
-
-    componentDidMount = () => {
+    componentDidMount() {
+        const { session_id, getTasksList } = this.props;
+        console.log(session_id);
+        
+        if (typeof session_id !== 'undefined') {
+            getTasksList(session_id);
+        }
         window.addEventListener('scroll', this.handleScroll);
     }
 
-    componentWillUnmount = () => {
+    componentWillUnmount() {
         window.removeEventListener('scroll', this.handleScroll);
     }
     
     handleScroll = () => {
-        const { list, isFetchingNext, getNextTasksPage } = this.props;
+        const {
+            session_id,
+            list,
+            isFetchingNext,
+            nextPage,
+            hasMorePage,
+            getNextTasksPage
+        } = this.props;
         const { height } = document.querySelector('.block-list.block-list--tasks').getBoundingClientRect();
 
-        if (!isFetchingNext && list.length > 0 && height - window.scrollY < 1000) {
-            getNextTasksPage();
+        if (!isFetchingNext && list.length > 0 && hasMorePage && height - window.scrollY < 1000) {
+            getNextTasksPage(session_id, nextPage);
         }
     }
-
-    enebleLoading = () => this.props.getTasksList();
     
     render() {
         const { list, isFetching, isFetchingNext } = this.props;
@@ -44,24 +62,26 @@ class Tasks extends PureComponent {
                 {!list.length && !isFetching
                     ? <EmptyTasksList />
                     : <TasksList list={list} isLoading={isFetching} isLoadingNext={isFetchingNext} />}
-            </section>,
-            <button key={2} onClick={this.enebleLoading} style={{ position: 'absolute', top: 0, right: 0, zIndex: 10 }}>Начать загрузку</button>
+            </section>
         ];
     }
 }
 
-const mapStateToProps = ({ Tasks }) => {
+const mapStateToProps = ({ Tasks, User }) => {
     return {
         isFetching: Tasks.isFetching,
         isFetchingNext: Tasks.isFetchingNext,
-        list: Tasks.list
+        list: Tasks.order,
+        nextPage: Tasks.page + 1,
+        hasMorePage: Tasks.more,
+        session_id: User.session_id,
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getTasksList: () => dispatch(getTasksList()),
-        getNextTasksPage: () => dispatch(getNextTasksPage()),
+        getTasksList: (session_id) => dispatch(getTasksList(session_id)),
+        getNextTasksPage: (session_id, page) => dispatch(getNextTasksPage(session_id, page)),
     };
 };
 

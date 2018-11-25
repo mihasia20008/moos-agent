@@ -1,8 +1,12 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
 import cx from 'classnames';
 
 import ProgressStatistic from '../../components/ProgressStatistic';
+
+import { logoutUser } from '../../redux/User/actions';
 
 const statistics = [{
     counter: 20,
@@ -27,12 +31,24 @@ const statistics = [{
 }];
 
 class Sidebar extends PureComponent {
+    static propTypes = {
+        name: PropTypes.string,
+        session_id: PropTypes.string.isRequired,
+        logoutUser: PropTypes.func.isRequired,
+    };
 
     handleOpenUserMenu = ({ target }) => {
         target.closest('.fr-user-menu').classList.toggle('open');
     }
 
+    handleLogout = () => {
+        const { session_id, logoutUser } = this.props;
+        logoutUser(session_id);
+    };
+
     render() {
+        const { name } = this.props;
+
         return (
             <section className={cx('fr-sidebar')}>
                 <Link className={cx('fr-sidebar__logo')} to="/">
@@ -66,16 +82,16 @@ class Sidebar extends PureComponent {
                                     <i className={cx('icon icon-settings')} />
                                     Настройки
                                 </Link>
-                                <Link className={cx('fr-user-menu__item')} to="/">
+                                <span className={cx('fr-user-menu__item')} onClick={this.handleLogout}>
                                     <i className={cx('icon icon-exit')} />
                                     Выход
-                                </Link>
+                                </span>
                             </div>
                         </div>
                         <div className={cx('fr-user-menu__main')} onClick={this.handleOpenUserMenu}>
                             <div className={cx('fr-user-menu__name')}>
                                 <span className={cx('icon icon-user')} />
-                                Созонов В.
+                                {name}
                             </div>
                         </div>
                     </div>
@@ -85,4 +101,20 @@ class Sidebar extends PureComponent {
     }
 }
 
-export default Sidebar;
+const mapStateToProps = ({ User }) => {
+    return {
+        name: User.fullname,
+        session_id: User.session_id,
+    };
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        logoutUser: (session_id) => dispatch(logoutUser(session_id)),
+    };
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(Sidebar);
