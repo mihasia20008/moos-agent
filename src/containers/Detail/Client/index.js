@@ -68,19 +68,19 @@ const Client = () => {
             <div className={cx('info-block__item info-block__item--fullwidth')}>
               <span className={cx('info-block__item-title')}>Контракты</span>
               <span className={cx('info-block__item-value')}>
-                <a href="javascript::void(0);">
+                <a href="#download">
                     <span>Контракт_Москва 129000_2018_сентябрь.docx</span>
                     <span>(1,2мб)</span>
                 </a>
               </span>
               <span className={cx('info-block__item-value')}>
-                <a href="javascript::void(0);">
+                <a href="#download">
                     <span>Контракт_Москва 129000_2018_июнь.docx</span>
                     <span>(1,2мб)</span>
                 </a>
               </span>
               <span className={cx('info-block__item-value')}>
-                <a href="javascript::void(0);">
+                <a href="#download">
                     <span>Контракт_Москва 129000_2018_апрель.docx</span>
                     <span>(1,2мб)</span>
                 </a>
