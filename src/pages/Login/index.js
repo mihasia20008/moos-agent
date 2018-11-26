@@ -33,12 +33,14 @@ class Login extends PureComponent {
         }
     }
 
-    handleInputBlur = (key, value) => this.setState({ [`${key}`]: value });
+    handleInputChange = (key, value) => this.setState({ [`${key}`]: value });
 
     handleFormSubmit = (event) => {
         event.preventDefault();
         const { login, password } = this.state;
-        this.props.loginUser(login, password);
+        if (login !== '' && password !== '') {
+            this.props.loginUser(login, password);
+        }
     }
 
     renderELogin() {
@@ -68,7 +70,7 @@ class Login extends PureComponent {
                     </Link>
                     <FormLogin
                         showLoader={isFetching}
-                        onInputBlur={this.handleInputBlur}
+                        onInputChange={this.handleInputChange}
                         onFormSubmit={this.handleFormSubmit}
                     />
                     <div className={cx('fr-login-sidebar__bottom')}>

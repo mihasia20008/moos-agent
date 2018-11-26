@@ -8,20 +8,20 @@ import Input from '../../../components/Input';
 
 import * as CONTENT from '../../../contentConstants';
 
-const Login = ({ showLoader, onInputBlur, onFormSubmit }) => {
+const FormLogin = ({ showLoader, onInputChange, onFormSubmit }) => {
     return (
         <form className={cx('form-login')} onSubmit={onFormSubmit}>
             <div className={cx('form-group')}>
                 <Input
                     name="login"
-                    onInputBlur={onInputBlur}
+                    onInputChange={onInputChange}
                     placeholder="Логин"
                     iconClass="icon-user-1"
                 />
                 <Input
                     name="password"
                     type="password"
-                    onInputBlur={onInputBlur}
+                    onInputChange={onInputChange}
                     placeholder="Пароль"
                     iconClass="icon-locker"
                 />
@@ -46,10 +46,10 @@ const Login = ({ showLoader, onInputBlur, onFormSubmit }) => {
     );
 };
 
-Login.propTypes = {
+FormLogin.propTypes = {
     showLoader: PropTypes.bool.isRequired,
-    onInputBlur: PropTypes.func.isRequired,
+    onInputChange: PropTypes.func.isRequired,
     onFormSubmit: PropTypes.func.isRequired,
 };
 
-export default Login;
+export default FormLogin;

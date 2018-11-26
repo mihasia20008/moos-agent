@@ -9,13 +9,13 @@
   &:not(#{$r}--pos-top){
     top: 50%;
     right: 50%;
-    transform: translate(calc(100% + 323px), -50%);
+    transform: translate(calc(100% + 427px), calc(-50% - 23px));
   }
 
   &--pos-top {
     top: 0;
     right: 50%;
-    transform: translateX(calc(100% + 323px));
+    transform: translate(calc(100% + 427px));
   }
 
   &__container {
@@ -54,5 +54,9 @@
     .btn {
       width: 100%;
     }
+  }
+
+  &__copy-link {
+    width: 100%;
   }
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 
-const Restore = () => {
+const FormRestore = () => {
     return (
         <form>
             <div className={cx('restore-pass__title')}>Восстановление пароля</div>
@@ -21,4 +21,4 @@ const Restore = () => {
     );
 };
 
-export default Restore;
+export default FormRestore;

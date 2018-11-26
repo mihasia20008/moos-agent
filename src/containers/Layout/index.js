@@ -137,7 +137,7 @@ class Layout extends PureComponent {
                             key={5}
                             topPosition
                             modalClass="modal-custom--with-help-block"
-                            onCloseModal={matchProps.history.goBack}>
+                            onCloseModal={matchProps.history.goBack}
                         >
                             <ClientDetail id={match.params.id} />
                         </Modal>

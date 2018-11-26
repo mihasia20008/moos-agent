@@ -7,7 +7,7 @@ import SearchCard from '../../../components/Card/Search';
 
 import { searchByString } from '../../../redux/Search/actions';
 
-class Search extends PureComponent {
+class FormSearch extends PureComponent {
     static propTypes = {
         defaultSearch: PropTypes.string,
         session_id: PropTypes.string.isRequired,
@@ -106,4 +106,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
     mapStateToProp,
     mapDispatchToProps,
-)(Search);
+)(FormSearch);
