@@ -5,7 +5,7 @@ import cx from 'classnames';
 class Input extends PureComponent {
     static propTypes = {
         name: PropTypes.string.isRequired,
-        onInputBlur: PropTypes.func.isRequired,
+        onInputChange: PropTypes.func.isRequired,
         defaultValue: PropTypes.string,
         type: PropTypes.string,
         placeholder: PropTypes.string,
@@ -30,14 +30,11 @@ class Input extends PureComponent {
         this.setState({ type: stateType === propsType ? 'text' : propsType });
     }
 
-    handleInputType = ({ target }) => this.setState({ value: target.value });
-
-    handleInputBlur = () => {
-        const { name, onInputBlur } = this.props;
-        const { value } = this.state;
-
-        onInputBlur(name, value);
-    }
+    handleInputType = ({ target }) => {
+        this.setState({ value: target.value });
+        const { name, onInputChange } = this.props;
+        onInputChange(name, target.value);
+    };
 
     render() {
         const { value, type: stateType } = this.state;
@@ -56,7 +53,6 @@ class Input extends PureComponent {
                     placeholder={placeholder}
                     value={value}
                     onChange={this.handleInputType}
-                    onBlur={this.handleInputBlur}
                 />
             </div>
         );
