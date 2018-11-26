@@ -18,7 +18,6 @@ import { authenticationUser } from '../../redux/User/actions';
 class Layout extends PureComponent {
     static propTypes = {
         component: PropTypes.func.isRequired,
-        isFetching: PropTypes.bool.isRequired,
         isAuth: PropTypes.bool.isRequired,
         showAddButton: PropTypes.bool.isRequired,
         showAddHelp: PropTypes.bool.isRequired,
@@ -49,7 +48,6 @@ class Layout extends PureComponent {
     render() {
         const {
             component: Component,
-            isFetching,
             isNotFound,
             showAddButton,
             showAddHelp,
@@ -76,7 +74,6 @@ class Layout extends PureComponent {
                             'fr-container--error': isNotFound,
                         })}>
                             <Component {...matchProps} />
-                            {isFetching && <Overlay size="big" />}
                         </div>
                         {showAddButton && (
                             <div className={cx('btn-options')}>
@@ -154,15 +151,12 @@ class Layout extends PureComponent {
 }
 
 const mapStateToProps = (state, ownProps) => {
-    const { Tasks, Clients, User } = state;
-
-    const isTaskEmpty = ownProps.path.search('/tasks') !== -1 && !Tasks.order.length && !Tasks.isFetching;
-    const isClientsEmpty = ownProps.path.search('/clients') !== -1 && !Clients.idsList.length && !Clients.isFetching;
+    const { Tasks, User } = state;
+    const isTaskEmpty = ownProps.path.search('/tasks') !== -1 && !Tasks.order.length && !Tasks.isFetching;    
     
     return {
-        showAddButton: ownProps.path.search('/tasks') !== -1 || ownProps.path.search('/clients') !== -1,
-        showAddHelp: isTaskEmpty || isClientsEmpty,
-        isFetching: Object.keys(state).some(key => state[key].isFetching),
+        showAddButton: ownProps.path.search('/tasks') !== -1,
+        showAddHelp: isTaskEmpty,
         isAuth: User.isAuth,
         session_id: User.session_id,
     };

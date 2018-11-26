@@ -43,6 +43,7 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 isFetching: false,
+                session_id: '',
             };
         }
         default: {

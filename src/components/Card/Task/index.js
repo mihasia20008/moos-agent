@@ -97,4 +97,10 @@ TaskCard.propTypes = {
     contract_max_price: PropTypes.string,
 };
 
+TaskCard.defaultProps = {
+    principalCompany_INN: '&mdash;',
+    purchaseAmount: '&mdash;',
+    contract_max_price: '&mdash;',
+};
+
 export default TaskCard;

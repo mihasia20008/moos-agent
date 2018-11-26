@@ -5,6 +5,7 @@ import { Link, NavLink } from 'react-router-dom';
 import cx from 'classnames';
 
 import ProgressStatistic from '../../components/ProgressStatistic';
+import UserMenu from '../../components/UserMenu';
 
 import { logoutUser } from '../../redux/User/actions';
 
@@ -36,10 +37,7 @@ class Sidebar extends PureComponent {
         session_id: PropTypes.string.isRequired,
         logoutUser: PropTypes.func.isRequired,
     };
-
-    handleOpenUserMenu = ({ target }) => {
-        target.closest('.fr-user-menu').classList.toggle('open');
-    }
+    static defaultProps = { name: '' };
 
     handleLogout = () => {
         const { session_id, logoutUser } = this.props;
@@ -75,26 +73,10 @@ class Sidebar extends PureComponent {
                             </Link>
                         </div>
                     </div>
-                    <div className={cx('fr-user-menu')}>
-                        <div className={cx('fr-user-menu__dropdown')}>
-                            <div className={cx('fr-user-menu__list')}>
-                                <Link className={cx('fr-user-menu__item')} to="?restore-password">
-                                    <i className={cx('icon icon-settings')} />
-                                    Настройки
-                                </Link>
-                                <span className={cx('fr-user-menu__item')} onClick={this.handleLogout}>
-                                    <i className={cx('icon icon-exit')} />
-                                    Выход
-                                </span>
-                            </div>
-                        </div>
-                        <div className={cx('fr-user-menu__main')} onClick={this.handleOpenUserMenu}>
-                            <div className={cx('fr-user-menu__name')}>
-                                <span className={cx('icon icon-user')} />
-                                {name}
-                            </div>
-                        </div>
-                    </div>
+                    <UserMenu
+                        name={name}
+                        onLogout={this.handleLogout}
+                    />
                 </div>
             </section>
         );
