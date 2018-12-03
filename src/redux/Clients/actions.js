@@ -1,6 +1,5 @@
 import * as types from './actionTypes';
 import { Clients } from '../../services/api';
-import * as Tasks from "../../services/api/tasks";
 
 export function getClientsList(session_id) {
     return async dispatch => {
