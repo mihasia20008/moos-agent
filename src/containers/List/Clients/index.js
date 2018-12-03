@@ -10,16 +10,23 @@ const ClientsList = ({ idsList, list, isLoading, isLoadingNext }) => {
         <div className={cx('block-list block-list--clients')}>
             {isLoading
                 ? [0, 1, 2, 3].map((item, index) => <Skeket key={index} />)
-                : idsList.map(id => (
-                    <ClientCard
+                : idsList.map(id => {
+                    const name = typeof list[id].displayName !== 'undefined' && list[id].displayName
+                        ? list[id].displayName
+                        : typeof list[id].shortName !== 'undefined' && list[id].shortName
+                            ? list[id].shortName
+                            : typeof list[id].fullName !== 'undefined' && list[id].fullName
+                                ? list[id].fullName
+                                : undefined;
+                    return <ClientCard
                         key={id}
                         id={id}
-                        displayName={list[id].displayName}
+                        displayName={name}
                         INN={list[id].INN ? list[id].INN : undefined}
                         KPP={list[id].KPP ? list[id].KPP : undefined}
                         OGRN={list[id].OGRN ? list[id].OGRN : undefined}
                     />
-                ))}
+                })}
             {isLoadingNext && <Skeket key={idsList.length + 10} showLoader />}
         </div>
     );

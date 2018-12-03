@@ -22,6 +22,25 @@ export default (state = initialState, action) => {
     case types.CLIENTS_ERROR: {
       return { ...state, isFetching: false };
     }
+    case types.NEXT_CLIENTS_FETCH: {
+      return { ...state, isFetchingNext: true };
+    }
+    case types.NEXT_CLIENTS_SUCCESS: {
+      const { idsList, list } = action.data;
+      return {
+        ...state,
+        isFetchingNext: false,
+        ...action.data,
+        list: {
+          ...state.list,
+          ...list,
+        },
+        idsList: state.idsList.concat(idsList),
+      };
+    }
+    case types.NEXT_CLIENTS_ERROR: {
+      return { ...state, isFetching: false };
+    }
     default: {
       return { ...state };
     }

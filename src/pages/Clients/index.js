@@ -9,7 +9,7 @@ import ClientsList from '../../containers/List/Clients';
 import ClientsStats from '../../components/ClientsStats';
 import EmptyClientsList from '../../components/Empty/ClientsList';
 
-import { getClientsList } from '../../redux/Clients/actions';
+import { getClientsList, getNextClientsList } from '../../redux/Clients/actions';
 
 class Clients extends PureComponent {
     static propTypes = {
@@ -17,8 +17,11 @@ class Clients extends PureComponent {
         isFetchingNext: PropTypes.bool.isRequired,
         list: PropTypes.object,
         idsList: PropTypes.array,
+        nextPage: PropTypes.number,
+        hasMorePage: PropTypes.bool,
         session_id: PropTypes.string.isRequired,
         getClientsList: PropTypes.func.isRequired,
+        getNextClientsList: PropTypes.func.isRequired,
     };
 
     componentDidMount() {
@@ -35,13 +38,20 @@ class Clients extends PureComponent {
     }
     
     handleScroll = () => {
-        // const { list, isFetchingNext, getNextTasksPage } = this.props;
-        // const { height } = document.querySelector('.block-list.block-list--tasks').getBoundingClientRect();
+        const {
+            session_id,
+            idsList,
+            isFetchingNext,
+            nextPage,
+            hasMorePage,
+            getNextClientsList,
+        } = this.props;
+        const { height } = document.querySelector('.block-list.block-list--clients').getBoundingClientRect();
 
-        // if (!isFetchingNext && list.length > 0 && height - window.scrollY < 1000) {
-        //     getNextTasksPage();
-        // }
-    }
+        if (!isFetchingNext && idsList.length > 0 && hasMorePage && height - window.scrollY < 1000) {
+            getNextClientsList(session_id, nextPage);
+        }
+    };
     
     render() {
         const { idsList, list, isFetching, isFetchingNext } = this.props;
@@ -73,6 +83,8 @@ const mapStateToProps = ({ Clients, User }) => {
         isFetchingNext: Clients.isFetchingNext,
         list: Clients.list,
         idsList: Clients.idsList,
+        nextPage: Clients.page + 1,
+        hasMorePage: Clients.more,
         session_id: User.session_id,
     };
 };
@@ -80,6 +92,7 @@ const mapStateToProps = ({ Clients, User }) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         getClientsList: (session_id) => dispatch(getClientsList(session_id)),
+        getNextClientsList: (session_id, page) => dispatch(getNextClientsList(session_id, page)),
     };
 };
 

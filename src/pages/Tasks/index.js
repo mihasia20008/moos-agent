@@ -24,8 +24,7 @@ class Tasks extends PureComponent {
 
     componentDidMount() {
         const { session_id, getTasksList } = this.props;
-        console.log(session_id);
-        
+
         if (typeof session_id !== 'undefined') {
             getTasksList(session_id);
         }
@@ -50,7 +49,7 @@ class Tasks extends PureComponent {
         if (!isFetchingNext && list.length > 0 && hasMorePage && height - window.scrollY < 1000) {
             getNextTasksPage(session_id, nextPage);
         }
-    }
+    };
     
     render() {
         const { list, isFetching, isFetchingNext } = this.props;
