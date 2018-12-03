@@ -25,7 +25,7 @@ export const getData = async (session_id, limit = 20) => {
           message: err.message,
       }
   }
-}
+};
 
 export const getNextPage = async (session_id, page, limit = 20) => {
     try {
@@ -50,4 +50,4 @@ export const getNextPage = async (session_id, page, limit = 20) => {
             message: err.message,
         }
     }
-}
+};

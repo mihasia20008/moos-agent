@@ -25,4 +25,4 @@ export const getData = async (session_id) => {
           message: err.message,
       }
   }
-}
+};

@@ -25,4 +25,4 @@ export const findByString = async (session_id, query) => {
           message: err.message,
       }
   }
-}
+};

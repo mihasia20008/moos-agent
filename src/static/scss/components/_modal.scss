@@ -139,6 +139,9 @@
 
 .modal-content {
 
+  &--blur {
+    filter: blur(4px);
+  }
   &__header {
     display: flex;
     justify-content: space-between;

@@ -1,0 +1,4 @@
+export const CLIENT_FETCH = 'CLIENT_FETCH';
+export const CLIENT_SUCCESS = 'CLIENT_SUCCESS';
+export const CLIENT_ERROR = 'CLIENT_ERROR';
+export const CLIENT_CLEAR = 'CLIENT_CLEAR';
