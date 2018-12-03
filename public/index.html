@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="ng-scope">
   <head>
     <meta charset="utf-8">
     <title>Farzoom | Агентский кабинет</title>
@@ -24,7 +24,7 @@
     <div id="root"></div>
     <script src="%PUBLIC_URL%/jquery-3.3.1.min.js"></script>
     <script src="%PUBLIC_URL%/deps.js"></script>
-    <!-- <script src="%PUBLIC_URL%/ngapp.js"></script>
+    <script src="%PUBLIC_URL%/ngapp.js"></script>
     <script>
       ngapp.init($('.start-form-section')[0], '<var:process_definition_key>', function (CamSDK) {
           var camClient = new CamSDK.Client({mock: false, apiUri: 'http://agent.fplace-develop.moos.solutions/camunda/api/engine'});
@@ -33,13 +33,13 @@
   
           processService.getByKey('<var:process_definition_key>', function (err, def) {
               if (err) {
-                  uas.flash.error(err);
+                  // uas.flash.error(err);
                   return;
               }
   
               processService.startForm({id: def.id}, function (err, taskFormInfo) {
                   if (err) {
-                      uas.flash.error(err);
+                      // uas.flash.error(err);
                       return;
                   }
   
@@ -63,7 +63,7 @@
                           });
   
                           camForm.on('submit-error', function (evt, res) {
-                              uas.flash.error(res[0]);
+                              // uas.flash.error(res[0]);
                               //$container.removeOverlay();
                           });
   
@@ -75,7 +75,7 @@
                                       $(".bk-overlay").hide();
                                       var $scope = angular.element('.start-form-section form').scope();
                                       if ($scope.$$camForm.$valid) {
-                                          uas.flash.error(err);
+                                          // uas.flash.error(err);
                                           throw err;
                                       }
                                   }
@@ -91,6 +91,6 @@
           $(".bk-overlay").hide();
           window.location.href = '/order/list?status=inprocess';
       });
-    </script> -->
+    </script>
   </body>
 </html>
