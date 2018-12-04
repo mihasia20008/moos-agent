@@ -15,8 +15,7 @@ class Clients extends PureComponent {
     static propTypes = {
         isFetching: PropTypes.bool.isRequired,
         isFetchingNext: PropTypes.bool.isRequired,
-        list: PropTypes.object,
-        idsList: PropTypes.array,
+        company: PropTypes.array,
         nextPage: PropTypes.number,
         hasMorePage: PropTypes.bool,
         session_id: PropTypes.string.isRequired,
@@ -40,7 +39,7 @@ class Clients extends PureComponent {
     handleScroll = () => {
         const {
             session_id,
-            idsList,
+            company,
             isFetchingNext,
             nextPage,
             hasMorePage,
@@ -48,26 +47,25 @@ class Clients extends PureComponent {
         } = this.props;
         const { height } = document.querySelector('.block-list.block-list--clients').getBoundingClientRect();
 
-        if (!isFetchingNext && idsList.length > 0 && hasMorePage && height - window.scrollY < 1000) {
+        if (!isFetchingNext && company.length > 0 && hasMorePage && height - window.scrollY < 1000) {
             getNextClientsList(session_id, nextPage);
         }
     };
     
     render() {
-        const { idsList, list, isFetching, isFetchingNext } = this.props;
+        const { company, isFetching, isFetchingNext } = this.props;
 
         return [
             <Sidebar key={0} />,
             <section key={1} className={cx('fr-content')}>
-                <ClientsFilter isDisable={!idsList.length} />
-                {!idsList.length && !isFetching
+                <ClientsFilter isDisable={!company.length} />
+                {!company.length && !isFetching
                     ? <EmptyClientsList />
                     : [
                         <ClientsStats key={0} />,
                         <ClientsList
                             key={1}
-                            idsList={idsList}
-                            list={list}
+                            company={company}
                             isLoading={isFetching}
                             isLoadingNext={isFetchingNext}
                         />
@@ -81,8 +79,7 @@ const mapStateToProps = ({ Clients, User }) => {
     return {
         isFetching: Clients.isFetching,
         isFetchingNext: Clients.isFetchingNext,
-        list: Clients.list,
-        idsList: Clients.idsList,
+        company: Clients.company,
         nextPage: Clients.page + 1,
         hasMorePage: Clients.more,
         session_id: User.session_id,

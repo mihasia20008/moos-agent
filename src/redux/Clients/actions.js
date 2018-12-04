@@ -11,7 +11,6 @@ export function getClientsList(session_id) {
                 dispatch({ type: types.CLIENTS_ERROR });
                 return;
             }
-            res.idsList = Object.keys(res.list);
             dispatch({ type: types.CLIENTS_SUCCESS, data: res });
         } catch (err) {
             console.log(err);
@@ -30,7 +29,6 @@ export function getNextClientsList(session_id, page) {
                 dispatch({ type: types.NEXT_CLIENTS_ERROR });
                 return;
             }
-            res.idsList = Object.keys(res.list);
             dispatch({ type: types.NEXT_CLIENTS_SUCCESS, data: res });
         } catch (err) {
             console.log(err);

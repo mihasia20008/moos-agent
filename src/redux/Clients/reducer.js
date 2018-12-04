@@ -3,8 +3,7 @@ import * as types from './actionTypes';
 const initialState = {
   isFetching: false,
   isFetchingNext: false,
-  list: {},
-  idsList: [],
+  company: [],
 };
 
 export default (state = initialState, action) => {
@@ -26,16 +25,12 @@ export default (state = initialState, action) => {
       return { ...state, isFetchingNext: true };
     }
     case types.NEXT_CLIENTS_SUCCESS: {
-      const { idsList, list } = action.data;
+      const { company } = action.data;
       return {
         ...state,
         isFetchingNext: false,
         ...action.data,
-        list: {
-          ...state.list,
-          ...list,
-        },
-        idsList: state.idsList.concat(idsList),
+        company: state.company.concat(company),
       };
     }
     case types.NEXT_CLIENTS_ERROR: {
