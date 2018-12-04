@@ -1,6 +1,13 @@
 import * as types from './actionTypes';
 import { Tasks } from '../../services/api';
 
+const prepareTasksList = orderList => orderList.reduce((acc, { tasks }) => {
+    if (!tasks) {
+        return acc;
+    }
+    return Object.assign(acc, { [`${tasks[0].task_id}`]: tasks[0].name });
+}, {});
+
 export function getTasksList(session_id) {
     return async dispatch => {
         try {
@@ -11,6 +18,7 @@ export function getTasksList(session_id) {
                 dispatch({ type: types.TASKS_ERROR });
                 return;
             }
+            res.tasks = prepareTasksList(res.order);
             dispatch({ type: types.TASKS_SUCCESS, data: res });
         } catch (err) {
             console.log(err);
@@ -29,6 +37,7 @@ export function getNextTasksPage(session_id, page) {
                 dispatch({ type: types.NEXT_TASKS_ERROR });
                 return;
             }
+            res.tasks = prepareTasksList(res.order);
             dispatch({ type: types.NEXT_TASKS_SUCCESS, data: res });
         } catch (err) {
             console.log(err);

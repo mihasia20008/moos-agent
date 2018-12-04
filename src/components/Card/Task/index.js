@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import cx from 'classnames';
 
 import { declOfNum } from '../../../services/utility';
@@ -14,6 +15,7 @@ const TaskCard = ({
     principalCompany_INN,
     purchaseAmount,
     contract_max_price,
+    tasks,
  }) => {
     return (
         <div className={cx('block-list__item')}>
@@ -78,10 +80,19 @@ const TaskCard = ({
                     <span>{orderNumber}</span>
                     <span className={cx('block-list__date-from')}>от {createdDate}</span>
                 </div>
-                <button className={cx('btn btn-primary btn-primary--with-icon')}>
-                    Заполнить уведомление об отказе
-                    <i className={cx('icon icon-chevron-right')} />
-                </button>
+                {tasks.length
+                    ? (
+                        <Link
+                            to={{
+                                pathname: `/tasks/${tasks[0].task_id}`,
+                                state: { title: tasks[0].name }
+                            }}
+                            className={cx('btn btn-primary btn-primary--with-icon')}
+                        >
+                            {tasks[0].name}
+                            <i className={cx('icon icon-chevron-right')} />
+                        </Link>
+                    ) : null}
             </div>
         </div>
     );
@@ -95,6 +106,7 @@ TaskCard.propTypes = {
     principalCompany_INN: PropTypes.string,
     purchaseAmount: PropTypes.string,
     contract_max_price: PropTypes.string,
+    tasks: PropTypes.array,
 };
 
 TaskCard.defaultProps = {

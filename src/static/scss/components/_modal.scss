@@ -177,6 +177,10 @@
       }
     }
 
+    &--task span:not(.icon) {
+      max-width: 100%;
+    }
+
     .icon {
       font-size: 18px;
       color: #242232;

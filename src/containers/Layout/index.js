@@ -10,6 +10,7 @@ import FormRestore from '../Form/Restore';
 import FormSearch from '../Form/Search';
 import UserStatictics from '../UserStatictics';
 import ClientDetail from '../Detail/Client';
+import TaskDetail from '../Detail/Task';
 
 import Overlay from '../../components/Overlay';
 
@@ -66,8 +67,10 @@ class Layout extends PureComponent {
                     return <Overlay size="big" />;
                 }
         
-                const { location: { search }, match } = matchProps;
-        
+                const { location: { search, state: routeState = {} }, match } = matchProps;
+
+                console.log(matchProps);
+
                 const renderArray = [
                     <div key={0} className={cx('fr-app')}>
                         <div className={cx('fr-container', {
@@ -140,6 +143,24 @@ class Layout extends PureComponent {
                             onCloseModal={matchProps.history.goBack}
                         >
                             <ClientDetail id={match.params.id} />
+                        </Modal>
+                    );
+                }
+
+                if (match.path.search('/tasks/') !== -1 && typeof match.params.id !== 'undefined') {
+                    const { title } = routeState;
+                    renderArray.push(
+                        <Modal
+                            key={5}
+                            topPosition
+                            modalClass="modal-custom--with-help-block"
+                            onCloseModal={matchProps.history.goBack}
+                        >
+                            <TaskDetail
+                                id={match.params.id}
+                                title={title}
+                                onCloseDetail={matchProps.history.goBack}
+                            />
                         </Modal>
                     );
                 }

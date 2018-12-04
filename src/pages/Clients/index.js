@@ -65,7 +65,7 @@ class Clients extends PureComponent {
                         <ClientsStats key={0} />,
                         <ClientsList
                             key={1}
-                            company={company}
+                            list={company}
                             isLoading={isFetching}
                             isLoadingNext={isFetchingNext}
                         />

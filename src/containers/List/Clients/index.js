@@ -5,12 +5,12 @@ import cx from 'classnames';
 import ClientCard from '../../../components/Card/Client';
 import Skeket from '../../../components/Card/Skelet';
 
-const ClientsList = ({ company, isLoading, isLoadingNext }) => {
+const ClientsList = ({ list, isLoading, isLoadingNext }) => {
     return (
         <div className={cx('block-list block-list--clients')}>
             {isLoading
                 ? [0, 1, 2, 3].map((item, index) => <Skeket key={index} />)
-                : company.map((item, index) => {
+                : list.map((item, index) => {
                     const name = typeof item.displayName !== 'undefined' && item.displayName
                         ? item.displayName
                         : typeof item.shortName !== 'undefined' && item.shortName
@@ -27,13 +27,13 @@ const ClientsList = ({ company, isLoading, isLoadingNext }) => {
                         OGRN={item.OGRN ? item.OGRN : undefined}
                     />
                 })}
-            {isLoadingNext && <Skeket key={company.length + 10} showLoader />}
+            {isLoadingNext && <Skeket key={list.length + 10} showLoader />}
         </div>
     );
 };
 
 ClientsList.propTypes = {
-    company: PropTypes.array,
+    list: PropTypes.array,
     isLoading: PropTypes.bool.isRequired,
     isLoadingNext: PropTypes.bool.isRequired
 };
