@@ -15,8 +15,10 @@
 }
 .modal-backdrop {
   background-color: rgba(36, 34, 50, 0.8)!important;
+  visibility: hidden;
 }
 .modal-backdrop.show {
+  visibility: visible;
   opacity: 1 !important;
 }
 

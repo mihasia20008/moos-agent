@@ -1,28 +1,53 @@
 <!DOCTYPE html>
 <html lang="en" class="ng-scope">
-  <head>
-    <meta charset="utf-8">
-    <title>Farzoom | Агентский кабинет</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon/favicon.ico">
-    <link rel="apple-touch-icon" sizes="180x180" href="%PUBLIC_URL%/favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="%PUBLIC_URL%/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="%PUBLIC_URL%/favicon/favicon-16x16.png">
-    <link rel="manifest" href="%PUBLIC_URL%/site.webmanifest">
-    <link rel="mask-icon" href="%PUBLIC_URL%/favicon/safari-pinned-tab.svg" color="#2147a6">
-    <meta name="msapplication-TileColor" content="#da532c">
-    <meta name="theme-color" content="#ffffff">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i&subset=cyrillic-ext" rel="stylesheet">
-    <script src="%PUBLIC_URL%/common/pace.min.js"></script>
-    <link href="%PUBLIC_URL%/common/pace-theme-minimal.css" rel="stylesheet" />
-  </head>
-  <body>
-    <noscript>
-      You need to enable JavaScript to run this app.
-    </noscript>
-    <div id="root"></div>
-    <script src="%PUBLIC_URL%/common/jquery-3.3.1.min.js"></script>
-    <script src="%PUBLIC_URL%/common/deps.js"></script>
-    <script src="%PUBLIC_URL%/common/ngapp.js"></script>
-  </body>
+    <head>
+        <meta charset="utf-8">
+        <title>Farzoom | Агентский кабинет</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="shortcut icon" href="/favicon/favicon.ico">
+        <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <link rel="mask-icon" href="/favicon/safari-pinned-tab.svg" color="#2147a6">
+        <meta name="msapplication-TileColor" content="#da532c">
+        <meta name="theme-color" content="#ffffff">
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i&subset=cyrillic-ext"
+              rel="stylesheet">
+        <script src="/common/pace.min.js"></script>
+        <link href="/common/pace-theme-minimal.css" rel="stylesheet"/>
+    </head>
+    <body>
+        <noscript>
+            You need to enable JavaScript to run this app.
+        </noscript>
+        <div id="root"></div>
+        <script src="/common/jquery-3.3.1.min.js"></script>
+        <script src="/common/deps.js"></script>
+        <script src="/common/ngapp.js"></script>
+        <div id="task-detail">
+            <div class="modal-custom modal-custom--with-help-block">
+                <div class="modal fade bd-example-modal-lg" id="exampleModalCenter" tabindex="-1" role="dialog"
+                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-content__header">
+                                <div>
+                                    <div class="modal-content__title modal-content__title--task">
+                                        <span class="icon icon-ok"></span>
+                                        <span class="task-title">Уведомление об отказе в гарантии</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-content__body" id="#comunda"></div>
+                        </div>
+                    </div>
+                    <button type="button" class="close" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+            </div>
+            <div class="modal-backdrop fade"></div>
+        </div>
+    </body>
 </html>

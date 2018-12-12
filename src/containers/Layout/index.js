@@ -69,8 +69,6 @@ class Layout extends PureComponent {
         
                 const { location: { search, state: routeState = {} }, match } = matchProps;
 
-                console.log(matchProps);
-
                 const renderArray = [
                     <div key={0} className={cx('fr-app')}>
                         <div className={cx('fr-container', {
@@ -150,18 +148,12 @@ class Layout extends PureComponent {
                 if (match.path.search('/tasks/') !== -1 && typeof match.params.id !== 'undefined') {
                     const { title } = routeState;
                     renderArray.push(
-                        <Modal
+                        <TaskDetail
                             key={5}
-                            topPosition
-                            modalClass="modal-custom--with-help-block"
-                            onCloseModal={matchProps.history.goBack}
-                        >
-                            <TaskDetail
-                                id={match.params.id}
-                                title={title}
-                                onCloseDetail={matchProps.history.goBack}
-                            />
-                        </Modal>
+                            id={match.params.id}
+                            title={title}
+                            onCloseDetail={matchProps.history.goBack}
+                        />
                     );
                 }
         

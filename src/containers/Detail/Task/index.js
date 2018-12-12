@@ -1,7 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import cx from "classnames";
 
 class TaskDetail extends PureComponent {
     static propTypes = {
@@ -18,19 +17,85 @@ class TaskDetail extends PureComponent {
 
     static getFormScript(id, processDefinitionKeys) {
         return `
-            ngapp.init($('#comunda')[0], '#process_definition_key#', function (CamSDK) {
+            ngapp.init($('#task-detail')[0], '#process_definition_key#', function (CamSDK) {
                 var urlPrefix = '',
                     camClient = new CamSDK.Client({
                         mock: false,
-                        apiUri: 'http://fplace-develop.moos.solutions/camunda/api/engine'
+                        apiUri: '/camunda/api/engine'
                     }),
                     taskService = new camClient.resource('task');
+                    
+                function openForm(taskData) {
+                    $('#task-detail').data('taskData', taskData);
+
+                    taskService.form(taskData.id, function (err, taskFormInfo) {
+            
+                        var url = urlPrefix + taskFormInfo.key.replace('embedded:app:', taskFormInfo.contextPath + '/');
+            
+                        new CamSDK.Form({
+                            client: camClient,
+                            formUrl: url,
+                            taskId: taskData.id,
+                            containerElement: $('#camunda'),
+                            done: function (err, camForm) {
+                                console.log(err);
+                                if (err) {
+                                    throw err;
+                                }
+            
+                                addDisableTaskBlock();
+            
+                                camForm.on('submit-success', function () {
+                                    window.location.reload();
+                                });
+            
+                                camForm.on('submit-error', function (evt, res) {
+                                    uas.flash.error(res[0]);
+            
+                                    $container.removeOverlay();
+                                });
+            
+                                $('#camunda_complete').click(function () {
+                                    $container.addOverlay();
+            
+                                    camForm.submit(function (err) {
+                                        if (err) {
+                                            uas.flash.error(err);
+            
+                                            $container.removeOverlay();
+            
+                                            throw err;
+                                        }
+                                        else {
+                                            //логируем успешное выполнение завершения задачи
+                                            $.post('/api/task/log_task_completion',
+                                                {
+                                                    task_id: taskData.id
+                                                },
+                                                function (res) {
+                                                    //обработка ошибки логирования
+                                                    if (res.status == 'error') {
+                                                        $container.removeOverlay();
+                                                        var $scope = angular.element('.start-form-section form').scope();
+                                                        if ($scope.$$camForm.$valid) {
+                                                            uas.flash.error('Ошибка логирования');
+                                                            throw err;
+                                                        }
+                                                    }
+                                                });
+                                        }
+                                    });
+                                });
+                            }
+                        });
+                    });
+                }
                     
                 function getTask(taskId) {
                     taskService.get(taskId, function (err, res) {
                         if (err) {
                             if (err.status === 404) {
-                                $('#comunda').html(
+                                $('#task').html(
                                     '<div class="error-code error-404"> ' +
                                     '<i>404</i> ' +
                                     '<h1>Задача не найдена</h1> ' +
@@ -40,7 +105,7 @@ class TaskDetail extends PureComponent {
                                 return;
                             }
                             if (err.status === 401) {
-                                $('#comunda').html(
+                                $('#task').html(
                                     '<div class="error-code error-401"> ' +
                                     '<i>401</i> ' +
                                     '<h1>Ошибка авторизации</h1> ' +
@@ -49,7 +114,7 @@ class TaskDetail extends PureComponent {
                                 );
                                 return;
                             }
-                            $('#comunda').html(
+                            $('#task').html(
                                 '<div class="error-code"> ' +
                                 '<i>Assign me</i> ' +
                                 '<h1>Assign me</h1> ' +
@@ -58,7 +123,8 @@ class TaskDetail extends PureComponent {
                             );
                             return;
                         }
-                        // openForm(res);
+                        console.log(res);
+                        openForm(res);
                     });
                 }
                 getTask('#task_id#');
@@ -69,7 +135,7 @@ class TaskDetail extends PureComponent {
     }
 
     componentDidMount() {
-        const { id, processDefinitionKeys, onCloseDetail } = this.props;
+        const { id, title, processDefinitionKeys, onCloseDetail } = this.props;
         if (processDefinitionKeys.length === 0) {
             onCloseDetail();
         }
@@ -78,32 +144,16 @@ class TaskDetail extends PureComponent {
         script.type = 'text/javascript';
         script.async = true;
         script.innerHTML = TaskDetail.getFormScript(id, processDefinitionKeys);
-        this.formScript.appendChild(script);
+
+        const taskDetailBlock = document.querySelector('#task-detail');
+        taskDetailBlock.querySelector('.task-title').innerHTML = title;
+        taskDetailBlock.querySelector('.modal-backdrop').classList.add('show');
+        taskDetailBlock.querySelector('.modal').classList.add('show');
+        taskDetailBlock.appendChild(script);
     }
 
     render() {
-        const {isFetching, title} = this.props;
-
-        return [
-            <div key={0} className={cx('modal-content__header', {
-                'modal-content--blur': isFetching,
-            })}>
-                <div>
-                    <div className={cx('modal-content__title modal-content__title--task')}>
-                        <span className={cx('icon icon-ok')}/>
-                        <span dangerouslySetInnerHTML={{__html: title}}/>
-                    </div>
-                </div>
-            </div>,
-            <div
-                key={1}
-                className={cx('modal-content__body', {
-                    'modal-content--blur': isFetching,
-                })}
-                id="#comunda"
-            />,
-            <div key={2} ref={node => (this.formScript = node)} />,
-        ];
+        return <div />;
     }
 }
 
@@ -118,6 +168,7 @@ const mapStateToProps = ({ Tasks, User}, ownProps) => {
 export default connect(
     mapStateToProps,
 )(TaskDetail);
+
 /*
 ngapp.init($('#task')[0], 'bg-pa-partner-bo', function (CamSDK) {
     var urlPrefix = '',
@@ -275,4 +326,122 @@ ngapp.init($('#task')[0], 'bg-pa-partner-bo', function (CamSDK) {
         })
     });
 });
+
+
+        uas.camunda = (function(){
+            var urlPrefix, camClient, taskService;
+
+            function getTask(id, processDefinitionKey) {
+                ngapp.init($('.modal-window section.task')[0], processDefinitionKey, function(CamSDK){
+                    function init() {
+                        urlPrefix = window.camundaBaseUrl || '', //'/templates/camunda',
+                            camClient = new CamSDK.Client({ mock: false, apiUri: urlPrefix + '/camunda/api/engine' });
+                        taskService = new camClient.resource('task');
+                    }
+
+                    function openForm(taskData) {
+                        var $container = $('#task_' + taskData.id);
+
+                        $container.data('taskData', taskData);
+
+                        taskService.form(taskData.id, function(error, taskFormInfo) {
+                            var url = urlPrefix + taskFormInfo.key.replace('embedded:app:', taskFormInfo.contextPath + '/');
+
+                            new CamSDK.Form({
+                                client: camClient,
+                                formUrl: url,
+                                taskId: taskData.id,
+                                containerElement: $container.find('.task-frame, .task-camunda'),
+                                done: function(error, camForm) {
+                                    if (error) {
+                                        throw error;
+                                    }
+
+                                    camForm.on('submit-success', function(){
+                                        window.location.reload();
+                                    });
+
+                                    camForm.on('submit-error', function(event, result) {
+                                        uas.flash.error(result[0]);
+
+                                        $container.removeOverlay();
+                                    });
+
+                                    $container.find('.js_camunda_complete').on('click', function(){
+                                        $container.addOverlay();
+
+                                        camForm.submit(function(error){
+                                            if (error) {
+                                                uas.flash.error(error);
+
+                                                $container.removeOverlay();
+
+                                                throw error;
+                                            }
+                                        });
+                                    });
+                                }
+                            });
+                        });
+                    }
+
+                    function getTaskById(id) {
+                        taskService.get(id, function(error, response){
+                            if (error) {
+                                var $container = $('#task_' + id);
+
+                                if (error.status === 404) {
+                                    $container.html(
+                                        '<div class="error-code error-404"> ' +
+                                        '<i>404</i> ' +
+                                        '<h1>Р—Р°РґР°С‡Р° РЅРµ РЅР°Р№РґРµРЅР°</h1> ' +
+                                        '<p>Р—Р°РїСЂР°С€РёРІР°РµРјР°СЏ РІР°РјРё Р·Р°РґР°С‡Р° РЅРµ РЅР°Р№РґРµРЅР°. <a class="js_modal_close" href="close">Р—Р°РєСЂС‹С‚СЊ РѕРєРЅРѕ</a>.</p> ' +
+                                        '</div>'
+                                    );
+
+                                } else if (error.status === 401) {
+                                    process_401_error();
+                                    $container.html(
+                                        '<div class="error-code error-401"> ' +
+                                        '<i>401</i> ' +
+                                        '<h1>РћС€РёР±РєР° Р°РІС‚РѕСЂРёР·Р°С†РёРё</h1> ' +
+                                        '<p>РџСЂРѕРёР·РѕС€Р»Р° РѕС€РёР±РєР° РїСЂРё РїРѕРїС‹С‚РєРµ Р°РІС‚РѕСЂРёР·Р°С†РёРё. <a class="js_modal_close" href="close">Р—Р°РєСЂС‹С‚СЊ РѕРєРЅРѕ</a>.</p> ' +
+                                        '</div>'
+                                    );
+
+                                } else {
+                                    $container.html(
+                                        '<div class="error-code"> ' +
+                                        '<i>РћС€РёР±РєР°</i> ' +
+                                        '<h1>РћС€РёР±РєР°</h1> ' +
+                                        '<p>РњС‹ СЃРѕР¶Р°Р»РµРµРј, РЅРѕ С‡С‚Рѕ-С‚Рѕ РїРѕС€Р»Рѕ РЅРµ С‚Р°Рє. <a class="js_modal_close" href="close">Р—Р°РєСЂС‹С‚СЊ РѕРєРЅРѕ</a>.</p> ' +
+                                        '</div>'
+                                    );
+                                }
+
+                                // throw error;
+                            } else {
+                                openForm(response);
+                            }
+                        });
+                    }
+
+                    if (!camClient) {
+                        init();
+                    }
+
+                    if (typeof(id) === 'object') {
+                        for (var i = 0, length = id.length; i < length; i++) {
+                            getTaskById(id[i]);
+                        }
+                    } else {
+                        getTaskById(id);
+                    }
+                });
+            }
+
+            return {
+                getTask: getTask
+            };
+        }());
 */
