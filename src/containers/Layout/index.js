@@ -157,6 +157,7 @@ class Layout extends PureComponent {
                             <TaskDetail
                                 id={match.params.id}
                                 title={title}
+                                onCloseDetail={matchProps.history.goBack}
                             />
                         </Modal>
                     );

@@ -23,7 +23,8 @@ class TaskDetail extends PureComponent {
                         mock: false,
                         apiUri: '/camunda/api/engine'
                     }),
-                    taskService = new camClient.resource('task');
+                    taskService = new camClient.resource('task'),
+                    $container  = $('#task').parent();;
                     
                 function openForm(taskData) {
                     $('#task-detail').data('taskData', taskData);
@@ -50,18 +51,18 @@ class TaskDetail extends PureComponent {
                                     console.log(res)
                                     //uas.flash.error(res[0]);
             
-                                    $container.removeOverlay();
+                                    //$container.removeOverlay();
                                 });
             
                                 $('#camunda_complete').click(function () {
-                                    $container.addOverlay();
+                                    //$container.addOverlay();
             
                                     camForm.submit(function (err) {
                                         if (err) {
                                             console.log(err);
                                             // uas.flash.error(err);
             
-                                            $container.removeOverlay();
+                                            //$container.removeOverlay();
             
                                             throw err;
                                         }
@@ -74,7 +75,7 @@ class TaskDetail extends PureComponent {
                                                 function (res) {
                                                     //обработка ошибки логирования
                                                     if (res.status == 'error') {
-                                                        $container.removeOverlay();
+                                                        //$container.removeOverlay();
                                                         var $scope = angular.element('.start-form-section form').scope();
                                                         if ($scope.$$camForm.$valid) {
                                                             //uas.flash.error('Ошибка логирования');
@@ -149,10 +150,10 @@ class TaskDetail extends PureComponent {
     }
 
     render() {
-        const { title } = this.props;
+        const { title, onCloseDetail } = this.props;
 
         return [
-            <div className="modal-content__header">
+            <div key={0} className="modal-content__header">
                 <div>
                     <div className="modal-content__title modal-content__title--task">
                         <span className="icon icon-ok"></span>
@@ -160,8 +161,24 @@ class TaskDetail extends PureComponent {
                     </div>
                 </div>
             </div>,
-            <div className="modal-content__body" id="task-detail">
+            <div key={1} className="modal-content__body" id="task-detail">
                 <div id="camunda" />
+            </div>,
+            <div key={2} className="modal-content__footer">
+                <button
+                    className="btn btn-primary"
+                    type="button"
+                    onClick={onCloseDetail}
+                >
+                    Отменить
+                </button>
+                <button
+                    className="btn btn-primary"
+                    type="button"
+                    id="camunda_complete"
+                >
+                    Завершить
+                </button>
             </div>
         ];
     }
