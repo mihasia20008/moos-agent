@@ -148,12 +148,17 @@ class Layout extends PureComponent {
                 if (match.path.search('/tasks/') !== -1 && typeof match.params.id !== 'undefined') {
                     const { title } = routeState;
                     renderArray.push(
-                        <TaskDetail
-                            key={5}
-                            id={match.params.id}
-                            title={title}
-                            onCloseDetail={matchProps.history.goBack}
-                        />
+                        <Modal
+                            key={6}
+                            topPosition
+                            modalClass="modal-custom--wide-width"
+                            onCloseModal={matchProps.history.goBack}
+                        >
+                            <TaskDetail
+                                id={match.params.id}
+                                title={title}
+                            />
+                        </Modal>
                     );
                 }
         

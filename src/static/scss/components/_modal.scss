@@ -87,6 +87,12 @@
       padding-right: 208px;
     }
   }
+
+  &--wide-width {
+    .modal-lg {
+      max-width: 1144px;
+    }
+  }
 }
 
 /* modal-custom--empty */

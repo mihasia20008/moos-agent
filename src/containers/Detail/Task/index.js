@@ -38,19 +38,17 @@ class TaskDetail extends PureComponent {
                             taskId: taskData.id,
                             containerElement: $('#camunda'),
                             done: function (err, camForm) {
-                                console.log(err);
                                 if (err) {
                                     throw err;
                                 }
-            
-                                addDisableTaskBlock();
             
                                 camForm.on('submit-success', function () {
                                     window.location.reload();
                                 });
             
                                 camForm.on('submit-error', function (evt, res) {
-                                    uas.flash.error(res[0]);
+                                    console.log(res)
+                                    //uas.flash.error(res[0]);
             
                                     $container.removeOverlay();
                                 });
@@ -60,7 +58,8 @@ class TaskDetail extends PureComponent {
             
                                     camForm.submit(function (err) {
                                         if (err) {
-                                            uas.flash.error(err);
+                                            console.log(err);
+                                            // uas.flash.error(err);
             
                                             $container.removeOverlay();
             
@@ -78,7 +77,7 @@ class TaskDetail extends PureComponent {
                                                         $container.removeOverlay();
                                                         var $scope = angular.element('.start-form-section form').scope();
                                                         if ($scope.$$camForm.$valid) {
-                                                            uas.flash.error('Ошибка логирования');
+                                                            //uas.flash.error('Ошибка логирования');
                                                             throw err;
                                                         }
                                                     }
@@ -95,7 +94,7 @@ class TaskDetail extends PureComponent {
                     taskService.get(taskId, function (err, res) {
                         if (err) {
                             if (err.status === 404) {
-                                $('#task').html(
+                                $('#task-detail').html(
                                     '<div class="error-code error-404"> ' +
                                     '<i>404</i> ' +
                                     '<h1>Задача не найдена</h1> ' +
@@ -105,7 +104,7 @@ class TaskDetail extends PureComponent {
                                 return;
                             }
                             if (err.status === 401) {
-                                $('#task').html(
+                                $('#task-detail').html(
                                     '<div class="error-code error-401"> ' +
                                     '<i>401</i> ' +
                                     '<h1>Ошибка авторизации</h1> ' +
@@ -114,7 +113,7 @@ class TaskDetail extends PureComponent {
                                 );
                                 return;
                             }
-                            $('#task').html(
+                            $('#task-detail').html(
                                 '<div class="error-code"> ' +
                                 '<i>Assign me</i> ' +
                                 '<h1>Assign me</h1> ' +
@@ -123,7 +122,7 @@ class TaskDetail extends PureComponent {
                             );
                             return;
                         }
-                        console.log(res);
+                        
                         openForm(res);
                     });
                 }
@@ -135,7 +134,7 @@ class TaskDetail extends PureComponent {
     }
 
     componentDidMount() {
-        const { id, title, processDefinitionKeys, onCloseDetail } = this.props;
+        const { id, processDefinitionKeys, onCloseDetail } = this.props;
         if (processDefinitionKeys.length === 0) {
             onCloseDetail();
         }
@@ -146,14 +145,25 @@ class TaskDetail extends PureComponent {
         script.innerHTML = TaskDetail.getFormScript(id, processDefinitionKeys);
 
         const taskDetailBlock = document.querySelector('#task-detail');
-        taskDetailBlock.querySelector('.task-title').innerHTML = title;
-        taskDetailBlock.querySelector('.modal-backdrop').classList.add('show');
-        taskDetailBlock.querySelector('.modal').classList.add('show');
         taskDetailBlock.appendChild(script);
     }
 
     render() {
-        return <div />;
+        const { title } = this.props;
+
+        return [
+            <div className="modal-content__header">
+                <div>
+                    <div className="modal-content__title modal-content__title--task">
+                        <span className="icon icon-ok"></span>
+                        <span className="task-title">{title}</span>
+                    </div>
+                </div>
+            </div>,
+            <div className="modal-content__body" id="task-detail">
+                <div id="camunda" />
+            </div>
+        ];
     }
 }
 
