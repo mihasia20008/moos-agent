@@ -17,3 +17,7 @@ export {
 export {
   default as Search,
 } from './Search/reducer';
+
+export {
+  default as Statistics,
+} from './Statistics/reducer';

@@ -3,6 +3,7 @@ import * as User from './user';
 import * as Clients from './clients';
 import * as Client from './client';
 import * as Search from './search';
+import * as Statistics from './statistics';
 
 export {
   Tasks,
@@ -10,4 +11,5 @@ export {
   Clients,
   Client,
   Search,
+  Statistics,
 };

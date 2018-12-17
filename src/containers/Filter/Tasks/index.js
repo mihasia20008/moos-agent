@@ -23,11 +23,11 @@ class TasksFilter extends PureComponent {
         },
     };
 
-    componentDidMount = () => {
+    componentDidMount() {
       window.addEventListener('scroll', this.handleScroll);
     }
 
-    componentWillUnmount = () => {
+    componentWillUnmount() {
       window.removeEventListener('scroll', this.handleScroll);
     }
 
@@ -39,13 +39,13 @@ class TasksFilter extends PureComponent {
         if (this.state.isFixed && window.scrollY === 0) {
             this.setState({ isFixed: false });
         }
-    }
+    };
     
     changeValue = (event) => console.log(event);
 
     handleSelectDropdown = (name, key) => {
         console.log(name, key);
-    }
+    };
 
     render() {
         const { isFixed, taskFilter } = this.state;
@@ -60,6 +60,12 @@ class TasksFilter extends PureComponent {
                         <div className={cx('main-filter__row', {
                             'main-filter__row--disabled': isDisable,
                         })}>
+                            <Dropdown
+                                name="taskFilter"
+                                defaultActive={taskFilter.active}
+                                list={taskFilter.list}
+                                onSelectItem={this.handleSelectDropdown}
+                            />
                             <Dropdown
                                 name="taskFilter"
                                 defaultActive={taskFilter.active}
