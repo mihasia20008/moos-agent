@@ -8,7 +8,6 @@ export const getWidget = async (session_id) => {
             method: 'GET',
             url: `${SERVER.HOST}/stat/summary?session_id=${session_id}`,
         });
-        console.log(rest);
         if (status === 0) {
             return {
                 isSuccess: true,

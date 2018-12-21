@@ -3,6 +3,7 @@ import * as types from './actionTypes';
 const initialState = {
   isFetching: false,
   isFetchingNext: false,
+  filters: {},
   order: [],
   tasks: {},
   page: 0,
@@ -39,6 +40,13 @@ export default (state = initialState, action) => {
     }
     case types.NEXT_TASKS_ERROR: {
       return { ...state, isFetching: false };
+    }
+    case types.TASKS_SET_FILTER: {
+      const { name, value } = action.data;
+      return {
+          ...state,
+          filters: Object.assign({}, state.filters, { [`${name}`]: value }),
+      }
     }
     default: {
       return { ...state };

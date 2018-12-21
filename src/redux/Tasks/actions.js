@@ -8,17 +8,22 @@ const prepareTasksList = orderList => orderList.reduce((acc, { tasks }) => {
     return Object.assign(acc, { [`${tasks[0].task_id}`]: tasks[0].name });
 }, {});
 
-export function getTasksList(session_id) {
+export function getTasksList(session_id, filters) {
     return async dispatch => {
         try {
             dispatch({ type: types.TASKS_FETCH });
-            const { isSuccess, ...res } = await Tasks.getData(session_id);
+            const { isSuccess, ...res } = await Tasks.getData(session_id, filters);
             if (!isSuccess) {
                 alert(res.message);
                 dispatch({ type: types.TASKS_ERROR });
                 return;
             }
-            res.tasks = prepareTasksList(res.order);
+            if (res.order) {
+                res.tasks = prepareTasksList(res.order);
+            } else {
+                res.order = [];
+                res.tasks = {};
+            }
             dispatch({ type: types.TASKS_SUCCESS, data: res });
         } catch (err) {
             console.log(err);
@@ -27,11 +32,11 @@ export function getTasksList(session_id) {
     };
 }
 
-export function getNextTasksPage(session_id, page) {
+export function getNextTasksPage(session_id, page, filters) {
     return async dispatch => {
         try {
             dispatch({ type: types.NEXT_TASKS_FETCH });
-            const { isSuccess, ...res } = await Tasks.getNextPage(session_id, page);
+            const { isSuccess, ...res } = await Tasks.getNextPage(session_id, page, filters);
             if (!isSuccess) {
                 alert(res.message);
                 dispatch({ type: types.NEXT_TASKS_ERROR });
@@ -44,4 +49,8 @@ export function getNextTasksPage(session_id, page) {
             dispatch({ type: types.NEXT_TASKS_ERROR });
         }
     }
+}
+
+export function setTasksFilter(name, value) {
+    return dispatch => dispatch({ type: types.TASKS_SET_FILTER, data: { name, value }});
 }

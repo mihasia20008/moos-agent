@@ -6,9 +6,16 @@ import cx from 'classnames';
 import ReactBootstrapSlider from 'react-bootstrap-slider';
 
 import Dropdown from '../../../components/Dropdown';
+import CheckboxList from '../../../components/CheckboxList';
+import TextField from '../../../components/TextField';
+import DatePicker from '../../../components/DatePicker';
 
 class TasksFilter extends PureComponent {
-    static propTypes = { isDisable: PropTypes.bool };
+    static propTypes = {
+        isDisable: PropTypes.bool,
+        filters: PropTypes.object,
+        onChangeFilter: PropTypes.func.isRequired,
+    };
     static defaultProps = { isDisable: false };
 
     state = {
@@ -47,9 +54,21 @@ class TasksFilter extends PureComponent {
         console.log(name, key);
     };
 
+    handleCheckboxSelect = ({ target }) => this.props.onChangeFilter(target.name, target.value);
+
+    handleTypeText = ({ target }) => this.props.onChangeFilter(target.name, target.value);
+
+    handleSelectDate = ({ target }) => {
+        const values = target.value.split('/');
+        this.props.onChangeFilter(target.name, {
+            from: values[0],
+            to: values[1],
+        });
+    };
+
     render() {
         const { isFixed, taskFilter } = this.state;
-        const { isDisable } = this.props;
+        const { isDisable, filters } = this.props;
 
         return (
             <div className={cx('main-filter', {
@@ -72,13 +91,15 @@ class TasksFilter extends PureComponent {
                                 list={taskFilter.list}
                                 onSelectItem={this.handleSelectDropdown}
                             />
-                            <div className={cx('main-filter__control main-filter__control--icon-left')}>
-                                <i className={cx('icon icon-calendar')} />
-                                <input type="text" className={cx('main-filter__control-field')} placeholder="Даты" />
-                            </div>
-                            <div className={cx('main-filter__control')}>
-                                <input type="text" className={cx('main-filter__control-field')} placeholder="Номер заявки" />
-                            </div>
+                            <DatePicker
+                                name="createdDate"
+                                defaultActive={filters.createdDate}
+                                onSelectDate={this.handleSelectDate}
+                            />
+                            <TextField
+                                value={filters.orderNumber}
+                                onChange={this.handleTypeText}
+                            />
                             <div className={cx('main-filter__control')}>
                                 <input type="text" className={cx('main-filter__control-field')} placeholder="Клиент" />
                             </div>
@@ -91,24 +112,10 @@ class TasksFilter extends PureComponent {
                         <div className={cx('main-filter__row', {
                             'main-filter__row--disabled': isDisable,
                         })}>
-                            <div className={cx('checkbox-list')}>
-                                <div className={cx('checkbox-list__item checkbox-list__item--purple')}>
-                                    <input type="radio" name="main-filter" id="mainFilterCheckbox1" />
-                                    <label htmlFor="mainFilterCheckbox1">Подано</label>
-                                </div>
-                                <div className={cx('checkbox-list__item checkbox-list__item--red')}>
-                                    <input type="radio" name="main-filter" id="mainFilterCheckbox2" />
-                                    <label htmlFor="mainFilterCheckbox2">Отказано</label>
-                                </div>
-                                <div className={cx('checkbox-list__item checkbox-list__item--orange')}>
-                                    <input type="radio" name="main-filter" id="mainFilterCheckbox3" />
-                                    <label htmlFor="mainFilterCheckbox3">В процессе</label>
-                                </div>
-                                <div className={cx('checkbox-list__item checkbox-list__item--blue')}>
-                                    <input type="radio" name="main-filter" id="mainFilterCheckbox4" />
-                                    <label htmlFor="mainFilterCheckbox4">Одобрено</label>
-                                </div>
-                            </div>
+                            <CheckboxList
+                                activeValue={filters.status}
+                                onChangeItem={this.handleCheckboxSelect}
+                            />
                             <div className={cx('filter-slider')}>
                                 <span>От 30К ₽</span>
                                 <ReactBootstrapSlider

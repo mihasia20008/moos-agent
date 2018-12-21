@@ -10,23 +10,7 @@ import UserMenu from '../../components/UserMenu';
 import { logoutUser } from '../../redux/User/actions';
 import { fetchWidgetData } from "../../redux/Statistics/actions";
 
-const statistics = [{
-    key: 'assigned',
-    text: 'К выполнению',
-    className: 'progress-statistic__item--purple',
-}, {
-    key: 'inprogress',
-    text: 'На стороне банка',
-    className: 'progress-statistic__item--yellow',
-}, {
-    key: 'sold',
-    text: 'Отказано',
-    className: 'progress-statistic__item--red',
-}, {
-    key: 'lost',
-    text: 'Одобрено',
-    className: 'progress-statistic__item--green',
-}];
+import { statusItems } from '../../contentConstants';
 
 class Sidebar extends PureComponent {
     static propTypes = {
@@ -61,7 +45,7 @@ class Sidebar extends PureComponent {
 
         return (
             <div className={cx('fr-sidebar-bm__statistics-cont progress-statistic')}>{
-                statistics.map(({ key, text, className }, index) => {
+                statusItems.map(({ key, text, className }, index) => {
                     return (typeof widgetItems[key] !== 'undefined')
                         ? (
                             <ProgressStatistic
@@ -115,7 +99,6 @@ class Sidebar extends PureComponent {
 }
 
 const mapStateToProps = ({ User, Statistics }) => {
-    console.log(Statistics);
     return {
         name: User.fullname,
         session_id: User.session_id,
