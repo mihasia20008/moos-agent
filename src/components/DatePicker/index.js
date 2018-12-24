@@ -2,11 +2,13 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 
-import { DateRange } from 'react-date-range';
+import { DateRangePicker } from 'react-date-range';
 import { ru } from 'react-date-range/dist/locale';
 
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
+
+import { staticRanges, staticInputRanges } from './getStaticData';
 
 class DatePicker extends PureComponent {
     static propTypes = {
@@ -115,6 +117,7 @@ class DatePicker extends PureComponent {
                         name={name}
                         value={value}
                         placeholder="Даты"
+                        autoComplete="off"
                         onChange={this.handleNativeType}
                         onFocus={this.handleTogglePicker}
                     />
@@ -122,8 +125,12 @@ class DatePicker extends PureComponent {
                 <div className={cx('main-filter__picker', {
                     'main-filter__picker--show': showPicker,
                 })}>
-                    <DateRange
+                    <DateRangePicker
                         locale={ru}
+                        staticRanges={staticRanges}
+                        inputRanges={staticInputRanges}
+                        color="#22c7b5"
+                        rangeColors={['#22c7b5', '#3ecf8e', '#fed14c']}
                         ranges={[range]}
                         moveRangeOnFirstSelection={false}
                         onChange={this.handleSelect}

@@ -165,5 +165,9 @@
     &--show {
       display: block;
     }
+
+    .rdrDayToday .rdrDayNumber span:after {
+      background: #22c7b5;
+    }
   }
 }
