@@ -6,7 +6,7 @@ export default (filters) => Object.keys(filters).reduce((acc, global) => {
             }
             return res;
         }, '');
-        return `${acc}&${value}`;
+        return `${acc}${value}`;
     }
     if (global === 'orderTypeRefId' && !filters.phaseId) {
         return acc;

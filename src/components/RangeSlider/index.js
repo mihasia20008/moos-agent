@@ -14,7 +14,7 @@ class RangeSlider extends PureComponent {
     };
     static defaultProps = {
         defaultActive: {
-            from: 1,
+            from: 1000000,
             to: 15000000,
         },
     };
@@ -47,7 +47,12 @@ class RangeSlider extends PureComponent {
 
     stopChangingValue = ({ target }) => {
         const { name, onEndChanging } = this.props;
-        onEndChanging(name, target.value);
+
+        if (target.value[0] === RangeSlider.defaultProps.defaultActive.from && target.value[1] === RangeSlider.defaultProps.defaultActive.to) {
+            onEndChanging(name, ['', '']);
+        } else {
+            onEndChanging(name, target.value);
+        }
     };
 
     render() {

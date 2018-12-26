@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import cx from 'classnames';
-import debounce from 'lodash/debounce';
 
 import Dropdown from '../../../components/Dropdown';
 import CheckboxList from '../../../components/CheckboxList';

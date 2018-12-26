@@ -1,4 +1,4 @@
-import { createStaticRanges, defaultInputRanges } from 'react-date-range/dist/defaultRanges';
+import { createStaticRanges } from 'react-date-range/dist/defaultRanges';
 
 import {
     addDays,
@@ -9,8 +9,6 @@ import {
     addMonths,
     startOfWeek,
     endOfWeek,
-    isSameDay,
-    differenceInCalendarDays,
 } from 'date-fns';
 
 const defineds = {
