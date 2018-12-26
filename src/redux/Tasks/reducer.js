@@ -42,10 +42,10 @@ export default (state = initialState, action) => {
       return { ...state, isFetching: false };
     }
     case types.TASKS_SET_FILTER: {
-      const { name, value } = action.data;
+      const { filters } = action.data;
       return {
           ...state,
-          filters: Object.assign({}, state.filters, { [`${name}`]: value }),
+          filters: Object.assign({}, state.filters, filters),
       }
     }
     default: {

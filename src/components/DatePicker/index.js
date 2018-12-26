@@ -33,6 +33,10 @@ class DatePicker extends PureComponent {
         endDate: this.props.defaultActive.to,
     };
 
+    componentWillUnmount() {
+        document.removeEventListener('click', this.handleOutsideClick, false);
+    }
+
     static prepareInputValue(stateFrom, stateTo, propsFrom, propsTo) {
         if (stateFrom !== propsFrom && stateFrom === stateTo) {
             return `${DatePicker.convertDateValue(stateFrom)}/`;

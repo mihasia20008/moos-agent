@@ -51,6 +51,6 @@ export function getNextTasksPage(session_id, page, filters) {
     }
 }
 
-export function setTasksFilter(name, value) {
-    return dispatch => dispatch({ type: types.TASKS_SET_FILTER, data: { name, value }});
+export function setTasksFilter(filters) {
+    return dispatch => dispatch({ type: types.TASKS_SET_FILTER, data: { filters }});
 }

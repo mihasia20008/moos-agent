@@ -2,13 +2,13 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import cx from 'classnames';
-
-import ReactBootstrapSlider from 'react-bootstrap-slider';
+import debounce from 'lodash/debounce';
 
 import Dropdown from '../../../components/Dropdown';
 import CheckboxList from '../../../components/CheckboxList';
 import TextField from '../../../components/TextField';
 import DatePicker from '../../../components/DatePicker';
+import RangeSlider from '../../../components/RangeSlider';
 
 class TasksFilter extends PureComponent {
     static propTypes = {
@@ -18,17 +18,7 @@ class TasksFilter extends PureComponent {
     };
     static defaultProps = { isDisable: false };
 
-    state = {
-        isFixed: false,
-        taskFilter: {
-            active: 1,
-            list: [
-                { key: 'all', value: 'Все заявки' },
-                { key: 'current', value: 'Текущие заявки' },
-                { key: 'closed', value: 'Завершенные заявки' },
-            ],
-        },
-    };
+    state = { isFixed: false };
 
     componentDidMount() {
       window.addEventListener('scroll', this.handleScroll);
@@ -36,6 +26,29 @@ class TasksFilter extends PureComponent {
 
     componentWillUnmount() {
       window.removeEventListener('scroll', this.handleScroll);
+    }
+
+    static getProcessesFilter(processes, orderTypeRefId = '') {
+        let active = 0;
+        const list = processes.reduce((acc, process, index) => {
+            if (orderTypeRefId === process.process_type) {
+                active = index;
+            }
+            return acc.concat([{ key: process.process_definition_key, value: process.process_name }]);
+        }, [{ key: 'all', value: 'Все процессы' }]);
+        return { active, list };
+    }
+
+    static getPhaseFilter(processes, activeProcess, phaseId = '') {
+        let active = 0;
+        const { phases = [] } = processes[activeProcess];
+        const list = phases.reduce((acc, phase, index) => {
+            if (phaseId === phase.phaseId) {
+                active = index;
+            }
+            return acc.concat([{ key: phase.phaseId, value: phase.phaseName }]);
+        }, [{ key: 'all', value: 'Все фазы' }]);
+        return { active, list };
     }
 
     handleScroll = () => {
@@ -47,28 +60,54 @@ class TasksFilter extends PureComponent {
             this.setState({ isFixed: false });
         }
     };
-    
-    changeValue = (event) => console.log(event);
 
     handleSelectDropdown = (name, key) => {
-        console.log(name, key);
+        const { onChangeFilter } = this.props;
+        if (name === 'orderTypeRefId' && key === 'all') {
+            onChangeFilter({
+                [`${name}`]: '',
+                phaseId: '',
+            });
+            return;
+        }
+        if (key === 'all') {
+            onChangeFilter({ [`${name}`]: '' });
+        } else {
+            onChangeFilter({ [`${name}`]: key });
+        }
     };
 
-    handleCheckboxSelect = ({ target }) => this.props.onChangeFilter(target.name, target.value);
+    handleCheckboxSelect = ({ target }) => this.props.onChangeFilter({ [`${target.name}`]: target.value });
 
-    handleTypeText = ({ target }) => this.props.onChangeFilter(target.name, target.value);
+    handleTypeText = ({ target }) => this.props.onChangeFilter({ [`${target.name}`]: target.value });
 
     handleSelectDate = ({ target }) => {
         const values = target.value.split('/');
-        this.props.onChangeFilter(target.name, {
-            from: values[0],
-            to: values[1],
+        this.props.onChangeFilter({
+            [`${target.name}`]: {
+                from: values[0],
+                to: values[1],
+            },
+        });
+    };
+
+    handleEndMovingSlider = (name, value) => {
+        this.props.onChangeFilter({
+            [`${name}`]: {
+                from: value[0],
+                to: value[1],
+            },
         });
     };
 
     render() {
-        const { isFixed, taskFilter } = this.state;
-        const { isDisable, filters } = this.props;
+        const { isFixed } = this.state;
+        const { isDisable, filters, processes } = this.props;
+
+        const processesFilter = TasksFilter.getProcessesFilter(processes, filters.orderTypeRefId);
+        const phaseFilter = filters.orderTypeRefId
+            ? TasksFilter.getPhaseFilter(processes, processesFilter.active, filters.phaseId)
+            : { list: [{ key: 'all', value: 'Все фазы' }] };
 
         return (
             <div className={cx('main-filter', {
@@ -80,15 +119,15 @@ class TasksFilter extends PureComponent {
                             'main-filter__row--disabled': isDisable,
                         })}>
                             <Dropdown
-                                name="taskFilter"
-                                defaultActive={taskFilter.active}
-                                list={taskFilter.list}
+                                name="orderTypeRefId"
+                                defaultActive={processesFilter.active}
+                                list={processesFilter.list}
                                 onSelectItem={this.handleSelectDropdown}
                             />
                             <Dropdown
-                                name="taskFilter"
-                                defaultActive={taskFilter.active}
-                                list={taskFilter.list}
+                                name="phaseId"
+                                defaultActive={phaseFilter.active}
+                                list={phaseFilter.list}
                                 onSelectItem={this.handleSelectDropdown}
                             />
                             <DatePicker
@@ -116,18 +155,10 @@ class TasksFilter extends PureComponent {
                                 activeValue={filters.status}
                                 onChangeItem={this.handleCheckboxSelect}
                             />
-                            <div className={cx('filter-slider')}>
-                                <span>От 30К ₽</span>
-                                <ReactBootstrapSlider
-                                    className={cx('filter-slider__control')}
-                                    value={[45000, 5900000]}
-                                    change={this.changeValue}
-                                    slideStop={this.changeValue}
-                                    step={10}
-                                    max={6900000}
-                                    min={30000} />
-                                <span>До 6.9М ₽</span>
-                            </div>
+                            <RangeSlider
+                                name="amount"
+                                onEndChanging={this.handleEndMovingSlider}
+                            />
                         </div>
                     </div>
                 </div>

@@ -18,6 +18,7 @@ class Tasks extends PureComponent {
         filters: PropTypes.object,
         nextPage: PropTypes.number.isRequired,
         hasMorePage: PropTypes.bool.isRequired,
+        processDefinitionKeys: PropTypes.array.isRequired,
         session_id: PropTypes.string.isRequired,
         getTasksList: PropTypes.func.isRequired,
         getNextTasksPage: PropTypes.func.isRequired,
@@ -62,7 +63,7 @@ class Tasks extends PureComponent {
     };
     
     render() {
-        const { list, filters, isFetching, isFetchingNext, setTasksFilter } = this.props;
+        const { list, filters, processDefinitionKeys, isFetching, isFetchingNext, setTasksFilter } = this.props;
 
         return [
             <Sidebar key={0} />,
@@ -70,6 +71,7 @@ class Tasks extends PureComponent {
                 <TasksFilter
                     isDisable={!list.length && !Object.keys(filters).length}
                     filters={filters}
+                    processes={processDefinitionKeys}
                     onChangeFilter={setTasksFilter}
                 />
                 {!list.length && !isFetching
@@ -88,6 +90,7 @@ const mapStateToProps = ({ Tasks, User }) => {
         filters: Tasks.filters,
         nextPage: Tasks.page + 1,
         hasMorePage: Tasks.more,
+        processDefinitionKeys: User.processDefinitionKeys,
         session_id: User.session_id,
     };
 };

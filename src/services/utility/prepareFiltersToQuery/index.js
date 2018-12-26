@@ -8,5 +8,11 @@ export default (filters) => Object.keys(filters).reduce((acc, global) => {
         }, '');
         return `${acc}&${value}`;
     }
-    return `${acc}&${global}=${filters[global]}`;
+    if (global === 'orderTypeRefId' && !filters.phaseId) {
+        return acc;
+    }
+    if (filters[global]) {
+        return `${acc}&${global}=${filters[global]}`;
+    }
+    return acc;
 }, '');

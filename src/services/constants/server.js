@@ -1,1 +1,1 @@
-export const HOST = 'http://agent.fplace-develop.moos.solutions/spa/api';
+export const HOST = 'http://agent.cherry-develop.moos.solutions/spa/api';
