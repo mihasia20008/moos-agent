@@ -27,7 +27,8 @@ class TasksFilter extends PureComponent {
       window.removeEventListener('scroll', this.handleScroll);
     }
 
-    static getProcessesFilter(processes, orderTypeRefId = '') {
+    getProcessesFilter(processes, orderTypeRefId = '') {
+        const { filters, onChangeFilter } = this.props;
         let active = 0;
         const list = processes.reduce((acc, process, index) => {
             if (orderTypeRefId === process.process_type) {
@@ -35,6 +36,12 @@ class TasksFilter extends PureComponent {
             }
             return acc.concat([{ key: process.process_definition_key, value: process.process_name }]);
         }, [{ key: 'all', value: 'Все процессы' }]);
+        if (list.length === 2) {
+            active = 1;
+            if (filters.orderTypeRefId !== list[1].key) {
+                onChangeFilter({ orderTypeRefId: list[1].key });
+            }
+        }
         return { active, list };
     }
 
@@ -103,9 +110,9 @@ class TasksFilter extends PureComponent {
         const { isFixed } = this.state;
         const { isDisable, filters, processes } = this.props;
 
-        const processesFilter = TasksFilter.getProcessesFilter(processes, filters.orderTypeRefId);
+        const processesFilter = this.getProcessesFilter(processes, filters.orderTypeRefId);
         const phaseFilter = filters.orderTypeRefId
-            ? TasksFilter.getPhaseFilter(processes, processesFilter.active, filters.phaseId)
+            ? TasksFilter.getPhaseFilter(processes, processesFilter.active - 1, filters.phaseId)
             : { list: [{ key: 'all', value: 'Все фазы' }] };
 
         return (
