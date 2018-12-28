@@ -1,183 +1,246 @@
-import React from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import cx from 'classnames';
+import _uniqBy from 'lodash/uniqBy';
 
-const UserStatictics = () => {
-    return (
-        <div className={cx('modal-content__inner chart-stats')}>
-            <div className={cx('chart-stats__item')}>
-                <div className={cx('chart-stats__head')}>
-                    <div className={cx('dropdown')}>
-                        <a className={cx('btn-dropdown dropdown-toggle')} href="javasctipt::void(0);" role="button" id="dropdownMenu1Link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Ваша статистика за август
-                        </a>
-                        <div className={cx('dropdown-menu')} aria-labelledby="dropdownMenu1Link">
-                            <a className={cx('dropdown-item')} href="javasctipt::void(0);">Сентябрь</a>
-                            <a className={cx('dropdown-item')} href="javasctipt::void(0);">Октябрь</a>
-                            <a className={cx('dropdown-item')} href="javasctipt::void(0);">Ноябрь</a>
+import Dropdown from '../../components/Dropdown';
+import StatsToggler from '../../components/StatsToggler';
+import StatsInfoBlock from '../../components/StatsInfoBlock';
+
+import { fetchPeriodsList, fetchEmployeeStat, fetchCompanyStat } from "../../redux/Statistics/actions";
+
+class UserStatictics extends Component {
+    static propTypes = {
+        session_id: PropTypes.string.isRequired,
+        username: PropTypes.string.isRequired,
+        periods: PropTypes.array.isRequired,
+        employees: PropTypes.array.isRequired,
+        companyStats: PropTypes.shape({
+            items: PropTypes.object.isRequired,
+            countSum: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.number]),
+            amountSum: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.number]),
+            noItems: PropTypes.bool.isRequired,
+        }).isRequired,
+        employeeStats: PropTypes.shape({
+            items: PropTypes.object.isRequired,
+            countSum: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.number]),
+            amountSum: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.number]),
+            noItems: PropTypes.bool.isRequired,
+        }).isRequired,
+    };
+
+    state = {
+        periods: {
+            activeCompany: 0,
+            activeEmployee: 0,
+            list: [{ key: 'default', value: 'месяц' }]
+        },
+        employees: {
+            active: 0,
+            list: [{ key: 'default', value: 'Сотрудник' }]
+        },
+        indicator: 'count',
+    };
+
+    static getDerivedStateFromProps(nextProps, prevState) {
+        const {
+            periods: nextPeriods,
+            employees: nextEmployees,
+            username,
+        } = nextProps;
+        const {
+            periods: { list: prevPeriodsList },
+            employees: { list: prevEmployeesList, active: activeEmployee },
+        } = prevState;
+        const preparedPeriods = UserStatictics.getPreparedPeriods(prevPeriodsList, nextPeriods);
+
+        const needCalcUserPosition = prevEmployeesList[activeEmployee].key !== username;
+        const preparedEmployees = UserStatictics.getPreparedEmployees(
+            prevEmployeesList,
+            nextEmployees,
+            needCalcUserPosition ? username : ''
+        );
+
+        if (Object.keys(preparedPeriods).length && Object.keys(preparedEmployees).length) {
+            return {
+                periods: preparedPeriods,
+                employees: preparedEmployees,
+            };
+        }
+        if (Object.keys(preparedEmployees).length) {
+            return { employees: preparedEmployees };
+        }
+        if (Object.keys(preparedPeriods).length) {
+            return { periods: preparedPeriods };
+        }
+
+        return {};
+    }
+
+    componentDidMount() {
+        const { session_id, dispatch } = this.props;
+        if (session_id) {
+            dispatch(fetchPeriodsList(session_id));
+        }
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        const { session_id, dispatch } = this.props;
+        const {
+            periods: {
+                activeCompany: prevActiveCompanyPeriod,
+                activeEmployee: prevActiveEmployeePeriod
+            },
+            employees: { active: prevActiveEmployee },
+        } = prevState;
+        const { periods, employees } = this.state;
+
+        const {
+            activeCompany: nexActiveCompanyPeriod,
+            activeEmployee: nextActiveEmployeePeriod
+        } = periods;
+        const { active: nextActiveEmployee } = employees;
+
+        if (nexActiveCompanyPeriod !== prevActiveCompanyPeriod) {
+            const periodKey = periods.list[nexActiveCompanyPeriod].key;
+            dispatch(fetchCompanyStat(session_id, periodKey));
+        }
+
+        if (nextActiveEmployeePeriod !== prevActiveEmployeePeriod || nextActiveEmployee !== prevActiveEmployee) {
+            const periodKey = periods.list[nextActiveEmployeePeriod].key;
+            const username = employees.list[nextActiveEmployee].key;
+            dispatch(fetchEmployeeStat(session_id, periodKey, username));
+        }
+    }
+
+    static getPreparedPeriods(prevPeriodsList, nextPeriods) {
+        const list = nextPeriods.reduce((acc, period) => {
+            return acc.concat({ key: period.period, value: period.name });
+        }, []);
+        const uniqList = _uniqBy(prevPeriodsList.concat(list), 'key');
+        if (uniqList.length === prevPeriodsList.length) {
+            return {};
+        }
+        return {
+            list,
+            activeCompany: list.length - 1,
+            activeEmployee: list.length - 1,
+        };
+    }
+
+    static getPreparedEmployees(prevEmployeesList, nextEmployees, username) {
+        const needCalculate = !!username;
+        let active = 0;
+        const list = nextEmployees.reduce((acc, employee, index) => {
+            if (needCalculate && username === employee) {
+                active = index;
+            }
+            return acc.concat({ key: employee, value: employee });
+        }, []);
+        const uniqList = _uniqBy(prevEmployeesList.concat(list), 'key');
+        if (uniqList.length === prevEmployeesList.length) {
+            return {};
+        }
+        return {
+            list,
+            active: active,
+        };
+    }
+
+    handleSelectDropdown = (name, key, index) => {
+        const preparedName = name.split('_');
+        this.setState({
+            [`${preparedName[0]}`]: Object.assign(
+                {},
+                this.state[preparedName[0]],
+                {
+                    [`active${preparedName[1] ? preparedName[1] : ''}`]: index
+                }
+            ),
+        });
+    };
+
+    handleToggleIndicator = (indicator) => this.setState({ indicator });
+
+    render() {
+        const { periods, employees, indicator } = this.state;
+        const { companyStats, employeeStats } = this.props;
+
+        return (
+            <div className={cx('modal-content__inner chart-stats')}>
+                <div className={cx('chart-stats__item')}>
+                    <div className={cx('chart-stats__head')}>
+                        <Dropdown
+                            name="periods_Employee"
+                            defaultText="Ваша статистика за"
+                            defaultActive={periods.activeEmployee}
+                            list={periods.list}
+                            disabled={periods.list.length < 2}
+                            onSelectItem={this.handleSelectDropdown}
+                        />
+                        <Dropdown
+                            name="employees"
+                            defaultActive={employees.active}
+                            list={employees.list}
+                            disabled={periods.list.length < 2}
+                            onSelectItem={this.handleSelectDropdown}
+                        />
+                        <div className={cx('chart-stats__filter')}>
+                            <StatsToggler
+                                name="count"
+                                text="Заявки"
+                                isActive={indicator === 'count'}
+                                onClick={this.handleToggleIndicator}
+                            />
+                            <StatsToggler
+                                name="amount"
+                                text="Деньги"
+                                isActive={indicator === 'amount'}
+                                onClick={this.handleToggleIndicator}
+                            />
                         </div>
                     </div>
-                    <div className={cx('dropdown')}>
-                        <a className={cx('btn-dropdown dropdown-toggle')} href="javasctipt::void(0);" role="button" id="dropdownMenu2Link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Сотрудник
-                        </a>
-                        <div className={cx('dropdown-menu')} aria-labelledby="dropdownMenu2Link">
-                            <a className={cx('dropdown-item')} href="javasctipt::void(0);">Сотрудник 1</a>
-                            <a className={cx('dropdown-item')} href="javasctipt::void(0);">Сотрудник 2</a>
-                            <a className={cx('dropdown-item')} href="javasctipt::void(0);">Сотрудник 3</a>
-                        </div>
-                    </div>
-                    <div className={cx('chart-stats__filter')}>
-                        <a href="javasctipt::void(0);" className={cx('chart-stats__filter-item chart-stats__filter-item--active')}>Заявки</a>
-                        <a href="javasctipt::void(0);" className={cx('chart-stats__filter-item')}>Деньги</a>
+                    <div className={cx('chart-stats__body')}>
+                        <StatsInfoBlock
+                            infoBlock={employeeStats}
+                            indicator={indicator}
+                        />
                     </div>
                 </div>
-                <div className={cx('chart-stats__body')}>
-                    <div className={cx('chart-stats__chart-wrapper')}>
-                        <img src="./img/chart-1.png" alt="" />
+                <div className={cx('chart-stats__item')}>
+                    <div className={cx('chart-stats__head')}>
+                        <Dropdown
+                            name="periods_Company"
+                            defaultText="Ваша статистика за"
+                            defaultActive={periods.activeCompany}
+                            list={periods.list}
+                            onSelectItem={this.handleSelectDropdown}
+                        />
                     </div>
-                    <div className={cx('chart-stats__info')}>
-                        <div className={cx('chart-stats__info-item')}>
-                            <div className={cx('chart-stats__info-stats')}>
-                                <div className={cx('chart-stats__info-stats-main')}>
-                                    120
-                                </div>
-                                <div className={cx('chart-stats__info-stats-secondary')}>
-                                    <span className={cx('chart-stats__info-stats-title')}>Подано заявок</span>
-                                    <span>4 348 159.12 ₽</span>
-                                </div>
-                            </div>
-                            <div className={cx('chart-stats__info-progress chart-stats__info-progress--purple')}>
-                                <div className={cx('chart-stats__info-progress-bar')} style={{ width: '44.4%' }}></div>
-                            </div>
-                        </div>
-                        <div className={cx('chart-stats__info-item')}>
-                            <div className={cx('chart-stats__info-stats')}>
-                                <div className={cx('chart-stats__info-stats-main')}>
-                                    95
-                                </div>
-                                <div className={cx('chart-stats__info-stats-secondary')}>
-                                    <span className={cx('chart-stats__info-stats-title')}>В процессе</span>
-                                    <span>148 000.00 ₽</span>
-                                </div>
-                            </div>
-                            <div className={cx('chart-stats__info-progress chart-stats__info-progress--yellow')}>
-                                <div className={cx('chart-stats__info-progress-bar')} style={{ width: '32.3%' }}></div>
-                            </div>
-                        </div>
-                        <div className={cx('chart-stats__info-item')}>
-                            <div className={cx('chart-stats__info-stats')}>
-                                <div className={cx('chart-stats__info-stats-main')}>
-                                    22
-                                </div>
-                                <div className={cx('chart-stats__info-stats-secondary')}>
-                                    <span className={cx('chart-stats__info-stats-title')}>Отказано</span>
-                                    <span>24 444 100.00 ₽</span>
-                                </div>
-                            </div>
-                            <div className={cx('chart-stats__info-progress chart-stats__info-progress--red')}>
-                                <div className={cx('chart-stats__info-progress-bar')} style={{ width: '16%' }}></div>
-                            </div>
-                        </div>
-                        <div className={cx('chart-stats__info-item')}>
-                            <div className={cx('chart-stats__info-stats')}>
-                                <div className={cx('chart-stats__info-stats-main')}>
-                                    245
-                                </div>
-                                <div className={cx('chart-stats__info-stats-secondary')}>
-                                    <span className={cx('chart-stats__info-stats-title')}>Одобрено</span>
-                                    <span>500 500.50 ₽</span>
-                                </div>
-                            </div>
-                            <div className={cx('chart-stats__info-progress chart-stats__info-progress--green')}>
-                                <div className={cx('chart-stats__info-progress-bar')} style={{ width: '72.2%' }}></div>
-                            </div>
-                        </div>
+                    <div className={cx('chart-stats__body')}>
+                        <StatsInfoBlock
+                            infoBlock={companyStats}
+                            indicator={indicator}
+                            globalColor="white"
+                        />
                     </div>
                 </div>
             </div>
-            <div className={cx('chart-stats__item')}>
-                <div className={cx('chart-stats__head')}>
-                    <div className={cx('dropdown')}>
-                        <a className={cx('btn-dropdown dropdown-toggle')} href="javasctipt::void(0);" role="button" id="dropdownMenu3Link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Cтатистика компании за август
-                        </a>
-                        <div className={cx('dropdown-menu')} aria-labelledby="dropdownMenu3Link">
-                            <a className={cx('dropdown-item')} href="javasctipt::void(0);">Сентябрь</a>
-                            <a className={cx('dropdown-item')} href="javasctipt::void(0);">Октябрь</a>
-                            <a className={cx('dropdown-item')} href="javasctipt::void(0);">Ноябрь</a>
-                        </div>
-                    </div>
-                </div>
-                <div className={cx('chart-stats__body')}>
-                    <div className={cx('chart-stats__chart-wrapper')}>
-                        <img src="./img/chart-2.png" alt="" />
-                    </div>
-                    <div className={cx('chart-stats__info')}>
-                        <div className={cx('chart-stats__info-item')}>
-                            <div className={cx('chart-stats__info-stats')}>
-                                <div className={cx('chart-stats__info-stats-main chart-stats__info-stats-main--md')}>
-                                    2 120
-                                </div>
-                                <div className={cx('chart-stats__info-stats-secondary')}>
-                                    <span className={cx('chart-stats__info-stats-title')}>Отдел аудита</span>
-                                    <span>421 348 159.12 ₽</span>
-                                </div>
-                                <span className={cx('badge')}>+3.123%</span>
-                            </div>
-                            <div className={cx('chart-stats__info-progress chart-stats__info-progress--white')}>
-                                <div className={cx('chart-stats__info-progress-bar')} style={{ width: '17%' }}></div>
-                            </div>
-                        </div>
-                        <div className={cx('chart-stats__info-item')}>
-                            <div className={cx('chart-stats__info-stats')}>
-                                <div className={cx('chart-stats__info-stats-main chart-stats__info-stats-main--md')}>
-                                    12 988
-                                </div>
-                                <div className={cx('chart-stats__info-stats-secondary')}>
-                                    <span className={cx('chart-stats__info-stats-title')}>Отдел кредитов</span>
-                                    <span>421 348 159.12 ₽</span>
-                                </div>
-                                <span className={cx('badge')}>+12.9%</span>
-                            </div>
-                            <div className={cx('chart-stats__info-progress chart-stats__info-progress--white')}>
-                                <div className={cx('chart-stats__info-progress-bar')} style={{ width: '72.3%' }}></div>
-                            </div>
-                        </div>
-                        <div className={cx('chart-stats__info-item')}>
-                            <div className={cx('chart-stats__info-stats')}>
-                                <div className={cx('chart-stats__info-stats-main chart-stats__info-stats-main--md')}>
-                                    9 812
-                                </div>
-                                <div className={cx('chart-stats__info-stats-secondary')}>
-                                    <span className={cx('chart-stats__info-stats-title')}>Отдел лизинга</span>
-                                    <span>421 348 159.12 ₽</span>
-                                </div>
-                                <span className={cx('badge')}>-9.81%</span>
-                            </div>
-                            <div className={cx('chart-stats__info-progress chart-stats__info-progress--white')}>
-                                <div className={cx('chart-stats__info-progress-bar')} style={{ width: '44%' }}></div>
-                            </div>
-                        </div>
-                        <div className={cx('chart-stats__info-item')}>
-                            <div className={cx('chart-stats__info-stats')}>
-                                <div className={cx('chart-stats__info-stats-main chart-stats__info-stats-main--md')}>
-                                    8 800
-                                </div>
-                                <div className={cx('chart-stats__info-stats-secondary')}>
-                                    <span className={cx('chart-stats__info-stats-title')}>Отдел продаж</span>
-                                    <span>421 348 159.12 ₽</span>
-                                </div>
-                                <span className={cx('badge')}>+0.113%</span>
-                            </div>
-                            <div className={cx('chart-stats__info-progress chart-stats__info-progress--white')}>
-                                <div className={cx('chart-stats__info-progress-bar')} style={{ width: '44%' }}></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
+        );
+    }
+}
+
+const mapStateToProps = ({ User, Statistics }) => {
+    console.log(Statistics);
+    return {
+        periods: Statistics.periods,
+        companyStats: Statistics.company,
+        employeeStats: Statistics.employee,
+        session_id: User.session_id,
+        username: User.username,
+        employees: User.companyEmployees,
+    };
 };
 
-export default UserStatictics;
+export default connect(mapStateToProps)(UserStatictics);

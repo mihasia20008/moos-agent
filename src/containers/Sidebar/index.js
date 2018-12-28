@@ -16,9 +16,11 @@ class Sidebar extends PureComponent {
     static propTypes = {
         name: PropTypes.string,
         session_id: PropTypes.string.isRequired,
-        noWidgetItems: PropTypes.bool.isRequired,
-        widgetItems: PropTypes.object.isRequired,
-        widgetSum: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.number]),
+        widget: PropTypes.shape({
+            items: PropTypes.object.isRequired,
+            sum: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.number]),
+            noItems: PropTypes.bool.isRequired,
+        }).isRequired,
         logoutUser: PropTypes.func.isRequired,
         fetchWidgetData: PropTypes.func.isRequired,
     };
@@ -37,21 +39,21 @@ class Sidebar extends PureComponent {
     };
 
     renderStatsWidget() {
-        const { noWidgetItems, widgetItems, widgetSum } = this.props;
+        const { widget } = this.props;
 
-        if (noWidgetItems) {
+        if (widget.noItems) {
             return null;
         }
 
         return (
             <div className={cx('fr-sidebar-bm__statistics-cont progress-statistic')}>{
                 statusItems.map(({ key, text, className }, index) => {
-                    return (typeof widgetItems[key] !== 'undefined')
+                    return (typeof widget.items[key] !== 'undefined')
                         ? (
                             <ProgressStatistic
                                 key={index}
-                                count={widgetItems[key].count}
-                                sum={widgetSum}
+                                count={widget.items[key].count}
+                                sum={widget.sum}
                                 text={text}
                                 className={className}
                             />
@@ -102,9 +104,7 @@ const mapStateToProps = ({ User, Statistics }) => {
     return {
         name: User.fullname,
         session_id: User.session_id,
-        noWidgetItems: Object.keys(Statistics.widgetItems).length === 0,
-        widgetItems: Statistics.widgetItems,
-        widgetSum: Statistics.widgetSum,
+        widget: Statistics.widget,
     };
 };
 

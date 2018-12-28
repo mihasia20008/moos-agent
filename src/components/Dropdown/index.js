@@ -11,10 +11,14 @@ class Dropdown extends PureComponent {
             value: PropTypes.string,
         })),
         onSelectItem: PropTypes.func.isRequired,
+        toggleClassName: PropTypes.string,
+        defaultText: PropTypes.string,
+        disabled: PropTypes.bool,
     };
     static defaultProps = {
         defaultActive: 0,
         list: [],
+        defaultText: ''
     };
 
     state = {
@@ -48,7 +52,7 @@ class Dropdown extends PureComponent {
         const { name, list, onSelectItem } = this.props;
         this.setState({ activeIndex: index, isOpen: false });
         document.removeEventListener('click', this.handleOutsideClick);
-        onSelectItem(name, list[index].key);
+        onSelectItem(name, list[index].key, index);
     };
 
     handleOutsideClick = ({ target }) => {
@@ -58,41 +62,36 @@ class Dropdown extends PureComponent {
 
     render() {
         const { isOpen, activeIndex } = this.state;
-        const { list } = this.props;
-        const isDisabled = list.length < 3;
+        const { list, toggleClassName, defaultText, disabled } = this.props;
 
         return (
-            <div
-                className={cx('main-filter__control main-filter__control--icon-right', {
-                    'main-filter__control--disabled': isDisabled
-                })}
-            >
-                <div className={cx('dropdown', {
+            <div className={cx('dropdown', {
+                'show': isOpen,
+                'disabled': disabled
+            })} ref={node => { this.dropdown = node; }}>
+                <button
+                    onClick={this.handleToggleDropdown}
+                    className={cx('btn-dropdown dropdown-toggle', toggleClassName)}
+                    type="button"
+                    data-toggle="dropdown"
+                >
+                    {defaultText
+                        ? `${defaultText} ${list[activeIndex].value.toLowerCase()}`
+                        : list[activeIndex].value}
+                </button>
+                <div className={cx('dropdown-menu', {
                     'show': isOpen
-                })} ref={node => { this.dropdown = node; }}>
-                    <button
-                        onClick={this.handleToggleDropdown}
-                        className={cx('btn btn-dropdown dropdown-toggle btn-dropdown--hidden-border')}
-                        type="button"
-                        data-toggle="dropdown"
-                    >
-                        {list[activeIndex].value}
-                    </button>
-                    <div className={cx('dropdown-menu', {
-                        'show': isOpen
-                    })}>{
-                        list.map((item, index) => (
-                            <span
-                                key={index}
-                                onClick={this.handleSelectItem.bind(this, index)}
-                                className={cx('dropdown-item')}
-                            >
-                                {item.value}
-                            </span>
-                        ))
-                    }</div>
-                </div>
-                <i className={cx('icon icon-chevron-down')} />
+                })}>{
+                    list.map((item, index) => (
+                        <span
+                            key={index}
+                            onClick={this.handleSelectItem.bind(this, index)}
+                            className={cx('dropdown-item')}
+                        >
+                            {item.value}
+                        </span>
+                    ))
+                }</div>
             </div>
         );
     }

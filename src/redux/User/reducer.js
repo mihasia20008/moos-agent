@@ -10,6 +10,7 @@ const initialState = {
   isclient: null,
   isagent: null,
   processDefinitionKeys: [],
+  companyEmployees: [],
 };
 
 export default (state = initialState, action) => {

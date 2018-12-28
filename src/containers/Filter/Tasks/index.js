@@ -124,18 +124,28 @@ class TasksFilter extends PureComponent {
                         <div className={cx('main-filter__row', {
                             'main-filter__row--disabled': isDisable,
                         })}>
-                            <Dropdown
-                                name="orderTypeRefId"
-                                defaultActive={processesFilter.active}
-                                list={processesFilter.list}
-                                onSelectItem={this.handleSelectDropdown}
-                            />
-                            <Dropdown
-                                name="phaseId"
-                                defaultActive={phaseFilter.active}
-                                list={phaseFilter.list}
-                                onSelectItem={this.handleSelectDropdown}
-                            />
+                            <div className={cx('main-filter__control main-filter__control--icon-right')}>
+                                <Dropdown
+                                    name="orderTypeRefId"
+                                    toggleClassName="btn btn-dropdown--hidden-border"
+                                    defaultActive={processesFilter.active}
+                                    list={processesFilter.list}
+                                    disabled={processesFilter.list.length < 3}
+                                    onSelectItem={this.handleSelectDropdown}
+                                />
+                                <i className={cx('icon icon-chevron-down')} />
+                            </div>
+                            <div className={cx('main-filter__control main-filter__control--icon-right')}>
+                                <Dropdown
+                                    name="phaseId"
+                                    toggleClassName="btn btn-dropdown--hidden-border"
+                                    defaultActive={phaseFilter.active}
+                                    list={phaseFilter.list}
+                                    disabled={phaseFilter.list.length < 3}
+                                    onSelectItem={this.handleSelectDropdown}
+                                />
+                                <i className={cx('icon icon-chevron-down')} />
+                            </div>
                             <DatePicker
                                 name="createdDate"
                                 defaultActive={filters.createdDate}
