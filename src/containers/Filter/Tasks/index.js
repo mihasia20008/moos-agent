@@ -34,7 +34,7 @@ class TasksFilter extends PureComponent {
             if (orderTypeRefId === process.process_type) {
                 active = index;
             }
-            return acc.concat([{ key: process.process_definition_key, value: process.process_name }]);
+            return acc.concat([{ key: process.process_type, value: process.process_name }]);
         }, [{ key: 'all', value: 'Все процессы' }]);
         if (list.length === 2) {
             active = 1;
