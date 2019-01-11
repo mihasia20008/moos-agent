@@ -7,6 +7,13 @@ import { declOfNum } from '../../../services/utility';
 
 const days = ['день', 'дня', 'дней'];
 
+const phasesText = [
+    'Подача заявки',
+    'Рассмотрение заявки',
+    'Согласование документов',
+    'Выдача гарантии'
+];
+
 const TaskCard = ({
     orderNumber,
     createdDate,
@@ -15,40 +22,48 @@ const TaskCard = ({
     principalCompany_INN,
     purchaseAmount,
     contract_max_price,
+    daysToStart,
+    phases,
     tasks,
  }) => {
+    const phasesCount = phases.length - 1;
+    const disabledPhases = 3 - phasesCount;
     return (
         <div className={cx('block-list__item')}>
             <div className={cx('block-list__row')}>
                 <div className={cx('stages-progress')}>
-                    <div className={cx('stages-progress__item stages-progress__item--confirmed')}>
-                        <i className={cx('stages-progress__icon icon icon-ok')} />
-                        <span className={cx('stages-progress__text')}>Подано</span>
-                    </div>
-                    <div className={cx('stages-progress__item stages-progress__item--confirmed')}>
-                        <i className={cx('stages-progress__icon icon icon-ok')} />
-                        <span className={cx('stages-progress__text')}>Отказ</span>
-                    </div>
-                    <div className={cx('stages-progress__item stages-progress__item--active')}>
-                        <i className={cx('stages-progress__icon icon icon-ok')} />
-                        <span className={cx('stages-progress__text')}>Требует изменения</span>
-                    </div>
-                    <div className={cx('stages-progress__item stages-progress__item--disabled')}>
-                        <i className={cx('stages-progress__icon icon icon-ok')} />
-                        <span className={cx('stages-progress__text')}>Готово к отправке</span>
-                    </div>
-                    <div className={cx('stages-progress__item stages-progress__item--disabled')}>
-                        <i className={cx('stages-progress__icon icon icon-ok')} />
-                        <span className={cx('stages-progress__text')}>Готово к отправке</span>
-                    </div>
-                    <div className={cx('stages-progress__item stages-progress__item--disabled')}>
-                        <i className={cx('stages-progress__icon icon icon-ok')} />
-                        <span className={cx('stages-progress__text')}>Отправлено</span>
-                    </div>
+                    {phases.map((phase, index) => (
+                        <div
+                            key={phase.phaseId}
+                            className={cx('stages-progress__item', {
+                                'stages-progress__item--confirmed': index < phasesCount,
+                                'stages-progress__item--active': index === phasesCount,
+                                [`stages-progress__item--${phase.status}`]: true
+                            })}
+                        >
+                            <i className={cx('stages-progress__icon icon icon-ok')} />
+                            <span className={cx('stages-progress__text')}>
+                                {phase.phaseName}
+                            </span>
+                        </div>
+                    ))}
+                    {Array.from({length: disabledPhases}, (v, i) => i).map(item => (
+                        <div
+                            key={item}
+                            className={cx('stages-progress__item stages-progress__item--disabled')}
+                        >
+                            <i className={cx('stages-progress__icon icon icon-ok')} />
+                            <span className={cx('stages-progress__text')}>
+                                {phasesText[phasesCount + item + 1]}
+                            </span>
+                        </div>
+                    ))}
                 </div>
-                <div className={cx('block-list__posted-time')}>
-                    <span>3 дня</span>
-                </div>
+                {daysToStart ? (
+                    <div className={cx('block-list__posted-time')}>
+                        <span>{daysToStart} {declOfNum(daysToStart, days)}</span>
+                    </div>
+                ) : null}
             </div>
             <div className={cx('block-list__row')}>
                 <div>
@@ -106,6 +121,8 @@ TaskCard.propTypes = {
     principalCompany_INN: PropTypes.string,
     purchaseAmount: PropTypes.string,
     contract_max_price: PropTypes.string,
+    daysToStart: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.number]),
+    phases: PropTypes.array,
     tasks: PropTypes.array,
 };
 
@@ -113,6 +130,7 @@ TaskCard.defaultProps = {
     principalCompany_INN: '&mdash;',
     purchaseAmount: '&mdash;',
     contract_max_price: '&mdash;',
+    phases: []
 };
 
 export default TaskCard;
