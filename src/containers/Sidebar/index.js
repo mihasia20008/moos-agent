@@ -74,7 +74,7 @@ class Sidebar extends PureComponent {
                 <div className={cx('fr-sidebar__menu')}>
                     <NavLink to="/tasks" activeClassName={cx('active')}>
                         <span className={cx('icon icon-ok')} />
-                        Задачи
+                        Заявки
                     </NavLink>
                     <NavLink to="/clients" activeClassName={cx('active')}>
                         <span className={cx('icon icon-user')} />
