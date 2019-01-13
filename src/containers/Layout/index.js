@@ -5,7 +5,8 @@ import { Route, Link, Redirect } from 'react-router-dom';
 import cx from 'classnames';
 
 import Modal from '../Modal';
-import AddModal from '../AddModal';
+import AddModalSelect from '../AddModal/Select';
+import AddModalForm from '../AddModal/Form';
 import FormRestore from '../Form/Restore';
 import FormSearch from '../Form/Search';
 import UserStatictics from '../UserStatictics';
@@ -125,11 +126,33 @@ class Layout extends PureComponent {
                         </Modal>
                     );
                 }
-        
-                if (search === '?add-modal') {
-                    renderArray.push(
-                        <AddModal key={4} onCloseModal={matchProps.history.goBack} />
-                    );
+
+                if (search.search(/\?add-modal/) !== -1) {
+                    const addResult = search.match(/add-modal=[a-z-]{1,}/g);
+                    if (addResult) {
+                        const definitionKey = addResult[0].split('=')[1];
+                        renderArray.push(
+                            <Modal
+                                key={4}
+                                topPosition
+                                modalClass="modal-custom--wide-width"
+                                onCloseModal={() => matchProps.history.go(-2)}
+                            >
+                                <AddModalForm
+                                    activeDefinitionKey={definitionKey}
+                                    onCloseModal={matchProps.history.go}
+                                />
+                            </Modal>
+                        );
+                    } else {
+                        renderArray.push(
+                            <AddModalSelect
+                                key={4}
+                                onCloseModal={matchProps.history.goBack}
+                            />
+                        );
+                    }
+
                 }
 
                 if (match.path.search('/clients/') !== -1 && typeof match.params.id !== 'undefined') {
