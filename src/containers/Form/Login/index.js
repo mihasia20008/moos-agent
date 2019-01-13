@@ -39,7 +39,7 @@ const FormLogin = ({ showLoader, onInputChange, onFormSubmit }) => {
                 </Link> */}
             </div>
             <div className={cx('form-login-bottom')}>
-                <Link to="?restore-password">Забыл пароль?</Link>
+                {/*<Link to="?restore-password">Забыл пароль?</Link>*/}
                 <span>Поддержка: {CONTENT.PHONE}</span>
             </div>
         </form>
