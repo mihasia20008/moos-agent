@@ -226,11 +226,16 @@
     }
   }
   &__footer {
-    .btn {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    text-align: right;
+    .btn-primary {
+      width: 200px;
+      display: inline-block;
+      margin-top: 20px;
+      margin-left: 15px;
+      background-color: #aaaaaa;
+    }
+    .btn-primary#camunda_complete {
+      background-color:#44a4ff;
     }
   }
   &__text {
