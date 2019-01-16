@@ -6,13 +6,15 @@ class Modal extends PureComponent {
     static propTypes = {
         children: PropTypes.node.isRequired,
         onCloseModal: PropTypes.func.isRequired,
+        preventOutsideClick: PropTypes.bool,
         topPosition: PropTypes.bool,
         centerPosition: PropTypes.bool,
         modalClass: PropTypes.string,
         dialogClass: PropTypes.string,
         contentClass: PropTypes.string,
     };
-    static defaultProps = { 
+    static defaultProps = {
+        preventOutsideClick: false,
         topPosition: false,
         centerPosition: false,
         modalClass: '',
@@ -33,14 +35,18 @@ class Modal extends PureComponent {
     }
 
     handleOutsideClick = (event) => {
+        const { preventOutsideClick } = this.props;
+        if (preventOutsideClick) {
+            return;
+        }
         if (this.content && this.content.contains(event.target)) return;     
         this.props.onCloseModal();
-    }
+    };
 
     setComponentRef = (item, node) => (this[item] = node);
 
     render() {
-        const { children, topPosition, centerPosition, modalClass, dialogClass, contentClass } = this.props;
+        const { children, topPosition, centerPosition, modalClass, dialogClass, contentClass, onCloseModal } = this.props;
 
         return [
             <div key={0} className={cx('modal-custom', modalClass, {
@@ -65,7 +71,7 @@ class Modal extends PureComponent {
                             {children}
                         </div>
                     </div>
-                    <button type="button" className={cx('close')} aria-label="Close">
+                    <button type="button" className={cx('close')} aria-label="Close" onClick={onCloseModal}>
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>

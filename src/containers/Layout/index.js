@@ -136,6 +136,7 @@ class Layout extends PureComponent {
                                 key={4}
                                 topPosition
                                 modalClass="modal-custom--wide-width"
+                                preventOutsideClick
                                 onCloseModal={() => matchProps.history.go(-2)}
                             >
                                 <AddModalForm
@@ -175,6 +176,7 @@ class Layout extends PureComponent {
                             key={6}
                             topPosition
                             modalClass="modal-custom--wide-width"
+                            preventOutsideClick
                             onCloseModal={matchProps.history.goBack}
                         >
                             <TaskDetail
