@@ -13,6 +13,10 @@ class TasksFilter extends PureComponent {
     static propTypes = {
         isDisable: PropTypes.bool,
         filters: PropTypes.object,
+        filterAmount: PropTypes.shape({
+            from: PropTypes.number,
+            to: PropTypes.number,
+        }),
         onChangeFilter: PropTypes.func.isRequired,
     };
     static defaultProps = { isDisable: false };
@@ -108,7 +112,7 @@ class TasksFilter extends PureComponent {
 
     render() {
         const { isFixed } = this.state;
-        const { isDisable, filters, processes } = this.props;
+        const { isDisable, filters, filterAmount, processes } = this.props;
 
         const processesFilter = this.getProcessesFilter(processes, filters.orderTypeRefId);
         const phaseFilter = filters.orderTypeRefId
@@ -173,6 +177,7 @@ class TasksFilter extends PureComponent {
                             />
                             <RangeSlider
                                 name="amount"
+                                defaultActive={filterAmount}
                                 onEndChanging={this.handleEndMovingSlider}
                             />
                         </div>

@@ -52,7 +52,7 @@ export function authenticationUser(session_id) {
             dispatch({ type: types.AUTH_SUCCESS, data: Object.assign(
                 {},
                 { ...res.user },
-                { 
+                {
                     processDefinitionKeys: res.process_definition_keys,
                     session_id: res.session.session_id,
                 },

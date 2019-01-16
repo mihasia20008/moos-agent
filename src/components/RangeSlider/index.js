@@ -20,9 +20,23 @@ class RangeSlider extends PureComponent {
     };
 
     state = {
+        wasChange: false,
         from: this.props.defaultActive.from,
         to: this.props.defaultActive.to,
     };
+
+    static getDerivedStateFromProps(props, state) {
+        const { from, to, wasChange } = state;
+        const { defaultActive } = props;
+        if (!wasChange && (defaultActive.from !== from || defaultActive.to !== to)) {
+            return {
+                wasChange: true,
+                from: defaultActive.from,
+                to: defaultActive.to,
+            }
+        }
+        return {};
+    }
 
     static difference(val, by) {
         return (val - val % by) / by;
@@ -57,6 +71,7 @@ class RangeSlider extends PureComponent {
 
     render() {
         const { from, to } = this.state;
+        const { defaultActive } = this.props;
 
         return (
             <div className={cx('filter-slider')}>
@@ -67,8 +82,8 @@ class RangeSlider extends PureComponent {
                     change={this.changeValue}
                     slideStop={this.stopChangingValue}
                     step={10}
-                    max={RangeSlider.defaultProps.defaultActive.to}
-                    min={RangeSlider.defaultProps.defaultActive.from} />
+                    max={defaultActive.to}
+                    min={defaultActive.from} />
                 <span>До {RangeSlider.getTextPrice(to)} ₽</span>
             </div>
         );
