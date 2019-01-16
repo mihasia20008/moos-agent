@@ -60,10 +60,10 @@ class UserStatistics extends Component {
             periods: { list: prevPeriodsList },
             employees: { list: prevEmployeesList, active: activeEmployee },
         } = prevState;
-        const preparedPeriods = UserStatictics.getPreparedPeriods(prevPeriodsList, nextPeriods);
+        const preparedPeriods = UserStatistics.getPreparedPeriods(prevPeriodsList, nextPeriods);
 
         const needCalcUserPosition = prevEmployeesList[activeEmployee].key !== username;
-        const preparedEmployees = UserStatictics.getPreparedEmployees(
+        const preparedEmployees = UserStatistics.getPreparedEmployees(
             prevEmployeesList,
             nextEmployees,
             needCalcUserPosition ? username : ''
