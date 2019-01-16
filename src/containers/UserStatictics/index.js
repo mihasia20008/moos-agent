@@ -104,13 +104,18 @@ class UserStatictics extends Component {
 
         if (nexActiveCompanyPeriod !== prevActiveCompanyPeriod) {
             const periodKey = periods.list[nexActiveCompanyPeriod].key;
-            dispatch(fetchCompanyStat(session_id, periodKey));
+            if (periodKey !== 'default') {
+                dispatch(fetchCompanyStat(session_id, periodKey));
+            }
         }
 
-        if (nextActiveEmployeePeriod !== prevActiveEmployeePeriod || nextActiveEmployee !== prevActiveEmployee) {
+        if (nextActiveEmployeePeriod !== prevActiveEmployeePeriod ||
+            nextActiveEmployee !== prevActiveEmployee) {
             const periodKey = periods.list[nextActiveEmployeePeriod].key;
             const username = employees.list[nextActiveEmployee].key;
-            dispatch(fetchEmployeeStat(session_id, periodKey, username));
+            if (username !== 'default' && periodKey !== 'default') {
+                dispatch(fetchEmployeeStat(session_id, periodKey, username));
+            }
         }
     }
 
