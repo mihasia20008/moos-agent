@@ -8,6 +8,10 @@
     &:not(:last-child) {
       margin-bottom: 80px;
     }
+    &--fetching {
+      position: relative;
+      height: 316px;
+    }
   }
 
   &__head {

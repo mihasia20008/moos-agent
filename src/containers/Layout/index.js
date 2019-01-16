@@ -9,7 +9,7 @@ import AddModalSelect from '../AddModal/Select';
 import AddModalForm from '../AddModal/Form';
 import FormRestore from '../Form/Restore';
 import FormSearch from '../Form/Search';
-import UserStatictics from '../UserStatictics';
+import UserStatistics from '../UserStatistics';
 import ClientDetail from '../Detail/Client';
 import TaskDetail from '../Detail/Task';
 
@@ -122,7 +122,7 @@ class Layout extends PureComponent {
                             contentClass="modal-content__p-0 modal-content__chart-stats"
                             onCloseModal={matchProps.history.goBack}
                         >
-                            <UserStatictics />
+                            <UserStatistics />
                         </Modal>
                     );
                 }

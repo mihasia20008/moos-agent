@@ -7,13 +7,20 @@ import _uniqBy from 'lodash/uniqBy';
 import Dropdown from '../../components/Dropdown';
 import StatsToggler from '../../components/StatsToggler';
 import StatsInfoBlock from '../../components/StatsInfoBlock';
+import Overlay from '../../components/Overlay';
 
 import { fetchPeriodsList, fetchEmployeeStat, fetchCompanyStat } from "../../redux/Statistics/actions";
 
-class UserStatictics extends Component {
+class UserStatistics extends Component {
     static propTypes = {
         session_id: PropTypes.string.isRequired,
         username: PropTypes.string.isRequired,
+        fetchStatus: PropTypes.shape({
+            periods: PropTypes.bool.isRequired,
+            employee: PropTypes.bool.isRequired,
+            company: PropTypes.bool.isRequired,
+            widget: PropTypes.bool.isRequired,
+        }).isRequired,
         periods: PropTypes.array.isRequired,
         employees: PropTypes.array.isRequired,
         companyStats: PropTypes.shape({
@@ -170,7 +177,7 @@ class UserStatictics extends Component {
 
     render() {
         const { periods, employees, indicator } = this.state;
-        const { companyStats, employeeStats } = this.props;
+        const { fetchStatus, companyStats, employeeStats } = this.props;
 
         return (
             <div className={cx('modal-content__inner chart-stats')}>
@@ -206,12 +213,18 @@ class UserStatictics extends Component {
                             />
                         </div>
                     </div>
-                    <div className={cx('chart-stats__body')}>
-                        <StatsInfoBlock
-                            infoBlock={employeeStats}
-                            indicator={indicator}
-                        />
-                    </div>
+                    {fetchStatus.employee ? (
+                        <div className={cx('chart-stats__item chart-stats__item--fetching')}>
+                            <Overlay inverse />
+                        </div>
+                    ) : (
+                        <div className={cx('chart-stats__body')}>
+                            <StatsInfoBlock
+                                infoBlock={employeeStats}
+                                indicator={indicator}
+                            />
+                        </div>
+                    )}
                 </div>
                 <div className={cx('chart-stats__item')}>
                     <div className={cx('chart-stats__head')}>
@@ -223,13 +236,19 @@ class UserStatictics extends Component {
                             onSelectItem={this.handleSelectDropdown}
                         />
                     </div>
-                    <div className={cx('chart-stats__body')}>
-                        <StatsInfoBlock
-                            infoBlock={companyStats}
-                            indicator={indicator}
-                            globalColor="white"
-                        />
-                    </div>
+                    {fetchStatus.employee ? (
+                        <div className={cx('chart-stats__item chart-stats__item--fetching')}>
+                            <Overlay inverse />
+                        </div>
+                    ) : (
+                        <div className={cx('chart-stats__body')}>
+                            <StatsInfoBlock
+                                infoBlock={companyStats}
+                                indicator={indicator}
+                                globalColor="white"
+                            />
+                        </div>
+                    )}
                 </div>
             </div>
         );
@@ -237,8 +256,8 @@ class UserStatictics extends Component {
 }
 
 const mapStateToProps = ({ User, Statistics }) => {
-    console.log(Statistics);
     return {
+        fetchStatus: Statistics.fetchStatus,
         periods: Statistics.periods,
         companyStats: Statistics.company,
         employeeStats: Statistics.employee,
@@ -248,4 +267,4 @@ const mapStateToProps = ({ User, Statistics }) => {
     };
 };
 
-export default connect(mapStateToProps)(UserStatictics);
+export default connect(mapStateToProps)(UserStatistics);

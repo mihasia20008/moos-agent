@@ -25,6 +25,10 @@
         stroke: #dd3508;
         animation: a 2s linear infinite
     }
+
+    &--inverse {
+        background-color: rgba(#000, 0.3);
+    }
   
     &--small {
         border-radius: 16px;
