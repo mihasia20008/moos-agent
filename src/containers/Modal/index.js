@@ -39,14 +39,23 @@ class Modal extends PureComponent {
         if (preventOutsideClick) {
             return;
         }
-        if (this.content && this.content.contains(event.target)) return;     
+        if (this.content && this.content.contains(event.target)) return;
+        if (this.close && this.close.contains(event.target)) return;
         this.props.onCloseModal();
     };
 
     setComponentRef = (item, node) => (this[item] = node);
 
     render() {
-        const { children, topPosition, centerPosition, modalClass, dialogClass, contentClass, onCloseModal } = this.props;
+        const {
+            children,
+            topPosition,
+            centerPosition,
+            modalClass,
+            dialogClass,
+            contentClass,
+            onCloseModal
+        } = this.props;
 
         return [
             <div key={0} className={cx('modal-custom', modalClass, {
@@ -67,11 +76,20 @@ class Modal extends PureComponent {
                         'modal-dialog-centered': centerPosition,
                         'modal-lg': topPosition,
                     })} role="document">
-                        <div className={cx('modal-content', contentClass)} ref={this.setComponentRef.bind(this, 'content')}>
+                        <div
+                            className={cx('modal-content', contentClass)}
+                            ref={this.setComponentRef.bind(this, 'content')}
+                        >
                             {children}
                         </div>
                     </div>
-                    <button type="button" className={cx('close')} aria-label="Close" onClick={onCloseModal}>
+                    <button
+                        type="button"
+                        className={cx('close')}
+                        aria-label="Close"
+                        onClick={onCloseModal}
+                        ref={this.setComponentRef.bind(this, 'close')}
+                    >
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
