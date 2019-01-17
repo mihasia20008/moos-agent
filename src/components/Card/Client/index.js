@@ -20,24 +20,24 @@ const ClientCard = ({
                     </div>
                     <div className={cx('block-list__info')} dangerouslySetInnerHTML={{ __html: INN }} />
                 </div>
-                <div className={cx('block-list__location')}>
-                    г. Ярославль
-                </div>
+                {/*<div className={cx('block-list__location')}>*/}
+                    {/*г. Ярославль*/}
+                {/*</div>*/}
             </div>
             <div className={cx('block-list__row')}>
                 <ul className={cx('stats-list')}>
-                    <li className={cx('stats-list__item stats-list__item--purple')}>
-                        <i className={cx('icon icon-ok')} />
-                        <span>1</span>
-                    </li>
-                    <li className={cx('stats-list__item stats-list__item--yellow')}>
-                        <i className={cx('icon icon-ok')} />
-                        <span>2</span>
-                    </li>
-                    <li className={cx('stats-list__item stats-list__item--green')}>
-                        <i className={cx('icon icon-ok')} />
-                        <span>10</span>
-                    </li>
+                    {/*<li className={cx('stats-list__item stats-list__item--purple')}>*/}
+                        {/*<i className={cx('icon icon-ok')} />*/}
+                        {/*<span>1</span>*/}
+                    {/*</li>*/}
+                    {/*<li className={cx('stats-list__item stats-list__item--yellow')}>*/}
+                        {/*<i className={cx('icon icon-ok')} />*/}
+                        {/*<span>2</span>*/}
+                    {/*</li>*/}
+                    {/*<li className={cx('stats-list__item stats-list__item--green')}>*/}
+                        {/*<i className={cx('icon icon-ok')} />*/}
+                        {/*<span>10</span>*/}
+                    {/*</li>*/}
                 </ul>
                 <div>
                     <table className={cx('table block-list__table')}>

@@ -54,22 +54,19 @@ class Clients extends PureComponent {
     
     render() {
         const { company, isFetching, isFetchingNext } = this.props;
+        // {/*<ClientsStats key={0} />,*/}
 
         return [
             <Sidebar key={0} />,
             <section key={1} className={cx('fr-content')}>
-                <ClientsFilter isDisable={!company.length} />
+                {/*<ClientsFilter isDisable={!company.length} />*/}
                 {!company.length && !isFetching
                     ? <EmptyClientsList />
-                    : [
-                        <ClientsStats key={0} />,
-                        <ClientsList
-                            key={1}
-                            list={company}
-                            isLoading={isFetching}
-                            isLoadingNext={isFetchingNext}
-                        />
-                    ]}
+                    : <ClientsList
+                        list={company}
+                        isLoading={isFetching}
+                        isLoadingNext={isFetchingNext}
+                    />}
             </section>
         ];
     }
