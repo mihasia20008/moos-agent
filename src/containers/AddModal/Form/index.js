@@ -48,7 +48,7 @@ class AddModalForm extends PureComponent {
         
                                 camForm.on('submit-success', function () {
                                     //$container.removeOverlay();
-                                    $(window).scrollTop(0);
+                                    window.location.href = '/tasks/';
                                     // $(".bk-popup").fadeIn();
                                 });
         
