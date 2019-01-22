@@ -629,7 +629,10 @@ table.form-v td.right {
 }
 div.form-v > table > tbody > tr > td,
 table.form-v > tbody > tr > td,
-table.form-v > tbody > tr > th { padding-left: 8px; }
+table.form-v > tbody > tr > th {
+  padding-left: 8px;
+  vertical-align: top;
+}
 table.form-v > tbody > tr > th {
   color: #81888C;
   font-size: 12px;
@@ -803,8 +806,6 @@ div.field span.error {
   font-size: 11px;
   line-height: 16px;
   white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
 }
 /*div.field span.hint { color: #999; }*/
 div.field i.hint {
