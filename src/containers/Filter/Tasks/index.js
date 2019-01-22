@@ -110,6 +110,8 @@ class TasksFilter extends PureComponent {
         });
     };
 
+    handleClearField = (name) => this.props.onChangeFilter({ [`${name}`]: '' });
+
     render() {
         const { isFixed } = this.state;
         const { isDisable, filters, filterAmount, processes } = this.props;
@@ -158,6 +160,7 @@ class TasksFilter extends PureComponent {
                             <TextField
                                 value={filters.orderNumber}
                                 onChange={this.handleTypeText}
+                                onClear={this.handleClearField}
                             />
                             <div className={cx('main-filter__control')}>
                                 <input type="text" className={cx('main-filter__control-field')} placeholder="Клиент" />

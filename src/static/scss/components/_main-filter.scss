@@ -115,6 +115,42 @@
         right: 12px;
       }
     }
+
+    &-cleaner {
+      display: flex;
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      top: 50%;
+      right: 10px;
+      opacity: 0.4;
+      transform: translateY(-50%);
+      transition: all 0.3s 0s;
+      padding: 0;
+      border: none;
+      background-color: transparent;
+
+      &:hover {
+        opacity: 1;
+        cursor: pointer;
+      }
+
+      &:focus {
+        outline: none;
+      }
+
+      svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+        margin: auto;
+      }
+
+      &.hidden {
+        visibility: hidden;
+        opacity: 0;
+      }
+    }
   }
 
   &__control-field {
