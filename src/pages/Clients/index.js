@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 import cx from 'classnames';
 
 import Sidebar from '../../containers/Sidebar';
-import ClientsFilter from '../../containers/Filter/Clients';
+// import ClientsFilter from '../../containers/Filter/Clients';
 import ClientsList from '../../containers/List/Clients';
-import ClientsStats from '../../components/ClientsStats';
+// import ClientsStats from '../../components/ClientsStats';
 import EmptyClientsList from '../../components/Empty/ClientsList';
 
 import { getClientsList, getNextClientsList } from '../../redux/Clients/actions';
