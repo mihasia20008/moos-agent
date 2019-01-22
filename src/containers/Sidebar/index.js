@@ -8,41 +8,60 @@ import ProgressStatistic from '../../components/ProgressStatistic';
 import UserMenu from '../../components/UserMenu';
 
 import { logoutUser } from '../../redux/User/actions';
+import { fetchWidgetData } from "../../redux/Statistics/actions";
 
-const statistics = [{
-    counter: 20,
-    text: 'Отказано',
-    barWidth: '55.8%',
-    className: 'progress-statistic__item--red',
-}, {
-    counter: 8,
-    text: 'Одобрено',
-    barWidth: '32.2%',
-    className: 'progress-statistic__item--green',
-}, {
-    counter: 34,
-    text: 'В процессе',
-    barWidth: '69.7%',
-    className: 'progress-statistic__item--yellow',
-}, {
-    counter: 2,
-    text: 'Подано',
-    barWidth: '13%',
-    className: 'progress-statistic__item--purple',
-}];
+import { statusItems } from '../../contentConstants';
 
 class Sidebar extends PureComponent {
     static propTypes = {
         name: PropTypes.string,
         session_id: PropTypes.string.isRequired,
+        widget: PropTypes.shape({
+            items: PropTypes.object.isRequired,
+            sum: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.number]),
+            noItems: PropTypes.bool.isRequired,
+        }).isRequired,
         logoutUser: PropTypes.func.isRequired,
+        fetchWidgetData: PropTypes.func.isRequired,
     };
     static defaultProps = { name: '' };
+
+    componentDidMount() {
+        const { session_id, fetchWidgetData } = this.props;
+        if (typeof session_id !== 'undefined') {
+            fetchWidgetData(session_id);
+        }
+    }
 
     handleLogout = () => {
         const { session_id, logoutUser } = this.props;
         logoutUser(session_id);
     };
+
+    renderStatsWidget() {
+        const { widget } = this.props;
+
+        if (widget.noItems) {
+            return null;
+        }
+
+        return (
+            <div className={cx('fr-sidebar-bm__statistics-cont progress-statistic')}>{
+                statusItems.map(({ key, text, className }, index) => {
+                    return (typeof widget.items[key] !== 'undefined')
+                        ? (
+                            <ProgressStatistic
+                                key={index}
+                                count={widget.items[key].count}
+                                sum={widget.sum}
+                                text={text}
+                                className={className}
+                            />
+                        ) : null;
+                })
+            }</div>
+        )
+    }
 
     render() {
         const { name } = this.props;
@@ -55,7 +74,7 @@ class Sidebar extends PureComponent {
                 <div className={cx('fr-sidebar__menu')}>
                     <NavLink to="/tasks" activeClassName={cx('active')}>
                         <span className={cx('icon icon-ok')} />
-                        Задачи
+                        Заявки
                     </NavLink>
                     <NavLink to="/clients" activeClassName={cx('active')}>
                         <span className={cx('icon icon-user')} />
@@ -64,9 +83,7 @@ class Sidebar extends PureComponent {
                 </div>
                 <div className={cx('fr-sidebar-bm')}>
                     <div className={cx('fr-sidebar-bm__statistics')}>
-                        <div className={cx('fr-sidebar-bm__statistics-cont progress-statistic')}>{
-                            statistics.map((statistic, index) => <ProgressStatistic key={index} {...statistic} />)
-                        }</div>
+                        {this.renderStatsWidget()}
                         <div className={cx('fr-sidebar-bm__statistics-btn')}>
                             <Link to="?show-statistic">
                                 Смотреть статистику
@@ -83,18 +100,20 @@ class Sidebar extends PureComponent {
     }
 }
 
-const mapStateToProps = ({ User }) => {
+const mapStateToProps = ({ User, Statistics }) => {
     return {
         name: User.fullname,
         session_id: User.session_id,
+        widget: Statistics.widget,
     };
-}
+};
 
 const mapDispatchToProps = (dispatch) => {
     return {
         logoutUser: (session_id) => dispatch(logoutUser(session_id)),
+        fetchWidgetData: (session_id) => dispatch(fetchWidgetData(session_id)),
     };
-}
+};
 
 export default connect(
     mapStateToProps,

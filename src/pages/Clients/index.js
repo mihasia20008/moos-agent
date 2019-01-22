@@ -9,16 +9,18 @@ import ClientsList from '../../containers/List/Clients';
 import ClientsStats from '../../components/ClientsStats';
 import EmptyClientsList from '../../components/Empty/ClientsList';
 
-import { getClientsList } from '../../redux/Clients/actions';
+import { getClientsList, getNextClientsList } from '../../redux/Clients/actions';
 
 class Clients extends PureComponent {
     static propTypes = {
         isFetching: PropTypes.bool.isRequired,
         isFetchingNext: PropTypes.bool.isRequired,
-        list: PropTypes.object,
-        idsList: PropTypes.array,
+        company: PropTypes.array,
+        nextPage: PropTypes.number,
+        hasMorePage: PropTypes.bool,
         session_id: PropTypes.string.isRequired,
         getClientsList: PropTypes.func.isRequired,
+        getNextClientsList: PropTypes.func.isRequired,
     };
 
     componentDidMount() {
@@ -35,33 +37,36 @@ class Clients extends PureComponent {
     }
     
     handleScroll = () => {
-        // const { list, isFetchingNext, getNextTasksPage } = this.props;
-        // const { height } = document.querySelector('.block-list.block-list--tasks').getBoundingClientRect();
+        const {
+            session_id,
+            company,
+            isFetchingNext,
+            nextPage,
+            hasMorePage,
+            getNextClientsList,
+        } = this.props;
+        const { height } = document.querySelector('.block-list.block-list--clients').getBoundingClientRect();
 
-        // if (!isFetchingNext && list.length > 0 && height - window.scrollY < 1000) {
-        //     getNextTasksPage();
-        // }
-    }
+        if (!isFetchingNext && company.length > 0 && hasMorePage && height - window.scrollY < 1000) {
+            getNextClientsList(session_id, nextPage);
+        }
+    };
     
     render() {
-        const { idsList, list, isFetching, isFetchingNext } = this.props;
+        const { company, isFetching, isFetchingNext } = this.props;
+        // {/*<ClientsStats key={0} />,*/}
 
         return [
             <Sidebar key={0} />,
             <section key={1} className={cx('fr-content')}>
-                <ClientsFilter isDisable={!idsList.length} />
-                {!idsList.length && !isFetching
+                {/*<ClientsFilter isDisable={!company.length} />*/}
+                {!company.length && !isFetching
                     ? <EmptyClientsList />
-                    : [
-                        <ClientsStats key={0} />,
-                        <ClientsList
-                            key={1}
-                            idsList={idsList}
-                            list={list}
-                            isLoading={isFetching}
-                            isLoadingNext={isFetchingNext}
-                        />
-                    ]}
+                    : <ClientsList
+                        list={company}
+                        isLoading={isFetching}
+                        isLoadingNext={isFetchingNext}
+                    />}
             </section>
         ];
     }
@@ -71,8 +76,9 @@ const mapStateToProps = ({ Clients, User }) => {
     return {
         isFetching: Clients.isFetching,
         isFetchingNext: Clients.isFetchingNext,
-        list: Clients.list,
-        idsList: Clients.idsList,
+        company: Clients.company,
+        nextPage: Clients.page + 1,
+        hasMorePage: Clients.more,
         session_id: User.session_id,
     };
 };
@@ -80,6 +86,7 @@ const mapStateToProps = ({ Clients, User }) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         getClientsList: (session_id) => dispatch(getClientsList(session_id)),
+        getNextClientsList: (session_id, page) => dispatch(getNextClientsList(session_id, page)),
     };
 };
 

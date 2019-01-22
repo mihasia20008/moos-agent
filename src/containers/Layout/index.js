@@ -5,11 +5,13 @@ import { Route, Link, Redirect } from 'react-router-dom';
 import cx from 'classnames';
 
 import Modal from '../Modal';
-import AddModal from '../AddModal';
+import AddModalSelect from '../AddModal/Select';
+import AddModalForm from '../AddModal/Form';
 import FormRestore from '../Form/Restore';
 import FormSearch from '../Form/Search';
-import UserStatictics from '../UserStatictics';
+import UserStatistics from '../UserStatistics';
 import ClientDetail from '../Detail/Client';
+import TaskDetail from '../Detail/Task';
 
 import Overlay from '../../components/Overlay';
 
@@ -66,8 +68,8 @@ class Layout extends PureComponent {
                     return <Overlay size="big" />;
                 }
         
-                const { location: { search }, match } = matchProps;
-        
+                const { location: { search, state: routeState = {} }, match } = matchProps;
+
                 const renderArray = [
                     <div key={0} className={cx('fr-app')}>
                         <div className={cx('fr-container', {
@@ -120,15 +122,38 @@ class Layout extends PureComponent {
                             contentClass="modal-content__p-0 modal-content__chart-stats"
                             onCloseModal={matchProps.history.goBack}
                         >
-                            <UserStatictics />
+                            <UserStatistics />
                         </Modal>
                     );
                 }
-        
-                if (search === '?add-modal') {
-                    renderArray.push(
-                        <AddModal key={4} onCloseModal={matchProps.history.goBack} />
-                    );
+
+                if (search.search(/\?add-modal/) !== -1) {
+                    const addResult = search.match(/add-modal=[a-z-]{1,}/g);
+                    if (addResult) {
+                        const definitionKey = addResult[0].split('=')[1];
+                        renderArray.push(
+                            <Modal
+                                key={4}
+                                topPosition
+                                modalClass="modal-custom--wide-width"
+                                preventOutsideClick
+                                onCloseModal={() => matchProps.history.go(-2)}
+                            >
+                                <AddModalForm
+                                    activeDefinitionKey={definitionKey}
+                                    onCloseModal={matchProps.history.go}
+                                />
+                            </Modal>
+                        );
+                    } else {
+                        renderArray.push(
+                            <AddModalSelect
+                                key={4}
+                                onCloseModal={matchProps.history.goBack}
+                            />
+                        );
+                    }
+
                 }
 
                 if (match.path.search('/clients/') !== -1 && typeof match.params.id !== 'undefined') {
@@ -140,6 +165,25 @@ class Layout extends PureComponent {
                             onCloseModal={matchProps.history.goBack}
                         >
                             <ClientDetail id={match.params.id} />
+                        </Modal>
+                    );
+                }
+
+                if (match.path.search('/tasks/') !== -1 && typeof match.params.id !== 'undefined') {
+                    const { title } = routeState;
+                    renderArray.push(
+                        <Modal
+                            key={6}
+                            topPosition
+                            modalClass="modal-custom--wide-width"
+                            preventOutsideClick
+                            onCloseModal={matchProps.history.goBack}
+                        >
+                            <TaskDetail
+                                id={match.params.id}
+                                title={title}
+                                onCloseDetail={matchProps.history.goBack}
+                            />
                         </Modal>
                     );
                 }

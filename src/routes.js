@@ -10,6 +10,7 @@ import NotFound from './pages/NotFound';
 export default (
     <Switch>
         <Route exact path="/" component={Login} />
+        <Layout path="/tasks/:id" component={Tasks} />
         <Layout path="/tasks" component={Tasks} />
         <Layout path="/clients/:id" component={Clients} />
         <Layout path="/clients" component={Clients} />

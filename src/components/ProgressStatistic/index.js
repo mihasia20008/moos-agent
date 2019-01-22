@@ -2,10 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 
-const ProgressStatistic = ({ counter, text, barWidth, className }) => {
+const ProgressStatistic = ({ count, sum, text, className }) => {
+    const barWidth = `${((count / sum) * 100).toFixed(1)}%`;
+
     return (
-        <div className={cx(`progress-statistic__item ${className}`)}>
-            <span className={cx('progress-statistic__counter')}>{counter}</span>
+        <div className={cx('progress-statistic__item', {
+            [`progress-statistic__item--${className}`]: className
+        })}>
+            <span className={cx('progress-statistic__counter')}>{count}</span>
             <span className={cx('progress-statistic__status')}>{text}</span>
             <span className={cx('progress-statistic__bar')} style={{ width: barWidth }} />
         </div>
@@ -13,9 +17,9 @@ const ProgressStatistic = ({ counter, text, barWidth, className }) => {
 };
 
 ProgressStatistic.propTypes = {
-    counter: PropTypes.number.isRequired,
+    count: PropTypes.number.isRequired,
+    sum: PropTypes.number.isRequired,
     text: PropTypes.string.isRequired,
-    barWidth: PropTypes.string.isRequired,
     className: PropTypes.string,
 };
 

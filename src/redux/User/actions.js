@@ -24,6 +24,9 @@ export function loginUser(username, password) {
                         processDefinitionKeys: res.process_definition_keys,
                         session_id: res.session.session_id,
                     },
+                    {
+                        companyEmployees: res.company.users || [],
+                    },
                 ),
             });
         } catch (err) {
@@ -49,9 +52,12 @@ export function authenticationUser(session_id) {
             dispatch({ type: types.AUTH_SUCCESS, data: Object.assign(
                 {},
                 { ...res.user },
-                { 
+                {
                     processDefinitionKeys: res.process_definition_keys,
                     session_id: res.session.session_id,
+                },
+                {
+                    companyEmployees: res.company.users || [],
                 },
             ) });
         } catch (err) {

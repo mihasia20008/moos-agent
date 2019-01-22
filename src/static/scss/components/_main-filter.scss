@@ -135,12 +135,39 @@
     text-align: center;
     transition: all 0.3s 0s;
 
-    &:focus {
+    &:focus,
+    &--active {
       border-color: #a8a6b6;
     }
 
     &:disabled {
       opacity: 0.5;
+    }
+  }
+
+  &__picker-wrap {
+    position: relative;
+    .main-filter__control {
+      width: 180px;
+    }
+    .main-filter__control-field {
+      padding-left: 25px;
+    }
+  }
+
+  &__picker {
+    display: none;
+    position: absolute;
+    top: calc(100% + 2px);
+    left: 0;
+    z-index: 10;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.48);
+    &--show {
+      display: block;
+    }
+
+    .rdrDayToday .rdrDayNumber span:after {
+      background: #22c7b5;
     }
   }
 }

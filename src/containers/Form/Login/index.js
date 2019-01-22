@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import cx from 'classnames';
 
 import Overlay from '../../../components/Overlay';
@@ -39,7 +38,7 @@ const FormLogin = ({ showLoader, onInputChange, onFormSubmit }) => {
                 </Link> */}
             </div>
             <div className={cx('form-login-bottom')}>
-                <Link to="?restore-password">Забыл пароль?</Link>
+                {/*<Link to="?restore-password">Забыл пароль?</Link>*/}
                 <span>Поддержка: {CONTENT.PHONE}</span>
             </div>
         </form>

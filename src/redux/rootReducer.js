@@ -11,5 +11,13 @@ export {
 } from './Clients/reducer';
 
 export {
+  default as Client,
+} from './Client/reducer';
+
+export {
   default as Search,
 } from './Search/reducer';
+
+export {
+  default as Statistics,
+} from './Statistics/reducer';

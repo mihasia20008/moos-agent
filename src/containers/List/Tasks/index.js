@@ -20,6 +20,9 @@ const TasksList = ({ list, isLoading, isLoadingNext }) => {
                         principalCompany_INN={item.principalCompany_INN}
                         purchaseAmount={item.purchaseAmount}
                         contract_max_price={item.contract_max_price}
+                        daysToStart={item.daysToStart}
+                        phases={item.phases}
+                        tasks={item.tasks || []}
                     />
                 ))}
             {isLoadingNext && <Skeket key={list.length + 10} showLoader />}

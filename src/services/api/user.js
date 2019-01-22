@@ -26,7 +26,7 @@ export const login = async (authData) => {
             message: err.message,
         }
     }
-}
+};
 
 export const auth = async (session_id) => {
     try {
@@ -51,7 +51,7 @@ export const auth = async (session_id) => {
             message: err.message,
         };
     }
-}
+};
 
 export const logout = async (session_id) => {
     try {
@@ -73,4 +73,4 @@ export const logout = async (session_id) => {
             message: err.message,
         };
     }
-} 
+};

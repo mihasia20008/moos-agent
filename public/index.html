@@ -1,96 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>Farzoom | Агентский кабинет</title>
-    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="apple-touch-icon" sizes="180x180" href="%PUBLIC_URL%/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="%PUBLIC_URL%/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="%PUBLIC_URL%/favicon-16x16.png">
-    <link rel="manifest" href="%PUBLIC_URL%/site.webmanifest">
-    <link rel="mask-icon" href="%PUBLIC_URL%/safari-pinned-tab.svg" color="#2147a6">
-    <meta name="msapplication-TileColor" content="#da532c">
-    <meta name="theme-color" content="#ffffff">
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i&subset=cyrillic-ext" rel="stylesheet">
-    <script src="%PUBLIC_URL%/pace.min.js"></script>
-    <link href="%PUBLIC_URL%/pace-theme-minimal.css" rel="stylesheet" />
-  </head>
-  <body>
-    <noscript>
-      You need to enable JavaScript to run this app.
-    </noscript>
-    <div id="root"></div>
-    <script src="%PUBLIC_URL%/jquery-3.3.1.min.js"></script>
-    <script src="%PUBLIC_URL%/deps.js"></script>
-    <!-- <script src="%PUBLIC_URL%/ngapp.js"></script>
-    <script>
-      ngapp.init($('.start-form-section')[0], '<var:process_definition_key>', function (CamSDK) {
-          var camClient = new CamSDK.Client({mock: false, apiUri: 'http://agent.fplace-develop.moos.solutions/camunda/api/engine'});
-          var processService = new camClient.resource('process-definition');
-          var $container = $('.start-form-section').parent();
-  
-          processService.getByKey('<var:process_definition_key>', function (err, def) {
-              if (err) {
-                  uas.flash.error(err);
-                  return;
-              }
-  
-              processService.startForm({id: def.id}, function (err, taskFormInfo) {
-                  if (err) {
-                      uas.flash.error(err);
-                      return;
-                  }
-  
-                  var url = taskFormInfo.key.replace('embedded:app:', taskFormInfo.contextPath + '/');
-  
-                  new CamSDK.Form({
-                      client: camClient,
-                      formUrl: url,
-                      processDefinitionId: def.id,
-                      containerElement: $('#camunda'),
-                      done: function (err, camForm) {
-                          if (err) {
-                              throw err;
-                          }
-  
-                          camForm.on('submit-success', function () {
-                              //$container.removeOverlay();
-                              $(window).scrollTop(0);
-                              $(".bk-popup").fadeIn();
-  
-                          });
-  
-                          camForm.on('submit-error', function (evt, res) {
-                              uas.flash.error(res[0]);
-                              //$container.removeOverlay();
-                          });
-  
-                          $('#camunda_submit').click(function (e) {
-                              $(".bk-overlay").fadeIn();
-                              e.preventDefault();
-                              camForm.submit(function (err, data) {
-                                  if (err) {
-                                      $(".bk-overlay").hide();
-                                      var $scope = angular.element('.start-form-section form').scope();
-                                      if ($scope.$$camForm.$valid) {
-                                          uas.flash.error(err);
-                                          throw err;
-                                      }
-                                  }
-                              });
-                          });
-                      }
-                  });
-              });
-          });
-      });
-      $(".bk-success").click(function() {
-          $(".bk-popup").hide();
-          $(".bk-overlay").hide();
-          window.location.href = '/order/list?status=inprocess';
-      });
-    </script> -->
-  </body>
+<html lang="en" class="ng-scope">
+    <head>
+        <meta charset="utf-8">
+        <title>Farzoom | Агентский кабинет</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="shortcut icon" href="/favicon/favicon.ico">
+        <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <link rel="mask-icon" href="/favicon/safari-pinned-tab.svg" color="#2147a6">
+        <meta name="msapplication-TileColor" content="#da532c">
+        <meta name="theme-color" content="#ffffff">
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i&subset=cyrillic-ext"
+              rel="stylesheet">
+        <script src="/common/pace.min.js"></script>
+        <link href="/common/pace-theme-minimal.css" rel="stylesheet"/>
+    </head>
+    <body>
+        <noscript>
+            You need to enable JavaScript to run this app.
+        </noscript>
+        <div id="root"></div>
+        <script src="/common/jquery-3.3.1.min.js"></script>
+        <script src="/common/deps.js"></script>
+        <script src="/common/ngapp.js"></script>
+    </body>
 </html>

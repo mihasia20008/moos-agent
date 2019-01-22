@@ -22,34 +22,24 @@
       color: #fff;
     }
 
-    &:nth-child(1) {
+    &--sold {
       #{$r}__icon {
-        color: $color-purple;
+        color: $color-green;
       }
     }
-    &:nth-child(2) {
+    &--lost {
       #{$r}__icon {
         color: $color-red;
       }
     }
-    &:nth-child(3) {
+    &--inprogress {
       #{$r}__icon {
         color: $color-yellow;
       }
     }
-    &:nth-child(4) {
+    &--assigned {
       #{$r}__icon {
-        color: $color-yellow;
-      }
-    }
-    &:nth-child(5) {
-      #{$r}__icon {
-        color: $color-green;
-      }
-    }
-    &:nth-child(6) {
-      #{$r}__icon {
-        color: $color-green;
+        color: $color-purple;
       }
     }
 
@@ -67,23 +57,17 @@
         right: 12px;
       };
 
-      &:nth-child(1) {
-        background-color: $color-purple;
+      &.stages-progress__item--sold {
+        background-color: $color-green;
       }
-      &:nth-child(2) {
+      &.stages-progress__item--lost {
         background-color: $color-red;
       }
-      &:nth-child(3) {
+      &.stages-progress__item--inprogress {
         background-color: $color-yellow;
       }
-      &:nth-child(4) {
-        background-color: $color-yellow;
-      }
-      &:nth-child(5) {
-        background-color: $color-green;
-      }
-      &:nth-child(6) {
-        background-color: $color-green;
+      &.stages-progress__item--assigned {
+        background-color: $color-purple;
       }
 
       #{$r}__icon {

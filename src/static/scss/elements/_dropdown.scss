@@ -6,7 +6,6 @@
 
   .dropdown-item {
     padding: 12px 20px;
-    white-space: normal;
     font: {
       size: 14px;
       weight: 500;
@@ -17,6 +16,22 @@
 .dropdown {
 
   $r: &;
+
+  &.disabled {
+    opacity: 0.5;
+    &:after {
+      display: block;
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-radius: 12px;
+      background-color: rgba(255, 255, 255, 0.2);
+      z-index: 9;
+    }
+  }
 
   &--company {
 
