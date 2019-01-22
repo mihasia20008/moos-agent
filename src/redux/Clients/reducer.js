@@ -16,6 +16,7 @@ export default (state = initialState, action) => {
         ...state,
         isFetching: false,
         ...action.data,
+        company: action.data.company ? action.data.company : []
       };
     }
     case types.CLIENTS_ERROR: {
