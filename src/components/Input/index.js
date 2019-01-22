@@ -10,6 +10,7 @@ class Input extends PureComponent {
         type: PropTypes.string,
         placeholder: PropTypes.string,
         iconClass: PropTypes.string,
+        error: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -47,7 +48,7 @@ class Input extends PureComponent {
 
     render() {
         const { value, type: stateType, hidePlaceholder } = this.state;
-        const { type: propsTypes, name, placeholder, iconClass } = this.props;
+        const { type: propsTypes, name, placeholder, iconClass, error } = this.props;
 
         return (
             <div className={cx('form-group__row-input')}>
@@ -58,7 +59,9 @@ class Input extends PureComponent {
                 <input
                     id={`input-${name}`}
                     type={stateType}
-                    className={cx('form-control', `form-control--${name}`)}
+                    className={cx('form-control', `form-control--${name}`, {
+                        'form-control--error': error
+                    })}
                     aria-describedby={name}
                     value={value}
                     onChange={this.handleInputType}

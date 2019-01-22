@@ -11,6 +11,7 @@ import FormRestore from '../../containers/Form/Restore';
 import { loginUser, authenticationUser } from '../../redux/User/actions';
 
 import * as CONTENT from '../../contentConstants';
+import Input from "../../components/Input";
 
 class Login extends PureComponent {
     static propTypes = {
@@ -22,8 +23,20 @@ class Login extends PureComponent {
     };
 
     state = {
-        login: '',
-        password: '',
+        login: {
+            name: 'login',
+            placeholder: 'Логин',
+            iconClass: 'icon-user-1',
+            error: false,
+            value: ''
+        },
+        password: {
+            name: 'password',
+            placeholder: 'Пароль',
+            iconClass: 'icon-locker',
+            error: false,
+            value: ''
+        },
     };
 
     componentDidMount() {
@@ -33,15 +46,41 @@ class Login extends PureComponent {
         }
     }
 
-    handleInputChange = (key, value) => this.setState({ [`${key}`]: value });
+    componentWillUnmount() {
+        clearTimeout(this.errorTimeout);
+    }
+
+    handleInputChange = (key, value) => this.setState(prevState => (
+        { [`${key}`]: Object.assign({}, prevState[key], { value }) }
+    ));
 
     handleFormSubmit = (event) => {
         event.preventDefault();
         const { login, password } = this.state;
-        if (login !== '' && password !== '') {
-            this.props.loginUser(login, password);
+        let canSubmit = true;
+        if (login.value === '') {
+            this.setState(prevState => (
+                { login: Object.assign({}, prevState.login, { error: true }) }
+            ));
+            canSubmit = false;
         }
-    }
+        if (password.value === '') {
+            this.setState(prevState => (
+                { password: Object.assign({}, prevState.password, { error: true }) }
+            ));
+            canSubmit = false;
+        }
+        if (canSubmit) {
+            this.props.loginUser(login.value, password.value);
+        } else {
+            this.errorTimeout = setTimeout(() => {
+                this.setState(prevState => ({
+                    login: Object.assign({}, prevState.login, { error: false }),
+                    password: Object.assign({}, prevState.password, { error: false })
+                }));
+            }, 800);
+        }
+    };
 
     renderELogin() {
         return (
@@ -70,6 +109,7 @@ class Login extends PureComponent {
                     </Link>
                     <FormLogin
                         showLoader={isFetching}
+                        fields={this.state}
                         onInputChange={this.handleInputChange}
                         onFormSubmit={this.handleFormSubmit}
                     />

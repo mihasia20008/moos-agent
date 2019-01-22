@@ -7,22 +7,18 @@ import Input from '../../../components/Input';
 
 import * as CONTENT from '../../../contentConstants';
 
-const FormLogin = ({ showLoader, onInputChange, onFormSubmit }) => {
+const FormLogin = ({ fields, showLoader, onInputChange, onFormSubmit }) => {
     return (
         <form className={cx('form-login')} onSubmit={onFormSubmit}>
             <div className={cx('form-group')}>
                 <Input
-                    name="login"
                     onInputChange={onInputChange}
-                    placeholder="Логин"
-                    iconClass="icon-user-1"
+                    { ...fields.login }
                 />
                 <Input
-                    name="password"
                     type="password"
                     onInputChange={onInputChange}
-                    placeholder="Пароль"
-                    iconClass="icon-locker"
+                    { ...fields.password }
                 />
             </div>
             <div className={cx('form-group mr-tp2')}>

@@ -60,6 +60,7 @@
         letter-spacing: 0.5px;
         text-align: center;
         color: $white;
+        transition: 0.4s ease-out;
 
         &:focus, &:active{
           outline: none;
@@ -91,6 +92,9 @@
         }
         &--password{
           border-radius: 0 0 12px 12px;
+        }
+        &--error {
+          box-shadow: 0 0 5px #d45252;
         }
       }
 
