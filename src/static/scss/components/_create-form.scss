@@ -613,7 +613,11 @@ fieldset.separate ul.form-v > li::before {
 
 div.form-v { margin-left: -8px; }
 div.form-v td.action,
-table.form-v td.action { padding-top: 24px; padding-bottom: 24px; }
+table.form-v td.action {
+  padding-top: 24px;
+  padding-bottom: 24px;
+  vertical-align: middle;
+}
 table.form-v th.right {
   text-align: right;
 }

@@ -264,3 +264,26 @@
     color: #fff;
   }
 }
+
+.fz-c-order__modal {
+  width: 1000px !important;
+}
+
+.fz-c-task-header__title h1,
+.fz-c-task-header__title h3 {
+  margin-bottom: 10px;
+}
+
+.fz-modal-select-beneficiaries__customer-select {
+  color: #005E6A !important;
+}
+
+.fz-modal-select-beneficiaries__table-value {
+  white-space: nowrap;
+}
+
+a:not([href]):not([tabindex]),
+a:not([href]):not([tabindex]):focus,
+a:not([href]):not([tabindex]):hover {
+  cursor: pointer;
+}
