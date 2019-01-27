@@ -1,8 +1,7 @@
 /* Modal */
 .modal-open {
-
   .fr-app {
-    background-color: rgba(36, 34, 50, 0.8);
+    //background-color: rgba(36, 34, 50, 0.8);
     filter:blur(4px);
     -o-filter:blur(4px);
     -ms-filter:blur(4px);
@@ -13,13 +12,21 @@
     display: flex!important;
   }
 }
+
 .modal-backdrop {
-  background-color: rgba(36, 34, 50, 0.8)!important;
-  visibility: hidden;
+  background-color: rgba(36, 34, 50, 0.8) !important;
 }
-.modal-backdrop.show {
-  visibility: visible;
-  opacity: 1 !important;
+
+.fade-enter {
+  opacity: 0.01;
+}
+.fade-enter-active {
+  opacity: 1;
+  transition: opacity 0.4s ease-out;
+}
+
+.fade-enter-done {
+  opacity: 1;
 }
 
 .modal.show {

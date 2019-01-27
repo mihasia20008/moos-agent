@@ -11,7 +11,6 @@ import FormRestore from '../../containers/Form/Restore';
 import { loginUser, authenticationUser } from '../../redux/User/actions';
 
 import * as CONTENT from '../../contentConstants';
-import Input from "../../components/Input";
 
 class Login extends PureComponent {
     static propTypes = {

@@ -57,45 +57,49 @@ class Modal extends PureComponent {
             onCloseModal
         } = this.props;
 
-        return [
-            <div key={0} className={cx('modal-custom', modalClass, {
-                'modal-custom--empty': centerPosition,
-            })}>
+        return (
+            <div>
                 <div
-                    ref={this.setComponentRef.bind(this, 'modal')}
-                    className={cx('modal', 'fade', {
-                        'bd-example-modal-lg': topPosition,
+                    className={cx('modal-custom', modalClass, {
+                        'modal-custom--empty': centerPosition,
                     })}
-                    id="exampleModalCenter"
-                    tabIndex="-1"
-                    role="dialog"
-                    aria-labelledby="exampleModalLabel"
-                    aria-hidden="true"
                 >
-                    <div className={cx('modal-dialog', dialogClass, {
-                        'modal-dialog-centered': centerPosition,
-                        'modal-lg': topPosition,
-                    })} role="document">
-                        <div
-                            className={cx('modal-content', contentClass)}
-                            ref={this.setComponentRef.bind(this, 'content')}
-                        >
-                            {children}
-                        </div>
-                    </div>
-                    <button
-                        type="button"
-                        className={cx('close')}
-                        aria-label="Close"
-                        onClick={onCloseModal}
-                        ref={this.setComponentRef.bind(this, 'close')}
+                    <div
+                        ref={this.setComponentRef.bind(this, 'modal')}
+                        className={cx('modal', 'fade', {
+                            'bd-example-modal-lg': topPosition,
+                        })}
+                        id="exampleModalCenter"
+                        tabIndex="-1"
+                        role="dialog"
+                        aria-labelledby="exampleModalLabel"
+                        aria-hidden="true"
                     >
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                        <div className={cx('modal-dialog', dialogClass, {
+                            'modal-dialog-centered': centerPosition,
+                            'modal-lg': topPosition,
+                        })} role="document">
+                            <div
+                                className={cx('modal-content', contentClass)}
+                                ref={this.setComponentRef.bind(this, 'content')}
+                            >
+                                {children}
+                            </div>
+                        </div>
+                        <button
+                            type="button"
+                            className={cx('close')}
+                            aria-label="Close"
+                            onClick={onCloseModal}
+                            ref={this.setComponentRef.bind(this, 'close')}
+                        >
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                 </div>
-            </div>,
-            <div key={1} className={cx('modal-backdrop', 'fade', 'show')} />
-        ];
+                <div className={cx('modal-backdrop')} />
+            </div>
+        );
     }
 }
 
