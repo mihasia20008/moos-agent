@@ -2,6 +2,7 @@ import * as types from './actionTypes';
 import { Tasks } from '../../services/api';
 
 import { logoutProcess } from "../User/actions";
+import {setErrorContent} from "../Error/actions";
 
 const prepareTasksList = orderList => orderList.reduce((acc, { tasks }) => {
     if (!tasks) {
@@ -20,9 +21,7 @@ export function getTasksList(session_id, filters) {
                     dispatch(logoutProcess());
                     return;
                 }
-                alert(res.message);
-                dispatch({ type: types.TASKS_ERROR });
-                return;
+                throw new Error(res.message);
             }
             if (res.order) {
                 res.tasks = prepareTasksList(res.order);
@@ -33,6 +32,7 @@ export function getTasksList(session_id, filters) {
             dispatch({ type: types.TASKS_SUCCESS, data: res });
         } catch (err) {
             console.log(err);
+            dispatch(setErrorContent(err.message));
             dispatch({ type: types.TASKS_ERROR });
         }
     };
@@ -48,14 +48,13 @@ export function getNextTasksPage(session_id, page, filters) {
                     dispatch(logoutProcess());
                     return;
                 }
-                alert(res.message);
-                dispatch({ type: types.NEXT_TASKS_ERROR });
-                return;
+                throw new Error(res.message);
             }
             res.tasks = prepareTasksList(res.order);
             dispatch({ type: types.NEXT_TASKS_SUCCESS, data: res });
         } catch (err) {
             console.log(err);
+            dispatch(setErrorContent(err.message));
             dispatch({ type: types.NEXT_TASKS_ERROR });
         }
     }

@@ -2,6 +2,7 @@ import * as types from './actionTypes';
 import { Search } from '../../services/api';
 
 import { logoutProcess } from "../User/actions";
+import { setErrorContent } from "../Error/actions";
 
 export function searchByString(session_id, query) {
     return async dispatch => {
@@ -12,9 +13,7 @@ export function searchByString(session_id, query) {
                     dispatch(logoutProcess());
                     return;
                 }
-                alert(res.message);
-                dispatch({ type: types.SEARCH_ERROR });
-                return;
+                throw new Error(res.message);
             }
             console.log(res);
             // res.list = res.list.slice(0, 7);
@@ -22,6 +21,7 @@ export function searchByString(session_id, query) {
             dispatch({ type: types.SEARCH_SUCCESS, data: res });
         } catch (err) {
             console.log(err);
+            dispatch(setErrorContent(err.message));
             dispatch({ type: types.SEARCH_ERROR });
         }
     };

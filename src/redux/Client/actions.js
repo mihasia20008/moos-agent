@@ -2,6 +2,7 @@ import * as types from './actionTypes';
 import { Client } from '../../services/api';
 
 import { logoutProcess } from "../User/actions";
+import { setErrorContent } from "../Error/actions";
 
 export function getClientItem(session_id, id) {
     return async dispatch => {
@@ -13,13 +14,12 @@ export function getClientItem(session_id, id) {
                     dispatch(logoutProcess());
                     return;
                 }
-                alert(res.message);
-                dispatch({ type: types.CLIENT_ERROR });
-                return;
+                throw new Error(res.message);
             }
             dispatch({ type: types.CLIENT_SUCCESS, data: res });
         } catch (err) {
             console.log(err);
+            dispatch(setErrorContent(err.message));
             dispatch({ type: types.CLIENT_ERROR });
         }
     };

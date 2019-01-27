@@ -21,3 +21,7 @@ export {
 export {
   default as Statistics,
 } from './Statistics/reducer';
+
+export {
+  default as Error,
+} from './Error/reducer';

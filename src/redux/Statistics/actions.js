@@ -2,6 +2,7 @@ import * as types from './actionTypes';
 import { Statistics } from '../../services/api';
 
 import { logoutProcess } from "../User/actions";
+import { setErrorContent } from "../Error/actions";
 
 export function fetchWidgetData(session_id) {
     return async dispatch => {
@@ -13,9 +14,7 @@ export function fetchWidgetData(session_id) {
                     dispatch(logoutProcess());
                     return;
                 }
-                alert(res.message);
-                dispatch({ type: types.WIDGET_STATS_ERROR });
-                return;
+                throw new Error(res.message);
             }
             const { result: items } = res;
             const sum = Object.keys(items).reduce((acc, key) => {
@@ -25,6 +24,7 @@ export function fetchWidgetData(session_id) {
             dispatch({ type: types.WIDGET_STATS_SUCCESS, data: { items, sum, noItems } });
         } catch (err) {
             console.log(err);
+            dispatch(setErrorContent(err.message));
             dispatch({ type: types.WIDGET_STATS_ERROR });
         }
     };
@@ -40,13 +40,12 @@ export function fetchPeriodsList(session_id) {
                     dispatch(logoutProcess());
                     return;
                 }
-                alert(res.message);
-                dispatch({ type: types.PERIODS_LIST_ERROR });
-                return;
+                throw new Error(res.message);
             }
             dispatch({ type: types.PERIODS_LIST_SUCCESS, data: { periods: res.periods } });
         } catch (err) {
             console.log(err);
+            dispatch(setErrorContent(err.message));
             dispatch({ type: types.PERIODS_LIST_ERROR });
         }
     }
@@ -62,9 +61,7 @@ export function fetchEmployeeStat(session_id, period, username) {
                     dispatch(logoutProcess());
                     return;
                 }
-                alert(res.message);
-                dispatch({ type: types.EMPLOYEE_STATS_ERROR });
-                return;
+                throw new Error(res.message);
             }
             const { result: items } = res;
             let countSum = 0;
@@ -78,6 +75,7 @@ export function fetchEmployeeStat(session_id, period, username) {
             dispatch({ type: types.EMPLOYEE_STATS_SUCCESS, data: { items, countSum, amountSum, noItems } });
         } catch (err) {
             console.log(err);
+            dispatch(setErrorContent(err.message));
             dispatch({ type: types.EMPLOYEE_STATS_ERROR });
         }
     }
@@ -93,9 +91,7 @@ export function fetchCompanyStat(session_id, period) {
                     dispatch(logoutProcess());
                     return;
                 }
-                alert(res.message);
-                dispatch({ type: types.COMPANY_STATS_ERROR });
-                return;
+                throw new Error(res.message);
             }
             const { result: items } = res;
             let countSum = 0;
@@ -109,6 +105,7 @@ export function fetchCompanyStat(session_id, period) {
             dispatch({ type: types.COMPANY_STATS_SUCCESS, data: { items, countSum, amountSum, noItems } });
         } catch (err) {
             console.log(err);
+            dispatch(setErrorContent(err.message));
             dispatch({ type: types.COMPANY_STATS_ERROR });
         }
     }

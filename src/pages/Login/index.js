@@ -11,6 +11,7 @@ import FormRestore from '../../containers/Form/Restore';
 import { loginUser, authenticationUser } from '../../redux/User/actions';
 
 import * as CONTENT from '../../contentConstants';
+import SnackBar from "../../containers/SnackBar";
 
 class Login extends PureComponent {
     static propTypes = {
@@ -125,7 +126,7 @@ class Login extends PureComponent {
     }
 
     render() {
-        const { location: { search }, isAuth } = this.props;
+        const { location: { search }, isAuth, showSnackBar } = this.props;
 
         if (isAuth) {
             return <Redirect to="/tasks" />
@@ -135,15 +136,17 @@ class Login extends PureComponent {
             this.renderMainContent(),
             search === '?restore-password' ? this.renderRestorePassword() : null,
             search === '?e-login' ? this.renderELogin() : null,
+            showSnackBar ? <SnackBar key={2} /> : null
         ];
     }
 };
 
-const mapStateToProps = ({ User }) => {
+const mapStateToProps = ({ User, Error }) => {
     return {
         isFetching: User.isFetching,
         isAuth: User.isAuth,
         session_id: User.session_id,
+        showSnackBar: Error.show,
     };
 };
 

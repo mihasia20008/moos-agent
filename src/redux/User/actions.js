@@ -3,6 +3,8 @@ import * as types from './actionTypes';
 import { User } from '../../services/api';
 import Cookies from 'js-cookie';
 
+import { setErrorContent } from "../Error/actions";
+
 export function logoutProcess() {
     return dispatch => {
         Cookies.remove('session_id');
@@ -21,9 +23,7 @@ export function loginUser(username, password) {
                     dispatch(logoutProcess());
                     return;
                 }
-                alert(res.message);
-                dispatch({ type: types.LOGIN_ERROR });
-                return;
+                throw new Error(res.message);
             }
             Cookies.set('session_id', res.session.session_id, { expires: 1 });
             Cookies.set('JSESSIONID', res.session.JSESSIONID, { expires: 1 });
@@ -43,6 +43,7 @@ export function loginUser(username, password) {
             });
         } catch (err) {
             console.log(err);
+            dispatch(setErrorContent(err.message));
             dispatch({ type: types.LOGIN_ERROR });
         }
     };
@@ -54,12 +55,7 @@ export function authenticationUser(session_id) {
             dispatch({ type: types.AUTH_FETCH });
             const { isSuccess, ...res} = await User.auth(session_id);
             if (!isSuccess) {
-                if (res.needLogout) {
-                    dispatch(logoutProcess());
-                    return;
-                }
-                Cookies.remove('session_id');
-                Cookies.remove('JSESSIONID');
+                dispatch(logoutProcess());
                 dispatch({ type: types.AUTH_ERROR });
                 return;
             }
@@ -78,6 +74,7 @@ export function authenticationUser(session_id) {
             ) });
         } catch (err) {
             console.log(err);
+            dispatch(setErrorContent(err.message));
             dispatch({ type: types.AUTH_ERROR })
         }
     }
@@ -93,13 +90,12 @@ export function logoutUser(session_id) {
                     dispatch(logoutProcess());
                     return;
                 }
-                alert(res.message);
-                dispatch({ type: types.LOGOUT_ERROR });
-                return;
+                throw new Error(res.message);
             }
             dispatch(logoutProcess());
         } catch (err) {
             console.log(err);
+            dispatch(setErrorContent(err.message));
             dispatch({ type: types.LOGOUT_ERROR });
         }
     };

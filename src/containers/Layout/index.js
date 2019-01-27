@@ -13,6 +13,7 @@ import FormSearch from '../Form/Search';
 import UserStatistics from '../UserStatistics';
 import ClientDetail from '../Detail/Client';
 import TaskDetail from '../Detail/Task';
+import SnackBar from '../SnackBar';
 
 import Overlay from '../../components/Overlay';
 
@@ -25,6 +26,7 @@ class Layout extends PureComponent {
         showAddButton: PropTypes.bool.isRequired,
         showAddHelp: PropTypes.bool.isRequired,
         isNotFound: PropTypes.bool,
+        showSnackBar: PropTypes.bool.isRequired,
         session_id: PropTypes.string.isRequired,
         authenticationUser: PropTypes.func.isRequired,
     };
@@ -56,6 +58,7 @@ class Layout extends PureComponent {
             showAddHelp,
             isAuth,
             session_id,
+            showSnackBar,
             ...rest
         } = this.props;
 
@@ -195,7 +198,8 @@ class Layout extends PureComponent {
                         classNames="fade"
                     >
                         <div>{contentNode}</div>
-                    </CSSTransition>
+                    </CSSTransition>,
+                    showSnackBar ? <SnackBar key={2} /> : null
                 ];
             }} />
         );
@@ -203,14 +207,18 @@ class Layout extends PureComponent {
 }
 
 const mapStateToProps = (state, ownProps) => {
-    const { Tasks, User } = state;
-    const isTaskEmpty = ownProps.path.search('/tasks') !== -1 && !Tasks.order.length && !Tasks.isFetching;    
+    const { Tasks, User, Error } = state;
+    const isTaskEmpty = ownProps.path &&
+        ownProps.path.search('/tasks') !== -1 &&
+        !Tasks.order.length &&
+        !Tasks.isFetching;
     
     return {
-        showAddButton: ownProps.path.search('/tasks') !== -1,
+        showAddButton: ownProps.path && ownProps.path.search('/tasks') !== -1,
         showAddHelp: isTaskEmpty,
         isAuth: User.isAuth,
         session_id: User.session_id,
+        showSnackBar: Error.show,
     };
 };
 
