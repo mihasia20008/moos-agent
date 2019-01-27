@@ -1,12 +1,18 @@
 import * as types from './actionTypes';
 import { Statistics } from '../../services/api';
 
+import { logoutProcess } from "../User/actions";
+
 export function fetchWidgetData(session_id) {
     return async dispatch => {
         try {
             dispatch({ type: types.WIDGET_STATS_FETCH });
             const { isSuccess, ...res } = await Statistics.getWidget(session_id);
             if (!isSuccess) {
+                if (res.needLogout) {
+                    dispatch(logoutProcess());
+                    return;
+                }
                 alert(res.message);
                 dispatch({ type: types.WIDGET_STATS_ERROR });
                 return;
@@ -30,6 +36,10 @@ export function fetchPeriodsList(session_id) {
             dispatch({ type: types.PERIODS_LIST_FETCH });
             const { isSuccess, ...res } = await Statistics.getPeriods(session_id);
             if (!isSuccess) {
+                if (res.needLogout) {
+                    dispatch(logoutProcess());
+                    return;
+                }
                 alert(res.message);
                 dispatch({ type: types.PERIODS_LIST_ERROR });
                 return;
@@ -48,6 +58,10 @@ export function fetchEmployeeStat(session_id, period, username) {
             dispatch({ type: types.EMPLOYEE_STATS_FETCH });
             const { isSuccess, ...res } = await Statistics.getEmployeeStats(session_id, period, username);
             if (!isSuccess) {
+                if (res.needLogout) {
+                    dispatch(logoutProcess());
+                    return;
+                }
                 alert(res.message);
                 dispatch({ type: types.EMPLOYEE_STATS_ERROR });
                 return;
@@ -75,6 +89,10 @@ export function fetchCompanyStat(session_id, period) {
             dispatch({ type: types.COMPANY_STATS_FETCH });
             const { isSuccess, ...res } = await Statistics.getCompanyStats(session_id, period);
             if (!isSuccess) {
+                if (res.needLogout) {
+                    dispatch(logoutProcess());
+                    return;
+                }
                 alert(res.message);
                 dispatch({ type: types.COMPANY_STATS_ERROR });
                 return;

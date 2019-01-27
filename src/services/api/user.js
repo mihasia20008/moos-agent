@@ -17,6 +17,7 @@ export const login = async (authData) => {
         }
         return {
             isSuccess: false,
+            needLogout: status === 5,
             message: rest.error,
         };
     } catch (err) {
@@ -42,6 +43,7 @@ export const auth = async (session_id) => {
         }
         return {
             isSuccess: false,
+            needLogout: status === 5,
             message: rest.error,
         };
     } catch (err) {
@@ -64,6 +66,7 @@ export const logout = async (session_id) => {
         }
         return {
             isSuccess: false,
+            needLogout: status === 5,
             message: rest.error,
         };
     } catch (err) {

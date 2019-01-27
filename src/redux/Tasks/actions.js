@@ -1,6 +1,8 @@
 import * as types from './actionTypes';
 import { Tasks } from '../../services/api';
 
+import { logoutProcess } from "../User/actions";
+
 const prepareTasksList = orderList => orderList.reduce((acc, { tasks }) => {
     if (!tasks) {
         return acc;
@@ -14,6 +16,10 @@ export function getTasksList(session_id, filters) {
             dispatch({ type: types.TASKS_FETCH });
             const { isSuccess, ...res } = await Tasks.getData(session_id, filters);
             if (!isSuccess) {
+                if (res.needLogout) {
+                    dispatch(logoutProcess());
+                    return;
+                }
                 alert(res.message);
                 dispatch({ type: types.TASKS_ERROR });
                 return;
@@ -38,6 +44,10 @@ export function getNextTasksPage(session_id, page, filters) {
             dispatch({ type: types.NEXT_TASKS_FETCH });
             const { isSuccess, ...res } = await Tasks.getNextPage(session_id, page, filters);
             if (!isSuccess) {
+                if (res.needLogout) {
+                    dispatch(logoutProcess());
+                    return;
+                }
                 alert(res.message);
                 dispatch({ type: types.NEXT_TASKS_ERROR });
                 return;

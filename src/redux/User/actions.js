@@ -3,12 +3,24 @@ import * as types from './actionTypes';
 import { User } from '../../services/api';
 import Cookies from 'js-cookie';
 
+export function logoutProcess() {
+    return dispatch => {
+        Cookies.remove('session_id');
+        Cookies.remove('JSESSIONID');
+        dispatch({type: types.LOGOUT_SUCCESS});
+    };
+}
+
 export function loginUser(username, password) {
     return async dispatch => {
         try {
             dispatch({ type: types.LOGIN_FETCH });
             const { isSuccess, ...res } = await User.login({ username, password });
             if (!isSuccess) {
+                if (res.needLogout) {
+                    dispatch(logoutProcess());
+                    return;
+                }
                 alert(res.message);
                 dispatch({ type: types.LOGIN_ERROR });
                 return;
@@ -42,6 +54,10 @@ export function authenticationUser(session_id) {
             dispatch({ type: types.AUTH_FETCH });
             const { isSuccess, ...res} = await User.auth(session_id);
             if (!isSuccess) {
+                if (res.needLogout) {
+                    dispatch(logoutProcess());
+                    return;
+                }
                 Cookies.remove('session_id');
                 Cookies.remove('JSESSIONID');
                 dispatch({ type: types.AUTH_ERROR });
@@ -73,13 +89,15 @@ export function logoutUser(session_id) {
             dispatch({ type: types.LOGOUT_FETCH });
             const { isSuccess, ...res } = await User.logout(session_id);
             if (!isSuccess) {
+                if (res.needLogout) {
+                    dispatch(logoutProcess());
+                    return;
+                }
                 alert(res.message);
                 dispatch({ type: types.LOGOUT_ERROR });
                 return;
             }
-            Cookies.remove('session_id');
-            Cookies.remove('JSESSIONID');
-            dispatch({ type: types.LOGOUT_SUCCESS });
+            dispatch(logoutProcess());
         } catch (err) {
             console.log(err);
             dispatch({ type: types.LOGOUT_ERROR });
