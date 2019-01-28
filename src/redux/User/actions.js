@@ -37,7 +37,7 @@ export function loginUser(username, password) {
                         session_id: res.session.session_id,
                     },
                     {
-                        companyEmployees: res.company.users || [],
+                        companyEmployees: res.company.agentLogins || [],
                     },
                 ),
             });
@@ -69,7 +69,7 @@ export function authenticationUser(session_id) {
                     session_id: res.session.session_id,
                 },
                 {
-                    companyEmployees: res.company.users || [],
+                    companyEmployees: res.company.agentLogins || [],
                 },
             ) });
         } catch (err) {
