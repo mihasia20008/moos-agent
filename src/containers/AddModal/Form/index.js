@@ -2,11 +2,14 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
+import { authenticationUser } from "../../../redux/User/actions";
+
 class AddModalForm extends PureComponent {
     static propTypes = {
         activeDefinitionKey: PropTypes.string,
         title: PropTypes.string,
         onCloseModal: PropTypes.func.isRequired,
+        dispatch: PropTypes.func.isRequired,
     };
 
     static getFormScript(processDefinitionKey) {
@@ -21,15 +24,19 @@ class AddModalForm extends PureComponent {
         
                 processService.getByKey('#process_definition_key#', function (err, def) {
                     if (err) {
-                        // uas.flash.error(err);
-                        console.log(err);
+                        setErrorNotification(err.message);
+                        setTimeout(function () {
+                            clearErrorNotification();
+                        }, 3000);
                         return;
                     }
         
                     processService.startForm({id: def.id}, function (err, taskFormInfo) {
                         if (err) {
-                            // uas.flash.error(err);
-                            console.log(err);
+                            setErrorNotification(err.message);
+                            setTimeout(function () {
+                                clearErrorNotification();
+                            }, 3000);
                             return;
                         }
         
@@ -112,7 +119,11 @@ class AddModalForm extends PureComponent {
     }
 
     componentDidMount() {
-        const { activeDefinitionKey, onCloseModal } = this.props;
+        const { activeDefinitionKey, onCloseModal, session_id, dispatch } = this.props;
+        // if (typeof session_id !== 'undefined') {
+        //     dispatch(authenticationUser(session_id, true));
+        // }
+
         if (typeof activeDefinitionKey === 'undefined') {
             onCloseModal();
         }
@@ -162,7 +173,7 @@ class AddModalForm extends PureComponent {
     }
 }
 
-const mapStateToProps = ({ Tasks, User}, ownProps) => {
+const mapStateToProps = ({ Tasks, User }, ownProps) => {
     const title = User.processDefinitionKeys.reduce((acc, item) => {
         if (item.process_definition_key === ownProps.activeDefinitionKey) {
             return item.process_name;
@@ -171,6 +182,7 @@ const mapStateToProps = ({ Tasks, User}, ownProps) => {
     }, 'Создание');
     return {
         title,
+        session_id: User.session_id,
     };
 };
 

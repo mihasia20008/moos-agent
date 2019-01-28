@@ -52,13 +52,13 @@ export function loginUser(username, password) {
     };
 }
 
-export function authenticationUser(session_id) {
+export function authenticationUser(session_id, needNotification) {
     return async dispatch => {
         try {
             dispatch({ type: types.AUTH_FETCH });
             const { isSuccess, ...res} = await User.auth(session_id);
             if (!isSuccess) {
-                dispatch(logoutProcess());
+                dispatch(logoutProcess(needNotification ? res.message : undefined));
                 dispatch({ type: types.AUTH_ERROR });
                 return;
             }
