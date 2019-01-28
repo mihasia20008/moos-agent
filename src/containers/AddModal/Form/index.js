@@ -42,36 +42,36 @@ class AddModalForm extends PureComponent {
                             containerElement: $('#camunda'),
                             done: function (err, camForm) {
                                 if (err) {
-                                    console.log(err);
+                                    console.log('all', err);
                                     throw err;
                                 }
         
                                 camForm.on('submit-success', function () {
-                                    //$container.removeOverlay();
                                     window.location.href = '/tasks/';
-                                    // $(".bk-popup").fadeIn();
                                 });
         
                                 camForm.on('submit-error', function (evt, res) {
-                                    console.log(res);
+                                    console.log('submit-error', res);
                                     // uas.flash.error(res[0]);
                                     //$container.removeOverlay();
                                 });
         
                                 $('#camunda_submit').click(function (e) {
-                                    // $(".bk-overlay").fadeIn();
                                     e.preventDefault();
-                                    console.log('submit');
                                     camForm.submit(function (err, data) {
-                                        console.log(err, data);
-                                        if (err) {
-                                            // $(".bk-overlay").hide();
+                                        if (err) { 
                                             var $scope = angular.element('#create-task form').scope();
-                                            console.log($scope);
-                                            // if ($scope.$$camForm.$valid) {
-                                            //     uas.flash.error(err);
-                                            //     throw err;
-                                            // }
+                                            if ($scope.$$camForm.$valid) {
+                                                setErrorNotification(err.message);
+                                                setTimeout(function () {
+                                                    clearErrorNotification();
+                                                }, 3000);
+                                            } else {
+                                                setErrorNotification(err);
+                                                setTimeout(function () {
+                                                    clearErrorNotification();
+                                                }, 3000);
+                                            }
                                         }
                                     });
                                 });
@@ -79,6 +79,33 @@ class AddModalForm extends PureComponent {
                         });
                     });
                 });
+                
+                
+                function setErrorNotification(content) {
+                    var innerHtml =
+                        '<span class="notification__text">' +
+                        content +
+                        '</span>' +
+                        '<button type="button" class="notification__reload-link">' +
+                        '    <i class="icon icon-close-s" />' +
+                        '</button>'
+                        .replace(/#content#/g, content);
+                    
+                    var elem = $(document.createElement('div'))
+                        .addClass('notification')
+                        .attr('id', 'error-note')
+                        .html(innerHtml);
+                        
+                    $('#root').append(elem);
+                    
+                    $('.notification__reload-link').click(function() {
+                        clearErrorNotification();
+                    });
+                }
+                
+                function clearErrorNotification() {
+                    $('#error-note').remove();
+                }
             });
         `
             .replace(/#process_definition_key#/g, processDefinitionKey);
