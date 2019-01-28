@@ -11,7 +11,7 @@ export function getClientsList(session_id) {
             const { isSuccess, ...res } = await Clients.getData(session_id);
             if (!isSuccess) {
                 if (res.needLogout) {
-                    dispatch(logoutProcess());
+                    dispatch(logoutProcess(res.message));
                     return;
                 }
                 throw new Error(res.message);
@@ -32,7 +32,7 @@ export function getNextClientsList(session_id, page) {
             const { isSuccess, ...res } = await Clients.getNextPage(session_id, page);
             if (!isSuccess) {
                 if (res.needLogout) {
-                    dispatch(logoutProcess());
+                    dispatch(logoutProcess(res.message));
                     return;
                 }
                 throw new Error(res.message);

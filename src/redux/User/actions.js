@@ -5,8 +5,11 @@ import Cookies from 'js-cookie';
 
 import { setErrorContent } from "../Error/actions";
 
-export function logoutProcess() {
+export function logoutProcess(message = '') {
     return dispatch => {
+        if (message) {
+            dispatch(setErrorContent(message));
+        }
         Cookies.remove('session_id');
         Cookies.remove('JSESSIONID');
         dispatch({type: types.LOGOUT_SUCCESS});
@@ -20,7 +23,7 @@ export function loginUser(username, password) {
             const { isSuccess, ...res } = await User.login({ username, password });
             if (!isSuccess) {
                 if (res.needLogout) {
-                    dispatch(logoutProcess());
+                    dispatch(logoutProcess(res.message));
                     return;
                 }
                 throw new Error(res.message);
@@ -87,7 +90,7 @@ export function logoutUser(session_id) {
             const { isSuccess, ...res } = await User.logout(session_id);
             if (!isSuccess) {
                 if (res.needLogout) {
-                    dispatch(logoutProcess());
+                    dispatch(logoutProcess(res.message));
                     return;
                 }
                 throw new Error(res.message);

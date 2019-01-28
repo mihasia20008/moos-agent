@@ -10,7 +10,7 @@ export function searchByString(session_id, query) {
             const { isSuccess, ...res } = await Search.findByString(session_id, query);
             if (!isSuccess) {
                 if (res.needLogout) {
-                    dispatch(logoutProcess());
+                    dispatch(logoutProcess(res.message));
                     return;
                 }
                 throw new Error(res.message);

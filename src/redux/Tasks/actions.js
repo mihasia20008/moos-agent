@@ -18,7 +18,7 @@ export function getTasksList(session_id, filters) {
             const { isSuccess, ...res } = await Tasks.getData(session_id, filters);
             if (!isSuccess) {
                 if (res.needLogout) {
-                    dispatch(logoutProcess());
+                    dispatch(logoutProcess(res.message));
                     return;
                 }
                 throw new Error(res.message);
@@ -45,7 +45,7 @@ export function getNextTasksPage(session_id, page, filters) {
             const { isSuccess, ...res } = await Tasks.getNextPage(session_id, page, filters);
             if (!isSuccess) {
                 if (res.needLogout) {
-                    dispatch(logoutProcess());
+                    dispatch(logoutProcess(res.message));
                     return;
                 }
                 throw new Error(res.message);

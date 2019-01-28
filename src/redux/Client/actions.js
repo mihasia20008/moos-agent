@@ -11,7 +11,7 @@ export function getClientItem(session_id, id) {
             const { isSuccess, ...res } = await Client.getData(session_id, id);
             if (!isSuccess) {
                 if (res.needLogout) {
-                    dispatch(logoutProcess());
+                    dispatch(logoutProcess(res.message));
                     return;
                 }
                 throw new Error(res.message);

@@ -11,7 +11,7 @@ export function fetchWidgetData(session_id) {
             const { isSuccess, ...res } = await Statistics.getWidget(session_id);
             if (!isSuccess) {
                 if (res.needLogout) {
-                    dispatch(logoutProcess());
+                    dispatch(logoutProcess(res.message));
                     return;
                 }
                 throw new Error(res.message);
@@ -37,7 +37,7 @@ export function fetchPeriodsList(session_id) {
             const { isSuccess, ...res } = await Statistics.getPeriods(session_id);
             if (!isSuccess) {
                 if (res.needLogout) {
-                    dispatch(logoutProcess());
+                    dispatch(logoutProcess(res.message));
                     return;
                 }
                 throw new Error(res.message);
@@ -58,7 +58,7 @@ export function fetchEmployeeStat(session_id, period, username) {
             const { isSuccess, ...res } = await Statistics.getEmployeeStats(session_id, period, username);
             if (!isSuccess) {
                 if (res.needLogout) {
-                    dispatch(logoutProcess());
+                    dispatch(logoutProcess(res.message));
                     return;
                 }
                 throw new Error(res.message);
@@ -88,7 +88,7 @@ export function fetchCompanyStat(session_id, period) {
             const { isSuccess, ...res } = await Statistics.getCompanyStats(session_id, period);
             if (!isSuccess) {
                 if (res.needLogout) {
-                    dispatch(logoutProcess());
+                    dispatch(logoutProcess(res.message));
                     return;
                 }
                 throw new Error(res.message);
