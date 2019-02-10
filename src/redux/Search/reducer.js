@@ -1,8 +1,7 @@
 import * as types from './actionTypes';
 
 const initialState = {
-    idsList: [],
-    list: {},
+    list: [],
 };
 
 export default (state = initialState, action) => {
@@ -10,7 +9,7 @@ export default (state = initialState, action) => {
         case types.SEARCH_SUCCESS: {
             return {
                 ...state,
-                ...action.data,
+                list: action.result,
             };
         }
         case types.SEARCH_ERROR:

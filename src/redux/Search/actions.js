@@ -15,10 +15,10 @@ export function searchByString(session_id, query) {
                 }
                 throw new Error(res.message);
             }
-            console.log(res);
-            // res.list = res.list.slice(0, 7);
-            res.idsList = Object.keys(res.list).splice(0, 7);
-            dispatch({ type: types.SEARCH_SUCCESS, data: res });
+            dispatch({
+                type: types.SEARCH_SUCCESS,
+                result: res.company ? res.company.slice(0, 7) : []
+            });
         } catch (err) {
             console.log(err);
             dispatch(setErrorContent(err.message));

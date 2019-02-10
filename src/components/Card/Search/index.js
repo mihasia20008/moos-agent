@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 import Highlighter from 'react-highlight-words';
 
-const SearchCard = ({ query, displayName, INN, OGRN, }) => {
+const SearchCard = ({ id, query, displayName, INN, OGRN, }) => {
     return (
         <div className={cx('autocomplete__item')}>
             <div className={cx('autocomplete__text autocomplete__text--title')}>

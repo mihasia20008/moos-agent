@@ -25,9 +25,7 @@ class Tasks extends PureComponent {
         hasMorePage: PropTypes.bool.isRequired,
         processDefinitionKeys: PropTypes.array.isRequired,
         session_id: PropTypes.string.isRequired,
-        getTasksList: PropTypes.func.isRequired,
-        getNextTasksPage: PropTypes.func.isRequired,
-        setTasksFilter: PropTypes.func.isRequired,
+        dispatch: PropTypes.func.isRequired
     };
 
     componentDidMount() {
