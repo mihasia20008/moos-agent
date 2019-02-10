@@ -74,10 +74,13 @@ class Modal extends PureComponent {
                     aria-labelledby="exampleModalLabel"
                     aria-hidden="true"
                 >
-                    <div className={cx('modal-dialog', dialogClass, {
-                        'modal-dialog-centered': centerPosition,
-                        'modal-lg': topPosition,
-                    })} role="document">
+                    <div
+                        className={cx('modal-dialog', dialogClass, {
+                            'modal-dialog-centered': centerPosition,
+                            'modal-lg': topPosition,
+                        })}
+                        role="document"
+                    >
                         <div
                             className={cx('modal-content', contentClass)}
                             ref={this.setComponentRef.bind(this, 'content')}

@@ -74,6 +74,8 @@
 
   .modal-dialog {
     max-width: 380px;
+    max-height: calc(100vh - 2.5rem);
+    overflow-y: scroll;
 
     &--medium {
       max-width: 500px;
@@ -90,8 +92,8 @@
 
   &--with-help-block {
     .modal-lg {
-      max-width: 1008px;
-      padding-right: 208px;
+      max-width: 1070px;
+      padding-right: 270px;
     }
   }
 
@@ -153,9 +155,6 @@
 }
 
 .modal-content {
-  max-height: calc(100vh - 2.5rem);
-  overflow-y: scroll;
-
   &--blur {
     filter: blur(4px);
   }
