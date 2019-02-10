@@ -65,7 +65,14 @@ class Layout extends PureComponent {
         return (
             <Route {...rest} render={matchProps => {
                 if (!isAuth && !session_id) {
-                    return <Redirect to="/" />;
+                    return (
+                        <Redirect
+                            to={{
+                                pathname: "/",
+                                search: "",
+                            }}
+                        />
+                    );
                 }
 
                 if (!isAuth) {
@@ -134,7 +141,10 @@ class Layout extends PureComponent {
                             );
                         } else {
                             contentNode = (
-                                <AddModalSelect onCloseModal={matchProps.history.goBack} />
+                                <AddModalSelect
+                                    onCloseModal={matchProps.history.goBack}
+                                    onProgrammingRedirect={matchProps.history.push}
+                                />
                             );
                         }
                         break;
@@ -146,7 +156,10 @@ class Layout extends PureComponent {
                                 modalClass="modal-custom--with-help-block"
                                 onCloseModal={matchProps.history.goBack}
                             >
-                                <ClientDetail id={match.params.id} />
+                                <ClientDetail
+                                    id={match.params.id}
+                                    onProgrammingRedirect={matchProps.history.push}
+                                />
                             </Modal>
                         );
                         break;
@@ -194,6 +207,7 @@ class Layout extends PureComponent {
                     </div>,
                     <CSSTransition
                         key={1}
+                        timeout={200}
                         in={Boolean(contentNode)}
                         classNames="fade"
                     >

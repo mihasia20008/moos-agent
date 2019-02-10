@@ -2,8 +2,6 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
-import { authenticationUser } from "../../../redux/User/actions";
-
 class AddModalForm extends PureComponent {
     static propTypes = {
         activeDefinitionKey: PropTypes.string,
@@ -119,10 +117,7 @@ class AddModalForm extends PureComponent {
     }
 
     componentDidMount() {
-        const { activeDefinitionKey, onCloseModal, session_id, dispatch } = this.props;
-        // if (typeof session_id !== 'undefined') {
-        //     dispatch(authenticationUser(session_id, true));
-        // }
+        const { activeDefinitionKey, onCloseModal } = this.props;
 
         if (typeof activeDefinitionKey === 'undefined') {
             onCloseModal();
@@ -181,8 +176,7 @@ const mapStateToProps = ({ Tasks, User }, ownProps) => {
         return acc;
     }, 'Создание');
     return {
-        title,
-        session_id: User.session_id,
+        title
     };
 };
 

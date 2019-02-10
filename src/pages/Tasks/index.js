@@ -9,6 +9,7 @@ import TasksList from '../../containers/List/Tasks';
 import EmptyTasksList from '../../components/Empty/TasksList';
 
 import { getTasksList, getNextTasksPage, setTasksFilter } from '../../redux/Tasks/actions';
+import { authenticationUser } from "../../redux/User/actions";
 
 class Tasks extends PureComponent {
     static propTypes = {
@@ -30,18 +31,18 @@ class Tasks extends PureComponent {
     };
 
     componentDidMount() {
-        const { session_id, getTasksList, filters } = this.props;
+        const { session_id, filters, dispatch } = this.props;
 
         if (typeof session_id !== 'undefined') {
-            getTasksList(session_id, filters);
+            dispatch(getTasksList(session_id, filters));
         }
         window.addEventListener('scroll', this.handleScroll);
     }
 
     componentWillReceiveProps(nextProps) {
-        const { session_id, getTasksList, filters } = this.props;
+        const { session_id, filters, dispatch } = this.props;
         if (JSON.stringify(filters) !== JSON.stringify(nextProps.filters)) {
-            getTasksList(session_id, nextProps.filters);
+            dispatch(getTasksList(session_id, nextProps.filters));
         }
     }
 
@@ -57,13 +58,27 @@ class Tasks extends PureComponent {
             isFetchingNext,
             nextPage,
             hasMorePage,
-            getNextTasksPage
+            dispatch
         } = this.props;
         const { height } = document.querySelector('.block-list.block-list--tasks').getBoundingClientRect();
 
         if (!isFetchingNext && list.length > 0 && hasMorePage && height - window.scrollY < 1000) {
-            getNextTasksPage(session_id, nextPage, filters);
+            dispatch(getNextTasksPage(session_id, nextPage, filters));
         }
+    };
+
+    handleChangeFilter = (name, value) => {
+        const { dispatch } = this.props;
+        dispatch(setTasksFilter(name, value));
+    };
+
+    handleOpenDetail = (taskId, taskName) => {
+        const { session_id, history, dispatch } = this.props;
+        dispatch(authenticationUser(session_id, true))
+            .then(() => history.push(`/tasks/${taskId}`, {
+                title: taskName
+            }))
+            .catch(err => console.log(err));
     };
     
     render() {
@@ -74,7 +89,6 @@ class Tasks extends PureComponent {
             processDefinitionKeys,
             isFetching,
             isFetchingNext,
-            setTasksFilter
         } = this.props;
 
         return [
@@ -85,11 +99,18 @@ class Tasks extends PureComponent {
                     filters={filters}
                     filterAmount={filterAmount}
                     processes={processDefinitionKeys}
-                    onChangeFilter={setTasksFilter}
+                    onChangeFilter={this.handleChangeFilter}
                 />
                 {!list.length && !isFetching
                     ? <EmptyTasksList />
-                    : <TasksList list={list} isLoading={isFetching} isLoadingNext={isFetchingNext} />}
+                    : (
+                        <TasksList
+                            list={list}
+                            isLoading={isFetching}
+                            isLoadingNext={isFetchingNext}
+                            onOpenDetail={this.handleOpenDetail}
+                        />
+                    )}
             </section>
         ];
     }
@@ -112,15 +133,4 @@ const mapStateToProps = ({ Tasks, User }) => {
     };
 };
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        getTasksList: (session_id, filters) => dispatch(getTasksList(session_id, filters)),
-        getNextTasksPage: (session_id, page, filters) => dispatch(getNextTasksPage(session_id, page, filters)),
-        setTasksFilter: (name, value) => dispatch(setTasksFilter(name, value)),
-    };
-};
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(Tasks);
+export default connect(mapStateToProps)(Tasks);

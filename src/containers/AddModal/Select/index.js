@@ -2,12 +2,15 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+
+import { authenticationUser } from "../../../redux/User/actions";
 
 class AddModalSelect extends PureComponent {
     static propTypes = {
         processDefinitionKeys: PropTypes.array,
-        onCloseModal: PropTypes.func.isRequired
+        session_id: PropTypes.string,
+        onCloseModal: PropTypes.func.isRequired,
+        onProgrammingRedirect: PropTypes.func.isRequired
     };
 
     componentDidMount() {
@@ -27,6 +30,14 @@ class AddModalSelect extends PureComponent {
         this.props.onCloseModal();
     };
 
+    handleOpenForm = ({ target }) => {
+        const { processKey } = target.dataset;
+        const { session_id, onProgrammingRedirect, dispatch } = this.props;
+        dispatch(authenticationUser(session_id, true))
+            .then(() => onProgrammingRedirect(`?add-modal=${processKey}`))
+            .catch(err => console.log(err));
+    };
+
     setComponentRef = (item, node) => (this[item] = node);
 
     render() {
@@ -44,10 +55,12 @@ class AddModalSelect extends PureComponent {
                 >
                     <div className={cx('modal-menu')} ref={this.setComponentRef.bind(this, 'content')}>{
                         processDefinitionKeys.map(process => (
-                            <Link
+                            <button
                                 key={process.process_definition_key}
-                                to={`?add-modal=${process.process_definition_key}`}
+                                type="button"
                                 className={cx('modal-menu__item')}
+                                data-process-key={process.process_definition_key}
+                                onClick={this.handleOpenForm}
                             >
                                 {process.process_type === 'bankguarantee'
                                     ? (
@@ -56,7 +69,7 @@ class AddModalSelect extends PureComponent {
                                         <img src="static/media/rewrite-garantee.svg" alt="" />
                                     )}
                                 <span>{process.process_name}</span>
-                            </Link>
+                            </button>
                         ))
                     }</div>
                     <button type="button" className={cx('close')} data-dismiss="modal" aria-label="Close">
@@ -72,6 +85,7 @@ class AddModalSelect extends PureComponent {
 const mapStateToProps = ({ User }) => {
     return {
         processDefinitionKeys: User.processDefinitionKeys,
+        session_id: User.session_id,
     };
 };
 
