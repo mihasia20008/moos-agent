@@ -1,21 +1,21 @@
 import * as types from './actionTypes';
 
 const initialState = {
-    list: [],
+    text: '',
+    show: false
 };
 
 export default (state = initialState, action) => {
     switch (action.type) {
-        case types.SEARCH_SUCCESS: {
+        case types.ERROR_SHOW: {
             return {
-                ...state,
-                list: action.result,
+                text: action.message,
+                show: true,
             };
         }
-        case types.SEARCH_CLEAR: {
+        case types.ERROR_HIDE: {
             return { ...initialState };
         }
-        case types.SEARCH_ERROR:
         default: {
             return { ...state };
         }

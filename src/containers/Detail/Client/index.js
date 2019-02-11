@@ -7,6 +7,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import OrderItem from './blocks/OrderItem';
 
 import { getClientItem, clearClient } from "../../../redux/Client/actions";
+import { authenticationUser } from "../../../redux/User/actions";
 
 class DetailClient extends PureComponent {
   static propTypes = {
@@ -20,24 +21,34 @@ class DetailClient extends PureComponent {
     KPP: PropTypes.string,
     address: PropTypes.string,
     orders: PropTypes.array,
-    getClientItem: PropTypes.func.isRequired,
+    onProgrammingRedirect: PropTypes.func.isRequired,
   };
 
   state = { wasCopy: false };
 
   componentDidMount() {
-    const { session_id, id, getClientItem } = this.props;
-    getClientItem(session_id, id);
+    const { session_id, id, dispatch } = this.props;
+    dispatch(getClientItem(session_id, id));
   }
 
   componentWillUnmount() {
-    this.props.clearClient();
+    const { dispatch } = this.props;
+    dispatch(clearClient());
   }
 
   handleCopyLink = () => {
     this.setState({ wasCopy: true });
     setTimeout(() => this.setState({ wasCopy: false }), 200);
     alert('Was copy!');
+  };
+
+  handleOpenTaskDetail = (taskId, taskName) => {
+    const { session_id, onProgrammingRedirect, dispatch } = this.props;
+    dispatch(authenticationUser(session_id, true))
+      .then(() => onProgrammingRedirect(`/tasks/${taskId}`, {
+        title: taskName
+      }))
+      .catch(err => console.log(err));
   };
 
   render() {
@@ -113,14 +124,14 @@ class DetailClient extends PureComponent {
         </div>
         {/* Документы */}
         <div className={cx('orders-list')}>{
-            orders.map((order, index) => (
+            orders.map((order) => (
                 <OrderItem
-                    key={index}
-                    id={order.order_id}
+                    key={order.order_id}
                     task={order.tasks ? order.tasks[0] : undefined}
                     orderNumber={order.orderNumber}
                     createdDate={order.createdDate}
                     activePhase={order.phases[order.phases.length - 1]}
+                    onOpenTaskDetail={this.handleOpenTaskDetail}
                 />
             ))
         }</div>
@@ -185,17 +196,7 @@ const mapStateToProps = ({ User, Client }) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-      getClientItem: (session_id, id) => dispatch(getClientItem(session_id, id)),
-      clearClient: () => dispatch(clearClient()),
-  };
-};
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(DetailClient);
+export default connect(mapStateToProps)(DetailClient);
 
 /*
 // История клиента

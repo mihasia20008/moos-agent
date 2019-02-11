@@ -5,7 +5,7 @@ import cx from 'classnames';
 import TaskCard from '../../../components/Card/Task';
 import Skeket from '../../../components/Card/Skelet';
 
-const TasksList = ({ list, isLoading, isLoadingNext }) => {
+const TasksList = ({ list, isLoading, isLoadingNext, onOpenDetail }) => {
     return (
         <div className={cx('block-list block-list--tasks')}>
             {isLoading
@@ -23,6 +23,7 @@ const TasksList = ({ list, isLoading, isLoadingNext }) => {
                         daysToStart={item.daysToStart}
                         phases={item.phases}
                         tasks={item.tasks || []}
+                        onOpenDetail={onOpenDetail}
                     />
                 ))}
             {isLoadingNext && <Skeket key={list.length + 10} showLoader />}
@@ -33,7 +34,8 @@ const TasksList = ({ list, isLoading, isLoadingNext }) => {
 TasksList.propTypes = {
     list: PropTypes.array,
     isLoading: PropTypes.bool.isRequired,
-    isLoadingNext: PropTypes.bool.isRequired
+    isLoadingNext: PropTypes.bool.isRequired,
+    onOpenDetail: PropTypes.func.isRequired
 };
 
 export default TasksList;

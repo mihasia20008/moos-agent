@@ -5,15 +5,16 @@ import cx from 'classnames';
 
 import SearchCard from '../../../components/Card/Search';
 
-import { searchByString } from '../../../redux/Search/actions';
+import { searchByString, clearSearchResults } from '../../../redux/Search/actions';
 
 class FormSearch extends PureComponent {
     static propTypes = {
         defaultSearch: PropTypes.string,
+        list: PropTypes.array.isRequired,
         session_id: PropTypes.string.isRequired,
-        searchByString: PropTypes.func.isRequired,
+        dispatch: PropTypes.func.isRequired
     };
-    static defaultProps = { defaultSearch: '' }
+    static defaultProps = { defaultSearch: '' };
 
     state = {
         search: this.props.defaultSearch,
@@ -21,26 +22,31 @@ class FormSearch extends PureComponent {
     };
 
     componentDidMount() {
-        const { defaultSearch, session_id, searchByString } = this.props;
+        const { defaultSearch, session_id, dispatch } = this.props;
         if (defaultSearch.length > 2) {
-            searchByString(session_id, defaultSearch);
+            dispatch(searchByString(session_id, defaultSearch));
         }
     }
 
+    componentWillUnmount() {
+        const { dispatch } = this.props;
+        dispatch(clearSearchResults());
+    }
+
     handleSearchType = ({ target: { value } }) => {
-        const { session_id, searchByString } = this.props;
+        const { session_id, dispatch } = this.props;
         this.setState({
             search: value,
             isFilled: value.length > 2,
         });
         if (value.length > 2) {
-            searchByString(session_id, value);
+            dispatch(searchByString(session_id, value));
         }
     };
 
     render() {
         const { search, isFilled } = this.state;
-        const { idsList, list } = this.props;
+        const { list } = this.props;
 
         return (
             <form className={cx('form-search', {
@@ -68,13 +74,14 @@ class FormSearch extends PureComponent {
                     </svg>
                 </div>
                 <div className={cx('autocomplete autocomplete--search')}>{
-                    idsList.map(id => (
+                    list.map(item => (
                         <SearchCard
-                            key={id}
+                            key={item.id}
                             query={search}
-                            displayName={list[id].displayName}
-                            INN={list[id].INN}
-                            OGRN={list[id].OGRN}
+                            id={item.id}
+                            displayName={item.displayName}
+                            INN={item.INN}
+                            OGRN={item.OGRN}
                         />
                     ))
                 }</div>
@@ -87,23 +94,13 @@ class FormSearch extends PureComponent {
             </form>
         );
     }
-};
+}
 
 const mapStateToProp = ({ User, Search }) => {
     return {
         session_id: User.session_id,
-        idsList: Search.idsList,
         list: Search.list,
     };
 };
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        searchByString: (session_id, query) => dispatch(searchByString(session_id, query)),
-    };
-};
-
-export default connect(
-    mapStateToProp,
-    mapDispatchToProps,
-)(FormSearch);
+export default connect(mapStateToProp)(FormSearch);

@@ -16,6 +16,7 @@ export const getWidget = async (session_id) => {
         }
         return {
             isSuccess: false,
+            needLogout: status === 5,
             message: rest.error,
         };
     } catch (err) {
@@ -41,6 +42,7 @@ export const getPeriods = async (session_id) => {
         }
         return {
             isSuccess: false,
+            needLogout: status === 5,
             message: rest.error,
         };
     } catch (err) {
@@ -67,6 +69,7 @@ export const getEmployeeStats = async (session_id, period, username = '') => {
         }
         return {
             isSuccess: false,
+            needLogout: status === 5,
             message: rest.error,
         };
     } catch (err) {
@@ -92,6 +95,7 @@ export const getCompanyStats = async (session_id, period) => {
         }
         return {
             isSuccess: false,
+            needLogout: status === 5,
             message: rest.error,
         };
     } catch (err) {

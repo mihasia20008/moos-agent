@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
 import cx from 'classnames';
 
+import logo from './logo-min.svg';
+
 import ProgressStatistic from '../../components/ProgressStatistic';
 import UserMenu from '../../components/UserMenu';
 
@@ -69,7 +71,7 @@ class Sidebar extends PureComponent {
         return (
             <section className={cx('fr-sidebar')}>
                 <Link className={cx('fr-sidebar__logo')} to="/">
-                    <img src="static/media/logo-min.svg" alt="logo" />
+                    <img src={logo} alt="logo" />
                 </Link>
                 <div className={cx('fr-sidebar__menu')}>
                     <NavLink to="/tasks" activeClassName={cx('active')}>

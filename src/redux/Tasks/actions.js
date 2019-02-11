@@ -1,6 +1,9 @@
 import * as types from './actionTypes';
 import { Tasks } from '../../services/api';
 
+import { logoutProcess } from "../User/actions";
+import {setErrorContent} from "../Error/actions";
+
 const prepareTasksList = orderList => orderList.reduce((acc, { tasks }) => {
     if (!tasks) {
         return acc;
@@ -14,9 +17,11 @@ export function getTasksList(session_id, filters) {
             dispatch({ type: types.TASKS_FETCH });
             const { isSuccess, ...res } = await Tasks.getData(session_id, filters);
             if (!isSuccess) {
-                alert(res.message);
-                dispatch({ type: types.TASKS_ERROR });
-                return;
+                if (res.needLogout) {
+                    dispatch(logoutProcess(res.message));
+                    return;
+                }
+                throw new Error(res.message);
             }
             if (res.order) {
                 res.tasks = prepareTasksList(res.order);
@@ -27,6 +32,7 @@ export function getTasksList(session_id, filters) {
             dispatch({ type: types.TASKS_SUCCESS, data: res });
         } catch (err) {
             console.log(err);
+            dispatch(setErrorContent(err.message));
             dispatch({ type: types.TASKS_ERROR });
         }
     };
@@ -38,14 +44,17 @@ export function getNextTasksPage(session_id, page, filters) {
             dispatch({ type: types.NEXT_TASKS_FETCH });
             const { isSuccess, ...res } = await Tasks.getNextPage(session_id, page, filters);
             if (!isSuccess) {
-                alert(res.message);
-                dispatch({ type: types.NEXT_TASKS_ERROR });
-                return;
+                if (res.needLogout) {
+                    dispatch(logoutProcess(res.message));
+                    return;
+                }
+                throw new Error(res.message);
             }
             res.tasks = prepareTasksList(res.order);
             dispatch({ type: types.NEXT_TASKS_SUCCESS, data: res });
         } catch (err) {
             console.log(err);
+            dispatch(setErrorContent(err.message));
             dispatch({ type: types.NEXT_TASKS_ERROR });
         }
     }

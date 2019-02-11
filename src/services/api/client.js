@@ -16,6 +16,7 @@ export const getData = async (session_id, id) => {
         }
         return {
             isSuccess: false,
+            needLogout: status === 5,
             message: rest.error,
         };
     } catch (err) {

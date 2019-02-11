@@ -16,6 +16,7 @@ export const findByString = async (session_id, query) => {
       }
       return {
           isSuccess: false,
+          needLogout: status === 5,
           message: rest.error,
       };
   } catch (err) {

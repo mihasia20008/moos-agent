@@ -1,8 +1,7 @@
 /* Modal */
 .modal-open {
-
   .fr-app {
-    background-color: rgba(36, 34, 50, 0.8);
+    //background-color: rgba(36, 34, 50, 0.8);
     filter:blur(4px);
     -o-filter:blur(4px);
     -ms-filter:blur(4px);
@@ -13,13 +12,21 @@
     display: flex!important;
   }
 }
+
 .modal-backdrop {
-  background-color: rgba(36, 34, 50, 0.8)!important;
-  visibility: hidden;
+  background-color: rgba(36, 34, 50, 0.8) !important;
 }
-.modal-backdrop.show {
-  visibility: visible;
-  opacity: 1 !important;
+
+.fade-enter {
+  opacity: 0.01;
+}
+.fade-enter-active {
+  opacity: 1;
+  transition: opacity 0.4s ease-out;
+}
+
+.fade-enter-done {
+  opacity: 1;
 }
 
 .modal.show {
@@ -67,6 +74,8 @@
 
   .modal-dialog {
     max-width: 380px;
+    max-height: calc(100vh - 2.5rem);
+    overflow-y: scroll;
 
     &--medium {
       max-width: 500px;
@@ -83,8 +92,8 @@
 
   &--with-help-block {
     .modal-lg {
-      max-width: 1008px;
-      padding-right: 208px;
+      max-width: 1070px;
+      padding-right: 270px;
     }
   }
 
@@ -146,7 +155,6 @@
 }
 
 .modal-content {
-
   &--blur {
     filter: blur(4px);
   }
@@ -155,7 +163,8 @@
     justify-content: space-between;
     align-items: flex-start;
     flex-wrap: wrap;
-    margin-bottom: 16px;
+    height: 0;
+    margin-bottom: 40px;
 
     &-info {
       width: 100%;
@@ -234,7 +243,8 @@
       margin-left: 15px;
       background-color: #aaaaaa;
     }
-    .btn-primary#camunda_complete {
+    .btn-primary#camunda_complete,
+    .btn-primary#camunda_submit {
       background-color:#44a4ff;
     }
   }

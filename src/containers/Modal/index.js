@@ -57,10 +57,12 @@ class Modal extends PureComponent {
             onCloseModal
         } = this.props;
 
-        return [
-            <div key={0} className={cx('modal-custom', modalClass, {
-                'modal-custom--empty': centerPosition,
-            })}>
+        return (
+            <div
+                className={cx('modal-custom', modalClass, {
+                    'modal-custom--empty': centerPosition,
+                })}
+            >
                 <div
                     ref={this.setComponentRef.bind(this, 'modal')}
                     className={cx('modal', 'fade', {
@@ -72,10 +74,13 @@ class Modal extends PureComponent {
                     aria-labelledby="exampleModalLabel"
                     aria-hidden="true"
                 >
-                    <div className={cx('modal-dialog', dialogClass, {
-                        'modal-dialog-centered': centerPosition,
-                        'modal-lg': topPosition,
-                    })} role="document">
+                    <div
+                        className={cx('modal-dialog', dialogClass, {
+                            'modal-dialog-centered': centerPosition,
+                            'modal-lg': topPosition,
+                        })}
+                        role="document"
+                    >
                         <div
                             className={cx('modal-content', contentClass)}
                             ref={this.setComponentRef.bind(this, 'content')}
@@ -93,9 +98,9 @@ class Modal extends PureComponent {
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-            </div>,
-            <div key={1} className={cx('modal-backdrop', 'fade', 'show')} />
-        ];
+                <div className={cx('modal-backdrop')} />
+            </div>
+        );
     }
 }
 

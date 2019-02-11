@@ -10,6 +10,7 @@ class Input extends PureComponent {
         type: PropTypes.string,
         placeholder: PropTypes.string,
         iconClass: PropTypes.string,
+        error: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -21,6 +22,7 @@ class Input extends PureComponent {
     state = {
         value: this.props.defaultValue,
         type: this.props.type,
+        hidePlaceholder: false,
     };
 
     handleShowPassword = () => {
@@ -28,7 +30,7 @@ class Input extends PureComponent {
         const { type: propsType } = this.props;
 
         this.setState({ type: stateType === propsType ? 'text' : propsType });
-    }
+    };
 
     handleInputType = ({ target }) => {
         this.setState({ value: target.value });
@@ -36,9 +38,17 @@ class Input extends PureComponent {
         onInputChange(name, target.value);
     };
 
+    handleInputFocus = () => this.setState({ hidePlaceholder: true });
+
+    handleInputBlur = (event) => {
+        if (event.target.value === '') {
+            this.setState({ hidePlaceholder: false });
+        }
+    };
+
     render() {
-        const { value, type: stateType } = this.state;
-        const { type: propsTypes, name, placeholder, iconClass } = this.props;
+        const { value, type: stateType, hidePlaceholder } = this.state;
+        const { type: propsTypes, name, placeholder, iconClass, error } = this.props;
 
         return (
             <div className={cx('form-group__row-input')}>
@@ -46,14 +56,26 @@ class Input extends PureComponent {
                 {propsTypes === 'password'
                     ? <span className={cx('icon icon-eye')} onClick={this.handleShowPassword} />
                     : null}
-                <input 
+                <input
+                    id={`input-${name}`}
                     type={stateType}
-                    className={cx('form-control', `form-control--${name}`)}
-                    aria-describedby={name} 
-                    placeholder={placeholder}
+                    className={cx('form-control', `form-control--${name}`, {
+                        'form-control--error': error
+                    })}
+                    aria-describedby={name}
                     value={value}
                     onChange={this.handleInputType}
+                    onFocus={this.handleInputFocus}
+                    onBlur={this.handleInputBlur}
                 />
+                <label
+                    className={cx('form-placeholder', {
+                        'form-placeholder--hidden': hidePlaceholder
+                    })}
+                    htmlFor={`#input-${name}`}
+                >
+                    {placeholder}
+                </label>
             </div>
         );
     }

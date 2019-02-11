@@ -11,6 +11,7 @@
     width: 100%;
     min-height: 80px;
     border-radius: 24px;
+    border: none;
     background-color: #ffffff;
     padding: 16px;
 
@@ -29,6 +30,7 @@
 
     &:hover {
       text-decoration: none;
+      cursor: pointer;
     }
 
     &:not(:last-child) {

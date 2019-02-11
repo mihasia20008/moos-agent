@@ -49,7 +49,7 @@ class TaskDetail extends PureComponent {
                                     });
                 
                                     camForm.on('submit-error', function (evt, res) {
-                                        console.log(res);
+                                        console.log('submit-error', res);
                                         //uas.flash.error(res[0]);
                 
                                         //$container.removeOverlay();
@@ -60,11 +60,10 @@ class TaskDetail extends PureComponent {
                 
                                         camForm.submit(function (err) {
                                             if (err) {
-                                                console.log(err);
-                                                // uas.flash.error(err);
-                
-                                                //$container.removeOverlay();
-                
+                                                setErrorNotification(err);
+                                                setTimeout(function () {
+                                                    clearErrorNotification();
+                                                }, 3000);                
                                                 throw err;
                                             }
                                             else {
@@ -94,9 +93,8 @@ class TaskDetail extends PureComponent {
                         
                     function getTask(taskId) {
                         taskService.get(taskId, function (err, res) {
-                            console.log(err, res);
                             if (err) {
-                                console.log(err.status);
+                                console.log(err, err.message, err.response);
                                 if (err.status === 404) {
                                     $('#camunda').html(
                                         '<div class="error-code error-404"> ' +
@@ -130,6 +128,33 @@ class TaskDetail extends PureComponent {
                             openForm(res);
                         });
                     }
+                    
+                    function setErrorNotification(content) {
+                        var innerHtml =
+                            '<span class="notification__text">' +
+                            content +
+                            '</span>' +
+                            '<button type="button" class="notification__reload-link">' +
+                            '    <i class="icon icon-close-s" />' +
+                            '</button>'
+                            .replace(/#content#/g, content);
+                        
+                        var elem = $(document.createElement('div'))
+                            .addClass('notification')
+                            .attr('id', 'error-note')
+                            .html(innerHtml);
+                            
+                        $('#root').append(elem);
+                        
+                        $('.notification__reload-link').click(function() {
+                            clearErrorNotification();
+                        });
+                    }
+                    
+                    function clearErrorNotification() {
+                        $('#error-note').remove();
+                    }
+                    
                     getTask('#task_id#');
                 });
             } catch (err) {

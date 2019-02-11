@@ -19,6 +19,7 @@ export const getData = async (session_id, filters = {}, limit = 20) => {
       }
       return {
           isSuccess: false,
+          needLogout: status === 5,
           message: rest.error,
       };
   } catch (err) {
@@ -45,6 +46,7 @@ export const getNextPage = async (session_id, page, filters = {}, limit = 20) =>
         }
         return {
             isSuccess: false,
+            needLogout: status === 5,
             message: rest.error,
         };
     } catch (err) {
