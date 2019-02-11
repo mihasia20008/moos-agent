@@ -15,10 +15,22 @@ const SearchCard = ({ id, query, displayName, INN, OGRN, }) => {
                 />
             </div>
             <div className={cx('autocomplete__text')}>
-                <span>ИНН:</span> {INN}
+                <span>ИНН:</span>
+                <Highlighter
+                    highlightClassName="autocomplete__identity"
+                    searchWords={[query]}
+                    autoEscape={true}
+                    textToHighlight={INN}
+                />
             </div>
             <div className={cx('autocomplete__text')}>
-                <span>ОГРН:</span> {OGRN}
+                <span>ОГРН:</span>
+                <Highlighter
+                    highlightClassName="autocomplete__identity"
+                    searchWords={[query]}
+                    autoEscape={true}
+                    textToHighlight={OGRN}
+                />
             </div>
         </div>
     );

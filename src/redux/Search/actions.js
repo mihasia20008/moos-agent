@@ -26,3 +26,7 @@ export function searchByString(session_id, query) {
         }
     };
 }
+
+export function clearSearchResults() {
+    return dispatch => dispatch({ type: types.SEARCH_CLEAR });
+}

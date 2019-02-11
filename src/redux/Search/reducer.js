@@ -12,6 +12,9 @@ export default (state = initialState, action) => {
                 list: action.result,
             };
         }
+        case types.SEARCH_CLEAR: {
+            return { ...initialState };
+        }
         case types.SEARCH_ERROR:
         default: {
             return { ...state };

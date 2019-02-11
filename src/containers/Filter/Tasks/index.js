@@ -8,6 +8,7 @@ import CheckboxList from '../../../components/CheckboxList';
 import TextField from '../../../components/TextField';
 import DatePicker from '../../../components/DatePicker';
 import RangeSlider from '../../../components/RangeSlider';
+import TextFieldWithAutoComplete from '../../../components/TextFieldWithAutoComplete';
 
 class TasksFilter extends PureComponent {
     static propTypes = {
@@ -110,7 +111,12 @@ class TasksFilter extends PureComponent {
         });
     };
 
-    handleClearField = (name) => this.props.onChangeFilter({ [`${name}`]: '' });
+    handleSearchSelect = (name, value) => {
+        const { onChangeFilter } = this.props;
+        onChangeFilter({ [`${name}`]: value })
+    };
+
+    handleClearField = (name, value) => this.props.onChangeFilter({ [`${name}`]: value });
 
     render() {
         const { isFixed } = this.state;
@@ -158,13 +164,17 @@ class TasksFilter extends PureComponent {
                                 onSelectDate={this.handleSelectDate}
                             />
                             <TextField
+                                name="orderNumber"
                                 value={filters.orderNumber}
                                 onChange={this.handleTypeText}
                                 onClear={this.handleClearField}
                             />
-                            <div className={cx('main-filter__control')}>
-                                <input type="text" className={cx('main-filter__control-field')} placeholder="Клиент" />
-                            </div>
+                            <TextFieldWithAutoComplete
+                                name="principalCompanyId"
+                                value={filters.principalCompanyId}
+                                onSelect={this.handleSearchSelect}
+                                onClear={this.handleClearField}
+                            />
                             <div className={cx('main-filter__control main-filter__control--button')}>
                                 <Link className={cx('btn btn-search')} to="?search">
                                     <i className={cx('icon icon-seacrh-m')} />

@@ -5,7 +5,7 @@ import cx from 'classnames';
 
 import SearchCard from '../../../components/Card/Search';
 
-import { searchByString } from '../../../redux/Search/actions';
+import { searchByString, clearSearchResults } from '../../../redux/Search/actions';
 
 class FormSearch extends PureComponent {
     static propTypes = {
@@ -26,6 +26,11 @@ class FormSearch extends PureComponent {
         if (defaultSearch.length > 2) {
             dispatch(searchByString(session_id, defaultSearch));
         }
+    }
+
+    componentWillUnmount() {
+        const { dispatch } = this.props;
+        dispatch(clearSearchResults());
     }
 
     handleSearchType = ({ target: { value } }) => {
@@ -89,7 +94,7 @@ class FormSearch extends PureComponent {
             </form>
         );
     }
-};
+}
 
 const mapStateToProp = ({ User, Search }) => {
     return {
