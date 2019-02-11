@@ -9,6 +9,7 @@ import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 
 import { staticRanges, staticInputRanges } from './getStaticData';
+import ClearButton from "../ClearButton";
 
 class DatePicker extends PureComponent {
     static propTypes = {
@@ -18,6 +19,7 @@ class DatePicker extends PureComponent {
             to: PropTypes.date,
         }),
         onSelectDate: PropTypes.func.isRequired,
+        onClear: PropTypes.func.isRequired,
     };
     static defaultProps = {
         defaultActive: {
@@ -57,10 +59,12 @@ class DatePicker extends PureComponent {
     handleSelect = (ranges) => {
         const { name } = this.props;
         const values = ranges[name];
+
+        const selectCount = values.startDate === values.endDate ? 1 : 2;
         this.setState({
             startDate: values.startDate,
             endDate: values.endDate,
-            selectCount: this.state.selectCount + 1,
+            selectCount,
         }, this.checkEndSelectDate);
     };
 
@@ -72,18 +76,29 @@ class DatePicker extends PureComponent {
     };
 
     handleEndSelect = () => {
-        this.handleTogglePicker();
-        this.props.onSelectDate({ target: this.input });
+        const { onSelectDate } = this.props;
+        const { selectCount } = this.state;
+        this.handleHidePicker();
+        if (selectCount) {
+            onSelectDate({ target: this.input });
+        } else {
+            this.handleClearField();
+        }
     };
 
-    handleTogglePicker = () => {
-        const { showPicker } = this.state;
-        if (showPicker) {
-            document.removeEventListener('click', this.handleOutsideClick, false);
-        } else {
-            document.addEventListener('click', this.handleOutsideClick, false);
-        }
-        this.setState({ showPicker: !showPicker, selectCount: 0 });
+    handleFocusPicker = () => {
+        document.addEventListener('click', this.handleOutsideClick, false);
+        const { selectCount } = this.state;
+        this.setState(Object.assign(
+            {},
+            { showPicker: true },
+            selectCount !== 1 ? { selectCount: 0 } : {}
+        ));
+    };
+
+    handleHidePicker = () => {
+        document.removeEventListener('click', this.handleOutsideClick, false);
+        this.setState({ showPicker: false });
     };
 
     handleOutsideClick = (event) => {
@@ -93,12 +108,24 @@ class DatePicker extends PureComponent {
 
     handleNativeType = () => ({});
 
-    render() {
+    handleClearField = () => {
+        const { name, onClear } = this.props;
+        const { defaultActive } = DatePicker.defaultProps;
+        this.setState({
+            selectCount: 0,
+            startDate: defaultActive.from,
+            endDate: defaultActive.to,
+        });
+        onClear(name, {});
+    };
 
-        const { showPicker, startDate, endDate } = this.state;
+    render() {
+        const { selectCount, showPicker, startDate, endDate } = this.state;
         const { name, defaultActive } = this.props;
 
-        const value = DatePicker.prepareInputValue(startDate, endDate, defaultActive.from, defaultActive.to);
+        const value = selectCount
+            ? DatePicker.prepareInputValue(startDate, endDate, defaultActive.from, defaultActive.to)
+            : '';
         const range = {
             key: name,
             startDate,
@@ -123,7 +150,11 @@ class DatePicker extends PureComponent {
                         placeholder="Даты"
                         autoComplete="off"
                         onChange={this.handleNativeType}
-                        onFocus={this.handleTogglePicker}
+                        onFocus={this.handleFocusPicker}
+                    />
+                    <ClearButton
+                        onClear={this.handleClearField}
+                        isHidden={!value.length}
                     />
                 </div>
                 <div className={cx('main-filter__picker', {

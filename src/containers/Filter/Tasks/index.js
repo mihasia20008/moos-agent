@@ -162,6 +162,7 @@ class TasksFilter extends PureComponent {
                                 name="createdDate"
                                 defaultActive={filters.createdDate}
                                 onSelectDate={this.handleSelectDate}
+                                onClear={this.handleClearField}
                             />
                             <TextField
                                 name="orderNumber"
