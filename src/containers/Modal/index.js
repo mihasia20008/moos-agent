@@ -41,6 +41,8 @@ class Modal extends PureComponent {
         }
         if (this.content && this.content.contains(event.target)) return;
         if (this.close && this.close.contains(event.target)) return;
+        const href = event.target.getAttribute('href');
+        if (href && href.search('/clients/') !== -1) return;
         this.props.onCloseModal();
     };
 
@@ -65,7 +67,7 @@ class Modal extends PureComponent {
             >
                 <div
                     ref={this.setComponentRef.bind(this, 'modal')}
-                    className={cx('modal', 'fade', {
+                    className={cx('modal', 'fade', 'show', {
                         'bd-example-modal-lg': topPosition,
                     })}
                     id="exampleModalCenter"

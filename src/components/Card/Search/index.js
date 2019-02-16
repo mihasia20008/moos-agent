@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
+import { Link } from 'react-router-dom';
 import Highlighter from 'react-highlight-words';
 
 const SearchCard = ({ id, query, displayName, INN, OGRN, }) => {
     return (
-        <div className={cx('autocomplete__item')}>
+        <Link to={`/clients/${id}`} className={cx('autocomplete__item')}>
             <div className={cx('autocomplete__text autocomplete__text--title')}>
                 <Highlighter
                     highlightClassName="autocomplete__identity"
@@ -32,7 +33,7 @@ const SearchCard = ({ id, query, displayName, INN, OGRN, }) => {
                     textToHighlight={OGRN}
                 />
             </div>
-        </div>
+        </Link>
     );
 };
 
