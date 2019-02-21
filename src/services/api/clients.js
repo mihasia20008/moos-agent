@@ -6,7 +6,7 @@ export const getData = async (session_id) => {
   try {
       const { data: { error_code: status, ...rest } } = await axios({
           method: 'GET',
-          url: `${SERVER.HOST}/company/list?session_id=${session_id}`,
+          url: `${SERVER.HOST}${SERVER.SPA_ENDPOINT}/company/list?session_id=${session_id}`,
       });
       if (status === 0) {
           return {
@@ -32,7 +32,7 @@ export const getNextPage = async (session_id, page, limit = 20) => {
     try {
         const { data: { error_code: status, ...rest } } = await axios({
             method: 'GET',
-            url: `${SERVER.HOST}/company/list?session_id=${session_id}&page=${page}&limit=${limit}`,
+            url: `${SERVER.HOST}${SERVER.SPA_ENDPOINT}/company/list?session_id=${session_id}&page=${page}&limit=${limit}`,
         });
         if (status === 0) {
             return {

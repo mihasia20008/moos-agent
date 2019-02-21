@@ -1,3 +1,3 @@
-export const HOST = process.env.NODE_ENV !== 'production'
-    ? 'http://agent.cherry-develop.moos.solutions/spa/api'
-    : '/spa/api';
+export const HOST = '';
+export const SPA_ENDPOINT = '/spa/api';
+export const API_ENDPOINT = '/api';
