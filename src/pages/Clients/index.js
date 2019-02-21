@@ -5,7 +5,7 @@ import cx from 'classnames';
 
 // import ClientsFilter from '../../containers/Filter/Clients';
 import ClientsList from '../../containers/List/Clients';
-// import ClientsStats from '../../components/ClientsStats';
+// import ClientsStatsPanel from '../../components/StatsPanel/Clients';
 import EmptyClientsList from '../../components/Empty/ClientsList';
 
 import { getClientsList, getNextClientsList } from '../../redux/Clients/actions';
@@ -53,7 +53,7 @@ class Clients extends PureComponent {
     
     render() {
         const { company, isFetching, isFetchingNext } = this.props;
-        // {/*<ClientsStats key={0} />,*/}
+        // {/*<ClientsStatsPanel key={0} />,*/}
 
         return (
             <section className={cx('fr-content')}>
