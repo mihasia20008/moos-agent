@@ -1,0 +1,3 @@
+export const AGENTS_FETCH = 'AGENTS_FETCH';
+export const AGENTS_SUCCESS = 'AGENTS_SUCCESS';
+export const AGENTS_ERROR = 'AGENTS_ERROR';

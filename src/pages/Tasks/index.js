@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import cx from 'classnames';
 
-import Sidebar from '../../containers/Sidebar';
 import TasksFilter from '../../containers/Filter/Tasks';
 import TasksList from '../../containers/List/Tasks';
 import EmptyTasksList from '../../components/Empty/TasksList';

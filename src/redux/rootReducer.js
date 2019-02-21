@@ -25,3 +25,7 @@ export {
 export {
   default as Error,
 } from './Error/reducer';
+
+export {
+  default as Agents,
+} from './Agents/reducer';

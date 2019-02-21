@@ -18,15 +18,14 @@ class Clients extends PureComponent {
         nextPage: PropTypes.number,
         hasMorePage: PropTypes.bool,
         session_id: PropTypes.string.isRequired,
-        getClientsList: PropTypes.func.isRequired,
-        getNextClientsList: PropTypes.func.isRequired,
+        dispatch: PropTypes.func.isRequired,
     };
 
     componentDidMount() {
-        const { session_id, getClientsList } = this.props;
+        const { session_id, dispatch } = this.props;
         
         if (typeof session_id !== 'undefined') {
-            getClientsList(session_id);
+            dispatch(getClientsList(session_id));
         } 
         window.addEventListener('scroll', this.handleScroll);
     }
@@ -42,12 +41,12 @@ class Clients extends PureComponent {
             isFetchingNext,
             nextPage,
             hasMorePage,
-            getNextClientsList,
+            dispatch,
         } = this.props;
         const { height } = document.querySelector('.block-list.block-list--clients').getBoundingClientRect();
 
         if (!isFetchingNext && company.length > 0 && hasMorePage && height - window.scrollY < 1000) {
-            getNextClientsList(session_id, nextPage);
+            dispatch(getNextClientsList(session_id, nextPage));
         }
     };
     
@@ -81,14 +80,4 @@ const mapStateToProps = ({ Clients, User }) => {
     };
 };
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        getClientsList: (session_id) => dispatch(getClientsList(session_id)),
-        getNextClientsList: (session_id, page) => dispatch(getNextClientsList(session_id, page)),
-    };
-};
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(Clients);
+export default connect(mapStateToProps)(Clients);
