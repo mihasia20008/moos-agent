@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 
 import ClientCard from '../../../components/Card/Client';
-import Skeket from '../../../components/Card/Skelet';
+import Skelet from '../../../components/Card/Skelet';
 
 const ClientsList = ({ list, isLoading, isLoadingNext }) => {
     return (
         <div className={cx('block-list block-list--clients')}>
             {isLoading
-                ? [0, 1, 2, 3].map((item, index) => <Skeket key={index} />)
+                ? [0, 1, 2, 3].map((item, index) => <Skelet key={index} />)
                 : list.map((item, index) => {
                     const name = typeof item.displayName !== 'undefined' && item.displayName
                         ? item.displayName
@@ -27,7 +27,7 @@ const ClientsList = ({ list, isLoading, isLoadingNext }) => {
                         OGRN={item.OGRN ? item.OGRN : undefined}
                     />
                 })}
-            {isLoadingNext && <Skeket key={list.length + 10} showLoader />}
+            {isLoadingNext && <Skelet key={list.length + 10} showLoader />}
         </div>
     );
 };

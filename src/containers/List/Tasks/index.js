@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 
 import TaskCard from '../../../components/Card/Task';
-import Skeket from '../../../components/Card/Skelet';
+import Skelet from '../../../components/Card/Skelet';
 
 const TasksList = ({ list, isLoading, isLoadingNext, onOpenDetail }) => {
     return (
         <div className={cx('block-list block-list--tasks')}>
             {isLoading
-                ? [0, 1, 2, 3].map((item, index) => <Skeket key={index} />)
+                ? [0, 1, 2, 3].map((item, index) => <Skelet key={index} />)
                 : list.map((item, index) => (
                     <TaskCard
                         key={index}
@@ -26,7 +26,7 @@ const TasksList = ({ list, isLoading, isLoadingNext, onOpenDetail }) => {
                         onOpenDetail={onOpenDetail}
                     />
                 ))}
-            {isLoadingNext && <Skeket key={list.length + 10} showLoader />}
+            {isLoadingNext && <Skelet key={list.length + 10} showLoader />}
         </div>
     );
 };

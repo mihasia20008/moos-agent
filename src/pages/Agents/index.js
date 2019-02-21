@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import cx from 'classnames';
 
 import AgentsStatsPanel from '../../components/StatsPanel/Agents';
+import EmptyAgentsList from "../../components/Empty/AgentsList";
+import AgentsList from "../../containers/List/Agents";
 
 import { getAgentsList } from "../../redux/Agents/actions";
 
@@ -24,11 +26,19 @@ class Agents extends PureComponent {
     }
 
     render() {
-        console.log(this.props.agents);
+        const { isFetching, agents } = this.props;
+
         return (
             <section className={cx('fr-content')}>
                 <AgentsStatsPanel />
-                Agent
+                {!agents.length && !isFetching
+                    ? <EmptyAgentsList />
+                    : (
+                        <AgentsList
+                            list={agents}
+                            isLoading={isFetching}
+                        />
+                    )}
             </section>
         );
     }
