@@ -5,6 +5,7 @@ import { Route, Link, Redirect } from 'react-router-dom';
 import cx from 'classnames';
 import { CSSTransition } from 'react-transition-group';
 
+import Sidebar from '../Sidebar';
 import Modal from '../Modal';
 import AddModalSelect from '../AddModal/Select';
 import AddModalForm from '../AddModal/Form';
@@ -192,6 +193,7 @@ class Layout extends PureComponent {
                         <div className={cx('fr-container', {
                             'fr-container--error': isNotFound,
                         })}>
+                            {!isNotFound && <Sidebar />}
                             <Component {...matchProps} />
                         </div>
                         {showAddButton && (

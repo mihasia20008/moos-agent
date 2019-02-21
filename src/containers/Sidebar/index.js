@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, withRouter } from 'react-router-dom';
 import cx from 'classnames';
 
 import logo from './logo-min.svg';
@@ -82,6 +82,10 @@ class Sidebar extends PureComponent {
                         <span className={cx('icon icon-user')} />
                         Клиенты
                     </NavLink>
+                    <NavLink to="/agents" activeClassName={cx('active')}>
+                        <span className={cx('icon icon-user')} />
+                        Агенты
+                    </NavLink>
                 </div>
                 <div className={cx('fr-sidebar-bm')}>
                     <div className={cx('fr-sidebar-bm__statistics')}>
@@ -117,7 +121,9 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(Sidebar);
+export default withRouter(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    )(Sidebar)
+);

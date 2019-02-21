@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import cx from 'classnames';
 
-import Sidebar from '../../containers/Sidebar';
 // import ClientsFilter from '../../containers/Filter/Clients';
 import ClientsList from '../../containers/List/Clients';
 // import ClientsStats from '../../components/ClientsStats';
@@ -56,9 +55,8 @@ class Clients extends PureComponent {
         const { company, isFetching, isFetchingNext } = this.props;
         // {/*<ClientsStats key={0} />,*/}
 
-        return [
-            <Sidebar key={0} />,
-            <section key={1} className={cx('fr-content')}>
+        return (
+            <section className={cx('fr-content')}>
                 {/*<ClientsFilter isDisable={!company.length} />*/}
                 {!company.length && !isFetching
                     ? <EmptyClientsList />
@@ -68,7 +66,7 @@ class Clients extends PureComponent {
                         isLoadingNext={isFetchingNext}
                     />}
             </section>
-        ];
+        );
     }
 }
 

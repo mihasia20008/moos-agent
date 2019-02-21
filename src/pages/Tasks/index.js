@@ -89,9 +89,8 @@ class Tasks extends PureComponent {
             isFetchingNext,
         } = this.props;
 
-        return [
-            <Sidebar key={0} />,
-            <section key={1} className={cx('fr-content')}>
+        return (
+            <section className={cx('fr-content')}>
                 <TasksFilter
                     isDisable={!list.length && !Object.keys(filters).length}
                     filters={filters}
@@ -110,7 +109,7 @@ class Tasks extends PureComponent {
                         />
                     )}
             </section>
-        ];
+        );
     }
 }
 
