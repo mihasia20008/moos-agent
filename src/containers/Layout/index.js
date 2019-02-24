@@ -9,11 +9,13 @@ import Sidebar from '../Sidebar';
 import Modal from '../Modal';
 import AddModalSelect from '../AddModal/Select';
 import AddModalForm from '../AddModal/Form';
+import AddModalAgent from '../AddModal/Agent';
 import FormRestore from '../Form/Restore';
 import FormSearch from '../Form/Search';
 import UserStatistics from '../UserStatistics';
 import ClientDetail from '../Detail/Client';
 import TaskDetail from '../Detail/Task';
+import AgentList from '../Detail/Agent';
 import SnackBar from '../SnackBar';
 
 import Overlay from '../../components/Overlay';
@@ -181,6 +183,36 @@ class Layout extends PureComponent {
                                 />
                             </Modal>
                         );
+                        break;
+                    }
+                    case match.path.search('/agents/') !== -1: {
+                        if (typeof match.params.id !== 'undefined') {
+                            contentNode = (
+                                <Modal
+                                    centerPosition
+                                    modalClass="users-list"
+                                    dialogClass="modal-dialog--md"
+                                    contentClass="modal-content--centred"
+                                    preventOutsideClick
+                                    onCloseModal={matchProps.history.goBack}
+                                >
+                                    <AgentList id={match.params.id} />
+                                </Modal>
+                            );
+                        }
+                        if (match.path.search('/add') !== -1) {
+                            contentNode = (
+                                <Modal
+                                    centerPosition
+                                    modalClass="user-edit-form"
+                                    contentClass="modal-content--centred"
+                                    preventOutsideClick
+                                    onCloseModal={matchProps.history.goBack}
+                                >
+                                    <AddModalAgent />
+                                </Modal>
+                            );
+                        }
                         break;
                     }
                     default: {

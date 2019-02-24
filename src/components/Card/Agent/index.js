@@ -1,9 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import cx from 'classnames';
 
 const AgentCard = ({
-   name,
+    id,
+    name,
+    agentsCount,
 }) => {
     return (
         <div className={cx('fr-agent-card')}>
@@ -14,10 +17,10 @@ const AgentCard = ({
                     <span>Договор № 1 от 01.01.2019</span>
                 </div>
                 <div className={cx('fr-agent-card__stats')}>
-                    <a href="#" className={cx('fr-agent-card__stats-item')} data-toggle="modal" data-target="#usersListModal">
-                        <span className={cx('fr-agent-card__stats-value')}>1</span>
+                    <Link to={`/agents/${id}`} className={cx('fr-agent-card__stats-item')} data-toggle="modal" data-target="#usersListModal">
+                        <span className={cx('fr-agent-card__stats-value')}>{agentsCount}</span>
                         <span className={cx('fr-agent-card__stats-text')}>пользователи</span>
-                    </a>
+                    </Link>
                     <a href="#" className={cx('fr-agent-card__stats-item')}>
                         <span className={cx('fr-agent-card__stats-value')}>3</span>
                         <span className={cx('fr-agent-card__stats-text')}>субагенты</span>
@@ -63,10 +66,11 @@ const AgentCard = ({
 
 AgentCard.propTypes = {
     name: PropTypes.string,
+    agentsCount: PropTypes.number.isRequired,
 };
 
 AgentCard.defaultProps = {
-    name: '<i style="font-style: italic; color: #ccc;">Название не указано</i>'
+    name: '<i style="font-style: italic; color: #ccc;">Название не указано</i>',
 };
 
 export default AgentCard;
