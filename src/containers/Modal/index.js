@@ -42,7 +42,7 @@ class Modal extends PureComponent {
         if (this.content && this.content.contains(event.target)) return;
         if (this.close && this.close.contains(event.target)) return;
         const href = event.target.getAttribute('href');
-        if (href && (href.search('/clients/') !== -1 || href.search('/agents/add/') !== -1)) return;
+        if (href && (href.search('/clients/') !== -1 || href.search('/agents/add') !== -1)) return;
         this.props.onCloseModal();
     };
 
