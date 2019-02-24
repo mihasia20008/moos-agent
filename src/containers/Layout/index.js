@@ -193,7 +193,6 @@ class Layout extends PureComponent {
                                     modalClass="users-list"
                                     dialogClass="modal-dialog--md"
                                     contentClass="modal-content--centred"
-                                    preventOutsideClick
                                     onCloseModal={matchProps.history.goBack}
                                 >
                                     <AgentList id={match.params.id} />
@@ -206,7 +205,6 @@ class Layout extends PureComponent {
                                     centerPosition
                                     modalClass="user-edit-form"
                                     contentClass="modal-content--centred"
-                                    preventOutsideClick
                                     onCloseModal={matchProps.history.goBack}
                                 >
                                     <AddModalAgent />
