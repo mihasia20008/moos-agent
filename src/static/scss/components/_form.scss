@@ -215,6 +215,11 @@
     }
   }
 }
+.form-group {
+  &--mb {
+    margin-bottom: 16px;
+  }
+}
 .bf-form {
   display: flex;
   flex-direction: column;

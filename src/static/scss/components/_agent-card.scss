@@ -3,6 +3,7 @@
 }
 .fr-agent-card {
   background-color: $color-white;
+  margin-bottom: 8px;
 
   $ac: &;
 
@@ -36,7 +37,7 @@
     #{$ac}__title {
       font: {
         size: 20px;
-        weight: 600;
+        weight: 500;
       };
       letter-spacing: 0.5px;
       color: #242232;
@@ -72,7 +73,7 @@
     &-text {
       font: {
         size: 14px;
-        weight: 600;
+        weight: 400;
       };
       letter-spacing: 0.3px;
       color: #505050;
@@ -124,6 +125,7 @@
       span {
         font: {
           size: 14px;
+          weight: 500;
         };
         letter-spacing: 0.3px;
       }
