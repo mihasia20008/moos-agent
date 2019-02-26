@@ -17,6 +17,7 @@ import { statusItems } from '../../contentConstants';
 class Sidebar extends PureComponent {
     static propTypes = {
         name: PropTypes.string,
+        isManager: PropTypes.bool,
         session_id: PropTypes.string.isRequired,
         widget: PropTypes.shape({
             items: PropTypes.object.isRequired,
@@ -26,7 +27,10 @@ class Sidebar extends PureComponent {
         logoutUser: PropTypes.func.isRequired,
         fetchWidgetData: PropTypes.func.isRequired,
     };
-    static defaultProps = { name: '' };
+    static defaultProps = {
+        name: '',
+        isManager: false,
+    };
 
     componentDidMount() {
         const { session_id, fetchWidgetData } = this.props;
@@ -66,7 +70,7 @@ class Sidebar extends PureComponent {
     }
 
     render() {
-        const { name } = this.props;
+        const { name, isManager } = this.props;
 
         return (
             <section className={cx('fr-sidebar')}>
@@ -82,10 +86,12 @@ class Sidebar extends PureComponent {
                         <span className={cx('icon icon-user')} />
                         Клиенты
                     </NavLink>
-                    <NavLink to="/agents" activeClassName={cx('active')}>
-                        <span className={cx('icon icon-user')} />
-                        Агенты
-                    </NavLink>
+                    {isManager ? (
+                        <NavLink to="/agents" activeClassName={cx('active')}>
+                            <span className={cx('icon icon-user')} />
+                            Агенты
+                        </NavLink>
+                    ) : null}
                 </div>
                 <div className={cx('fr-sidebar-bm')}>
                     <div className={cx('fr-sidebar-bm__statistics')}>
@@ -109,6 +115,7 @@ class Sidebar extends PureComponent {
 const mapStateToProps = ({ User, Statistics }) => {
     return {
         name: User.fullname,
+        isManager: User.ismanager,
         session_id: User.session_id,
         widget: Statistics.widget,
     };

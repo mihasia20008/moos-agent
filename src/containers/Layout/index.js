@@ -28,6 +28,7 @@ class Layout extends PureComponent {
         isAuth: PropTypes.bool.isRequired,
         showAddButton: PropTypes.bool.isRequired,
         showAddHelp: PropTypes.bool.isRequired,
+        isManager: PropTypes.bool,
         isNotFound: PropTypes.bool,
         showSnackBar: PropTypes.bool.isRequired,
         session_id: PropTypes.string.isRequired,
@@ -35,6 +36,7 @@ class Layout extends PureComponent {
     };
     static defaultProps = {
         isNotFound: false,
+        isManager: false,
     };
 
     componentDidUpdate(prevProps) {
@@ -57,6 +59,7 @@ class Layout extends PureComponent {
         const {
             component: Component,
             isNotFound,
+            isManager,
             showAddButton,
             showAddHelp,
             isAuth,
@@ -83,6 +86,17 @@ class Layout extends PureComponent {
                 }
         
                 const { location: { search, state: routeState = {} }, match } = matchProps;
+
+                if (match.path.search('/agents/') !== -1 && !isManager) {
+                    return (
+                        <Redirect
+                            to={{
+                                pathname: "/tasks",
+                                search: "",
+                            }}
+                        />
+                    );
+                }
 
                 let contentNode;
 
@@ -264,6 +278,7 @@ const mapStateToProps = (state, ownProps) => {
         showAddHelp: isTaskEmpty,
         isAuth: User.isAuth,
         session_id: User.session_id,
+        isManager: User.ismanager,
         showSnackBar: Error.show,
     };
 };
