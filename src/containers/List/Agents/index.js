@@ -10,10 +10,10 @@ const AgentsList = ({ list, isLoading }) => {
         <div className={cx('fr-agents-list')}>
             {isLoading
                 ? [0, 1, 2, 3].map((item, index) => <Skelet key={index} />)
-                : list.map((item, index) => (
+                : list.map(item => (
                     <AgentCard
                         key={item.id}
-                        id={index}
+                        id={item.id}
                         name={item.displayName}
                         agentsCount={item.agentLogins ? item.agentLogins.length : 0}
                     />

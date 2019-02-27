@@ -4,10 +4,17 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import cx from 'classnames';
 
+import { getAgentUsersList } from "../../../redux/Agents/actions";
+
 class AgentList extends PureComponent {
     static propTypes = {
         list: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.array])
     };
+
+    componentDidMount() {
+        const { session_id, id, dispatch } = this.props;
+        dispatch(getAgentUsersList(session_id, id));
+    }
 
     renderAgentList() {
         const { fetchingList, list } = this.props;
@@ -15,14 +22,14 @@ class AgentList extends PureComponent {
         if (fetchingList) {
             return (
                 <tr>
-                    <td colSpan={3}>
+                    <td colSpan={3} style={{ textAlign: 'center' }}>
                         Список загружается
                     </td>
                 </tr>
             );
         }
 
-        if (fetchingList || !list || list.length === 0) {
+        if (!fetchingList && list.length === 0) {
             return (
                 <tr>
                     <td colSpan={3} style={{ textAlign: 'center' }}>
@@ -35,13 +42,17 @@ class AgentList extends PureComponent {
         return list.map((item, index) => (
             <tr key={index}>
                 <td>
-                    <span className={cx('table--text-bold')}>{item}</span>
+                    <span className={cx('table--text-bold')}>{item.fullName}</span>
                 </td>
                 <td>
-                    <span>менеджер</span>
+                    {/*<span>менеджер</span>*/}
                 </td>
                 <td>
-                    <span className={cx('table__badge table__badge--success')}>Активен</span>
+                    {item.enabled ? (
+                        <span className={cx('table__badge table__badge--success')}>Активен</span>
+                    ) : (
+                        <span className={cx('table__badge table__badge--danger')}>Заблокирован</span>
+                    )}
                 </td>
             </tr>
         ));
@@ -52,12 +63,14 @@ class AgentList extends PureComponent {
             <div className={cx('agent-list')}>
                 <h3>Пользователи</h3>
                 <table className={cx('table table__secondary')}>
-                    <tbody>
+                    <thead>
                         <tr>
                             <th>Пользователь</th>
                             <th>Роль</th>
                             <th>Статус</th>
                         </tr>
+                    </thead>
+                    <tbody>
                         {this.renderAgentList()}
                     </tbody>
                 </table>
@@ -67,12 +80,10 @@ class AgentList extends PureComponent {
     }
 }
 
-const mapStateToProps = ({ Agents }, props) => {
-    const { isFetching, agents } = Agents;
-
+const mapStateToProps = ({ Agents }) => {
     return {
-        fetchingList: isFetching,
-        list: agents[props.id] ? agents[props.id].agentLogins : [],
+        fetchingList: Agents.isUsersFetching,
+        list: Agents.users,
     };
 };
 

@@ -21,14 +21,14 @@ const AgentCard = ({
                         <span className={cx('fr-agent-card__stats-value')}>{agentsCount}</span>
                         <span className={cx('fr-agent-card__stats-text')}>пользователи</span>
                     </Link>
-                    <a href="#" className={cx('fr-agent-card__stats-item')}>
+                    <span className={cx('fr-agent-card__stats-item')}>
                         <span className={cx('fr-agent-card__stats-value')}>3</span>
                         <span className={cx('fr-agent-card__stats-text')}>субагенты</span>
-                    </a>
-                    <a href="#" className={cx('fr-agent-card__stats-item')}>
+                    </span>
+                    <span className={cx('fr-agent-card__stats-item')}>
                         <span className={cx('fr-agent-card__stats-value')}>5%</span>
                         <span className={cx('fr-agent-card__stats-text')}>ставка</span>
-                    </a>
+                    </span>
                 </div>
             </div>
             <div className={cx('fr-agent-card__footer')}>

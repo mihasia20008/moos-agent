@@ -24,3 +24,24 @@ export function getAgentsList(session_id) {
         }
     };
 }
+
+export function getAgentUsersList(session_id, companyId) {
+    return async dispatch => {
+        try {
+            dispatch({ type: types.AGENT_USERS_FETCH });
+            const { isSuccess, ...res } = await Agents.getUsersList(session_id, companyId);
+            if (!isSuccess) {
+                if (res.needLogout) {
+                    dispatch(logoutProcess(res.message));
+                    return;
+                }
+                throw new Error(res.message);
+            }
+            dispatch({ type: types.AGENT_USERS_SUCCESS, data: { users: res.user } });
+        } catch (err) {
+            console.log(err);
+            dispatch(setErrorContent(err.message));
+            dispatch({ type: types.AGENT_USERS_ERROR });
+        }
+    };
+}
