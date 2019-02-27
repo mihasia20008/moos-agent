@@ -59,6 +59,8 @@ class AgentList extends PureComponent {
     }
 
     render() {
+        const { id } = this.props;
+
         return (
             <div className={cx('agent-list')}>
                 <h3>Пользователи</h3>
@@ -74,7 +76,7 @@ class AgentList extends PureComponent {
                         {this.renderAgentList()}
                     </tbody>
                 </table>
-                <Link to={`/agents/add`} className={cx('btn-options__link btn-edit-user')} />
+                <Link to={`/agents/${id}/users/new`} className={cx('btn-options__link btn-edit-user')} />
             </div>
         );
     }

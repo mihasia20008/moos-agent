@@ -199,8 +199,21 @@ class Layout extends PureComponent {
                         );
                         break;
                     }
-                    case match.path.search('/agents/') !== -1: {
-                        if (typeof match.params.id !== 'undefined') {
+                    case match.path.search('/agents/') !== -1 && typeof match.params.id !== 'undefined': {
+                        if (match.path.search('/users/new') !== -1) {
+                            contentNode = (
+                                <Modal
+                                    centerPosition
+                                    modalClass="user-edit-form"
+                                    contentClass="modal-content--centred"
+                                    onCloseModal={matchProps.history.goBack}
+                                >
+                                    <AddModalAgent />
+                                </Modal>
+                            );
+                            break;
+                        }
+                        if (match.path.search('/users') !== -1) {
                             contentNode = (
                                 <Modal
                                     centerPosition
@@ -212,18 +225,7 @@ class Layout extends PureComponent {
                                     <AgentList id={match.params.id} />
                                 </Modal>
                             );
-                        }
-                        if (match.path.search('/add') !== -1) {
-                            contentNode = (
-                                <Modal
-                                    centerPosition
-                                    modalClass="user-edit-form"
-                                    contentClass="modal-content--centred"
-                                    onCloseModal={matchProps.history.goBack}
-                                >
-                                    <AddModalAgent />
-                                </Modal>
-                            );
+                            break;
                         }
                         break;
                     }

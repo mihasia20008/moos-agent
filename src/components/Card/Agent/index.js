@@ -17,7 +17,7 @@ const AgentCard = ({
                     <span>Договор № 1 от 01.01.2019</span>
                 </div>
                 <div className={cx('fr-agent-card__stats')}>
-                    <Link to={`/agents/${id}`} className={cx('fr-agent-card__stats-item')} data-toggle="modal" data-target="#usersListModal">
+                    <Link to={`/agents/${id}/users`} className={cx('fr-agent-card__stats-item')} data-toggle="modal" data-target="#usersListModal">
                         <span className={cx('fr-agent-card__stats-value')}>{agentsCount}</span>
                         <span className={cx('fr-agent-card__stats-text')}>пользователи</span>
                     </Link>
