@@ -6,6 +6,7 @@ import cx from 'classnames';
 const AgentCard = ({
     id,
     name,
+    inn,
     agentsCount,
 }) => {
     return (
@@ -13,8 +14,10 @@ const AgentCard = ({
             <div className={cx('fr-agent-card__body')}>
                 <div className={cx('fr-agent-card__main')}>
                     <span className={cx('fr-agent-card__title')} dangerouslySetInnerHTML={{ __html: name }} />
-                    <span>Куратор: Головинский Василий Владимирович</span>
-                    <span>Договор № 1 от 01.01.2019</span>
+                    <span>
+                        <span style={{ marginRight: '5px' }}>ИНН:</span>
+                        <span dangerouslySetInnerHTML={{ __html: inn }} />
+                    </span>
                 </div>
                 <div className={cx('fr-agent-card__stats')}>
                     <Link to={`/agents/${id}/users`} className={cx('fr-agent-card__stats-item')} data-toggle="modal" data-target="#usersListModal">
@@ -24,10 +27,6 @@ const AgentCard = ({
                     <span className={cx('fr-agent-card__stats-item')}>
                         <span className={cx('fr-agent-card__stats-value')}>3</span>
                         <span className={cx('fr-agent-card__stats-text')}>субагенты</span>
-                    </span>
-                    <span className={cx('fr-agent-card__stats-item')}>
-                        <span className={cx('fr-agent-card__stats-value')}>5%</span>
-                        <span className={cx('fr-agent-card__stats-text')}>ставка</span>
                     </span>
                 </div>
             </div>
@@ -66,11 +65,13 @@ const AgentCard = ({
 
 AgentCard.propTypes = {
     name: PropTypes.string,
+    inn: PropTypes.string,
     agentsCount: PropTypes.number.isRequired,
 };
 
 AgentCard.defaultProps = {
     name: '<i style="font-style: italic; color: #ccc;">Название не указано</i>',
+    inn: '<i style="font-style: italic; color: #ccc;">Не указан</i>',
 };
 
 export default AgentCard;
