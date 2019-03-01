@@ -199,7 +199,7 @@ class Layout extends PureComponent {
                         );
                         break;
                     }
-                    case match.path.search('/agents/') !== -1 && typeof match.params.id !== 'undefined': {
+                    case match.path.search('/agents/') !== -1 && typeof match.params.agent !== 'undefined': {
                         if (match.path.search('/users/new') !== -1) {
                             contentNode = (
                                 <Modal
@@ -222,7 +222,7 @@ class Layout extends PureComponent {
                                     contentClass="modal-content--centred"
                                     onCloseModal={matchProps.history.goBack}
                                 >
-                                    <AgentList id={match.params.id} />
+                                    <AgentList id={match.params.agent} />
                                 </Modal>
                             );
                             break;

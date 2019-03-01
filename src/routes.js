@@ -15,8 +15,8 @@ export default (
         <Layout path="/tasks" component={Tasks} />
         <Layout path="/clients/:id" component={Clients} />
         <Layout path="/clients" component={Clients} />
-        <Layout path="/agents/:id/users/new" component={Agents} />
-        <Layout path="/agents/:id/users" component={Agents} />
+        <Layout path="/agents/:agent/users/new" component={Agents} />
+        <Layout path="/agents/:agent/users" component={Agents} />
         <Layout path="/agents" component={Agents} />
         <Layout component={NotFound} isNotFound />
     </Switch>
