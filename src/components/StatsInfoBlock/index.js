@@ -4,9 +4,10 @@ import cx from "classnames";
 
 import StatsInfoItem from '../StatsInfoItem';
 
-import { statusItems } from '../../contentConstants';
+import CONTENT from '../../contentConstants';
 
 const StatsInfoBlock = ({ globalColor, infoBlock, indicator }) => {
+    const { statusItems } = CONTENT;
     return (
         <div className={cx('chart-stats__info')}>{
             statusItems.map(({ key, text, className }, index) => {

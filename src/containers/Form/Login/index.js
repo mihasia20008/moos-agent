@@ -5,7 +5,7 @@ import cx from 'classnames';
 import Overlay from '../../../components/Overlay';
 import Input from '../../../components/Input';
 
-import * as CONTENT from '../../../contentConstants';
+import CONTENT from '../../../contentConstants';
 
 const FormLogin = ({ fields, showLoader, onInputChange, onFormSubmit }) => {
     return (

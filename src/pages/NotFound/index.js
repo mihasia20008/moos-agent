@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import cx from 'classnames';
 
-import * as CONTENT from '../../contentConstants';
+import CONTENT from '../../contentConstants';
 
 const NotFound = () => {
     return [

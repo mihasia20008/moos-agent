@@ -4,9 +4,10 @@ import cx from "classnames";
 
 import Item from './Item';
 
-import { statusItems } from '../../contentConstants';
+import CONTENT from '../../contentConstants';
 
 const CheckboxList = ({ activeValue, onChangeItem }) => {
+    const { statusItems } = CONTENT;
     return (
         <div className={cx('checkbox-list')}>{
             statusItems.map(({ key, text, className }, index) => (

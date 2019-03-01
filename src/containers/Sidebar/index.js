@@ -12,7 +12,7 @@ import UserMenu from '../../components/UserMenu';
 import { logoutUser } from '../../redux/User/actions';
 import { fetchWidgetData } from "../../redux/Statistics/actions";
 
-import { statusItems } from '../../contentConstants';
+import CONTENT from '../../contentConstants';
 
 class Sidebar extends PureComponent {
     static propTypes = {
@@ -51,6 +51,7 @@ class Sidebar extends PureComponent {
             return null;
         }
 
+        const { statusItems } = CONTENT;
         return (
             <div className={cx('fr-sidebar-bm__statistics-cont progress-statistic')}>{
                 statusItems.map(({ key, text, className }, index) => {
