@@ -1,47 +1,50 @@
 import React from 'react';
 import cx from 'classnames';
 
-const AgentsStatsPanel = () => {
+import CONTENT from '../../../contentConstants';
+
+import { formatNumber } from '../../../services/utility';
+
+const AgentsStatsPanel = ({ list }) => {
+    const { statusItems } = CONTENT;
+    const { company = {}, order = {} } = list;
+    const { total = {} } = order;
+
     return (
         <div className={cx('fr-stats-panel')}>
             <div className={cx('fr-stats-panel__item')}>
                 <span className={cx('fr-stats-panel__title')}>Клиенты</span>
                 <div className={cx('fr-stats-panel__stats')}>
-                    <span className={cx('fr-stats-panel__stats-value')}>122 871</span>
+                    <span className={cx('fr-stats-panel__stats-value')}>
+                        {company.count ? company.count : 0}
+                    </span>
                 </div>
             </div>
             <div className={cx('fr-stats-panel__item')}>
                 <span className={cx('fr-stats-panel__title')}>Сделки</span>
                 <div className={cx('fr-stats-panel__stats')}>
-                    <span className={cx('fr-stats-panel__stats-value fr-stats-panel__stats-value--bold')}>
-                        192 821
-                    </span>
-                    <span
-                        className={cx('fr-stats-panel__stats-value fr-stats-panel__stats-value--bold fr-stats-panel__stats-value--purple')}
-                    >
-                        1241
-                    </span>
-                    <span
-                        className={cx('fr-stats-panel__stats-value fr-stats-panel__stats-value--bold fr-stats-panel__stats-value--yellow')}
-                    >
-                        9124
-                    </span>
-                    <span
-                        className={cx('fr-stats-panel__stats-value fr-stats-panel__stats-value--bold fr-stats-panel__stats-value--red')}
-                    >
-                        37 888
-                    </span>
-                    <span
-                        className={cx('fr-stats-panel__stats-value fr-stats-panel__stats-value--bold fr-stats-panel__stats-value--green')}
-                    >
-                        87 125
-                    </span>
+                    {statusItems.map(({ key, text, className }) => {
+                        return (typeof order[key] !== 'undefined')
+                            ? (
+                                <span
+                                    key={key}
+                                    className={cx('fr-stats-panel__stats-value fr-stats-panel__stats-value--bold', {
+                                        [`fr-stats-panel__stats-value--${className}`]: className
+                                    })}
+                                    title={text}
+                                >
+                                    {order[key].count}
+                                </span>
+                            ) : null;
+                    })}
                 </div>
             </div>
             <div className={cx('fr-stats-panel__item')}>
                 <span className={cx('fr-stats-panel__title')}>Сумма</span>
                 <div className={cx('fr-stats-panel__stats')}>
-                    <span className={cx('fr-stats-panel__stats-value')}>421 348 159.12 ₽</span>
+                    <span className={cx('fr-stats-panel__stats-value')}>
+                        {`${formatNumber(total.amount ? total.amount : 0, true)} ₽`}
+                    </span>
                 </div>
             </div>
         </div>

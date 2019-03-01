@@ -4,6 +4,7 @@ const initialState = {
     isFetching: false,
     isUsersFetching: false,
     agents: [],
+    stat: {},
     users: [],
     changingUser: '',
 };

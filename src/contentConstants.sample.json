@@ -5,8 +5,7 @@
     "statusItems": [
         {
             "key": "total",
-            "text": "Всего",
-            "className": "bold"
+            "text": "Всего"
         },
         {
             "key": "assigned",

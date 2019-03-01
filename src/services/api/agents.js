@@ -6,7 +6,7 @@ export const getData = async (session_id) => {
     try {
         const { data: { error_code: status, ...rest } } = await axios({
             method: 'GET',
-            url: `${SERVER.HOST}${SERVER.API_ENDPOINT}/manager/agent/list?session_id=${session_id}&from=01.01.2019`,
+            url: `${SERVER.HOST}${SERVER.API_ENDPOINT}/manager/agent/list?session_id=${session_id}`,
         });
         if (status === 0) {
             return {

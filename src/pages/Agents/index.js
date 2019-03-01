@@ -13,6 +13,7 @@ class Agents extends PureComponent {
     static propTypes = {
         isFetching: PropTypes.bool,
         agents: PropTypes.array,
+        statSummury: PropTypes.object,
         session_id: PropTypes.string.isRequired,
         dispatch: PropTypes.func.isRequired,
     };
@@ -26,11 +27,11 @@ class Agents extends PureComponent {
     }
 
     render() {
-        const { isFetching, agents } = this.props;
+        const { isFetching, agents, statSummury } = this.props;
 
         return (
             <section className={cx('fr-content')}>
-                <AgentsStatsPanel list={agents} />
+                <AgentsStatsPanel list={statSummury} />
                 {!agents.length && !isFetching
                     ? <EmptyAgentsList />
                     : (
@@ -48,6 +49,7 @@ const mapStateToProps = ({ Agents, User }) => {
     return {
         isFetching: Agents.isFetching,
         agents: Agents.agents,
+        statSummury: Agents.stat,
         session_id: User.session_id,
     }
 };
