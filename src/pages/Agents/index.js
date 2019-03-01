@@ -30,7 +30,7 @@ class Agents extends PureComponent {
 
         return (
             <section className={cx('fr-content')}>
-                <AgentsStatsPanel />
+                <AgentsStatsPanel list={agents} />
                 {!agents.length && !isFetching
                     ? <EmptyAgentsList />
                     : (

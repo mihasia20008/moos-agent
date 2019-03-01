@@ -45,3 +45,45 @@ export function getAgentUsersList(session_id, companyId) {
         }
     };
 }
+
+export function setUserEnable(session_id, username) {
+    return async dispatch => {
+        try {
+            dispatch({ type: types.AGENT_USER_CHANGE_STATUS_FETCH, user: username });
+            const { isSuccess, ...res } = await Agents.setEnableStatus(session_id, username);
+            if (!isSuccess) {
+                if (res.needLogout) {
+                    dispatch(logoutProcess(res.message));
+                    return;
+                }
+                throw new Error(res.message);
+            }
+            dispatch({ type: types.AGENT_USER_CHANGE_STATUS_SUCCESS });
+        } catch (err) {
+            console.log(err);
+            dispatch(setErrorContent(err.message));
+            dispatch({ type: types.AGENT_USER_CHANGE_STATUS_ERROR });
+        }
+    };
+}
+
+export function setUserDisable(session_id, username) {
+    return async dispatch => {
+        try {
+            dispatch({ type: types.AGENT_USER_CHANGE_STATUS_FETCH, user: username });
+            const { isSuccess, ...res } = await Agents.setDisableStatus(session_id, username);
+            if (!isSuccess) {
+                if (res.needLogout) {
+                    dispatch(logoutProcess(res.message));
+                    return;
+                }
+                throw new Error(res.message);
+            }
+            dispatch({ type: types.AGENT_USER_CHANGE_STATUS_SUCCESS });
+        } catch (err) {
+            console.log(err);
+            dispatch(setErrorContent(err.message));
+            dispatch({ type: types.AGENT_USER_CHANGE_STATUS_ERROR });
+        }
+    };
+}

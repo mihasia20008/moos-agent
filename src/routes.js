@@ -16,6 +16,7 @@ export default (
         <Layout path="/clients/:id" component={Clients} />
         <Layout path="/clients" component={Clients} />
         <Layout path="/agents/:agent/users/new" component={Agents} />
+        <Layout path="/agents/:agent/users/:user" component={Agents} />
         <Layout path="/agents/:agent/users" component={Agents} />
         <Layout path="/agents" component={Agents} />
         <Layout component={NotFound} isNotFound />

@@ -4,11 +4,13 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import cx from 'classnames';
 
+import UserItem from './blocks/UserItem';
+
 import { getAgentUsersList } from "../../../redux/Agents/actions";
 
 class AgentList extends PureComponent {
     static propTypes = {
-        list: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.array])
+        list: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.array]),
     };
 
     componentDidMount() {
@@ -17,12 +19,12 @@ class AgentList extends PureComponent {
     }
 
     renderAgentList() {
-        const { fetchingList, list } = this.props;
+        const { fetchingList, list, id } = this.props;
 
         if (fetchingList) {
             return (
                 <tr>
-                    <td colSpan={3} style={{ textAlign: 'center' }}>
+                    <td colSpan={2} style={{ textAlign: 'center' }}>
                         Список загружается
                     </td>
                 </tr>
@@ -32,7 +34,7 @@ class AgentList extends PureComponent {
         if (!fetchingList && list.length === 0) {
             return (
                 <tr>
-                    <td colSpan={3} style={{ textAlign: 'center' }}>
+                    <td colSpan={2} style={{ textAlign: 'center' }}>
                         Список пользователей пуст
                     </td>
                 </tr>
@@ -40,21 +42,13 @@ class AgentList extends PureComponent {
         }
 
         return list.map((item, index) => (
-            <tr key={index}>
-                <td>
-                    <span className={cx('table--text-bold')}>{item.fullName}</span>
-                </td>
-                <td>
-                    {/*<span>менеджер</span>*/}
-                </td>
-                <td>
-                    {item.enabled ? (
-                        <span className={cx('table__badge table__badge--success')}>Активен</span>
-                    ) : (
-                        <span className={cx('table__badge table__badge--danger')}>Заблокирован</span>
-                    )}
-                </td>
-            </tr>
+            <UserItem
+                key={index}
+                agentId={id}
+                username={item.username}
+                fullName={item.fullName}
+                enabled={item.enabled}
+            />
         ));
     }
 
@@ -68,7 +62,7 @@ class AgentList extends PureComponent {
                     <thead>
                         <tr>
                             <th>Пользователь</th>
-                            <th>Роль</th>
+                            {/*<th>Роль</th>*/}
                             <th>Статус</th>
                         </tr>
                     </thead>

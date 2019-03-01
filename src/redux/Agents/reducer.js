@@ -5,6 +5,7 @@ const initialState = {
     isUsersFetching: false,
     agents: [],
     users: [],
+    changingUser: '',
 };
 
 export default (state = initialState, action) => {
@@ -38,6 +39,27 @@ export default (state = initialState, action) => {
         }
         case types.AGENT_USERS_ERROR: {
             return { ...state, isUsersFetching: false };
+        }
+        case types.AGENT_USER_CHANGE_STATUS_FETCH: {
+            return { ...state, changingUser: action.user };
+        }
+        case types.AGENT_USER_CHANGE_STATUS_SUCCESS: {
+            const updatedUsers = state.users.map(user => {
+                return user.username !== state.changingUser
+                    ? user
+                    : Object.assign({}, user, { enabled: !user.enabled });
+            });
+            return {
+                ...state,
+                changingUser: '',
+                users: [...updatedUsers]
+            };
+        }
+        case types.AGENT_USER_CHANGE_STATUS_ERROR: {
+            return {
+                ...state,
+                changingUser: '',
+            };
         }
         default: {
             return state;

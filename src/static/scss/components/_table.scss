@@ -81,6 +81,7 @@
     }
 
     #{$t}__badge {
+      position: relative;
       display: inline-block;
       width: 126px;
       background-color: $color-white;
@@ -92,6 +93,10 @@
       text-align: center;
       border-radius: 8px;
 
+      &:focus {
+        outline: none;
+      }
+
       &--success {
         background-color: $color-green;
       }
@@ -99,6 +104,10 @@
         background-color: $color-red;
       }
     }
+  }
+
+  button.table__badge:hover {
+    cursor: pointer;
   }
 
   &__text-left {
