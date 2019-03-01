@@ -16,6 +16,7 @@ const AgentsList = ({ list, isLoading }) => {
                         id={item.id}
                         name={item.displayName}
                         inn={item.INN}
+                        statList={item.stat}
                         agentsCount={item.agentLogins ? item.agentLogins.length : 0}
                     />
                 ))}

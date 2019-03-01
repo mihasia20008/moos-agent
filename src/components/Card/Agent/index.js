@@ -3,11 +3,14 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import cx from 'classnames';
 
+import AgentStats from './blocks/AgentStats';
+
 const AgentCard = ({
     id,
     name,
     inn,
     agentsCount,
+    statList,
 }) => {
     return (
         <div className={cx('fr-agent-card')}>
@@ -30,35 +33,7 @@ const AgentCard = ({
                     {/*</span>*/}
                 </div>
             </div>
-            <div className={cx('fr-agent-card__footer')}>
-                <div className={cx('fr-agent-card__footer-item fr-agent-card__footer-item--purple')} style={{ width: '47.2%' }}>
-                    <div className={cx('fr-agent-card__footer-item-counter')}>
-                        <span className={cx('icon icon-ok')} />
-                        <span className={cx('fr-agent-card__footer-item-counter-value')}>1</span>
-                    </div>
-                    <div className={cx('fr-agent-card__footer-item-cost')}>
-                        <span>5 000 000 ₽</span>
-                    </div>
-                </div>
-                <div className={cx('fr-agent-card__footer-item fr-agent-card__footer-item--yellow')} style={{ width: '34.5%' }}>
-                    <div className={cx('fr-agent-card__footer-item-counter')}>
-                        <span className={cx('icon icon-ok')} />
-                        <span className={cx('fr-agent-card__footer-item-counter-value')}>2</span>
-                    </div>
-                    <div className={cx('fr-agent-card__footer-item-cost')}>
-                        <span>3 000 000 ₽</span>
-                    </div>
-                </div>
-                <div className={cx('fr-agent-card__footer-item fr-agent-card__footer-item--green')} style={{ width: '18.3%' }}>
-                    <div className={cx('fr-agent-card__footer-item-counter')}>
-                        <span className={cx('icon icon-ok')} />
-                        <span className={cx('fr-agent-card__footer-item-counter-value')}>1</span>
-                    </div>
-                    <div className={cx('fr-agent-card__footer-item-cost')}>
-                        <span>500 000 ₽</span>
-                    </div>
-                </div>
-            </div>
+            <AgentStats items={statList} />
         </div>
     );
 };
@@ -66,6 +41,24 @@ const AgentCard = ({
 AgentCard.propTypes = {
     name: PropTypes.string,
     inn: PropTypes.string,
+    statList: PropTypes.shape({
+        assigned: PropTypes.shape({
+            count: PropTypes.number.isRequired,
+            amount: PropTypes.number.isRequired,
+        }),
+        lost: PropTypes.shape({
+            count: PropTypes.number.isRequired,
+            amount: PropTypes.number.isRequired,
+        }),
+        inprogress: PropTypes.shape({
+            count: PropTypes.number.isRequired,
+            amount: PropTypes.number.isRequired,
+        }),
+        sold: PropTypes.shape({
+            count: PropTypes.number.isRequired,
+            amount: PropTypes.number.isRequired,
+        }),
+    }),
     agentsCount: PropTypes.number.isRequired,
 };
 
