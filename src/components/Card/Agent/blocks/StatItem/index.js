@@ -4,7 +4,7 @@ import cx from "classnames";
 
 import { formatNumber } from '../../../../../services/utility';
 
-const StatItem = ({ amount, count, sum, progressColor }) => {
+const StatItem = ({ text, amount, count, sum, progressColor }) => {
     const barWidth = `${((count / sum) * 100).toFixed(1)}%`;
 
     return (
@@ -13,6 +13,7 @@ const StatItem = ({ amount, count, sum, progressColor }) => {
                 [`fr-agent-card__footer-item--${progressColor}`]: progressColor
             })}
             style={{ width: barWidth }}
+            title={text}
         >
             <div className={cx('fr-agent-card__footer-item-counter')}>
                 <span className={cx('icon icon-ok')} />
@@ -28,6 +29,7 @@ const StatItem = ({ amount, count, sum, progressColor }) => {
 };
 
 StatItem.propTypes = {
+    text: PropTypes.string.isRequired,
     amount: PropTypes.number.isRequired,
     count: PropTypes.number.isRequired,
     sum: PropTypes.number.isRequired,

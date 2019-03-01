@@ -24,6 +24,7 @@ const AgentStats = ({ items }) => {
                     ? (
                         <StatItem
                             key={key}
+                            text={text}
                             count={items[key].count}
                             amount={items[key].amount}
                             sum={sum}

@@ -4,6 +4,11 @@
     "EMAIL": "support@farzoom.com",
     "statusItems": [
         {
+            "key": "total",
+            "text": "Всего",
+            "className": "bold"
+        },
+        {
             "key": "assigned",
             "text": "К выполнению",
             "className": "purple"
