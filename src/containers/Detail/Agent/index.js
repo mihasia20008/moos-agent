@@ -78,7 +78,7 @@ class AgentList extends PureComponent {
 
 const mapStateToProps = ({ Agents }) => {
     return {
-        fetchingList: Agents.isUsersFetching,
+        fetchingList: Agents.getUsersFetching,
         list: Agents.users,
     };
 };

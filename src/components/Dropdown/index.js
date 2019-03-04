@@ -14,11 +14,13 @@ class Dropdown extends PureComponent {
         toggleClassName: PropTypes.string,
         defaultText: PropTypes.string,
         disabled: PropTypes.bool,
+        hideDefaultItem: PropTypes.bool,
     };
     static defaultProps = {
         defaultActive: 0,
         list: [],
-        defaultText: ''
+        defaultText: '',
+        hideDefaultItem: false,
     };
 
     state = {
@@ -60,9 +62,28 @@ class Dropdown extends PureComponent {
         this.handleToggleDropdown();
     };
 
+    renderToggleText() {
+        const { activeIndex } = this.state;
+        const { list, defaultText, hideDefaultItem } = this.props;
+
+        if (hideDefaultItem) {
+            if (activeIndex === 0) {
+                return defaultText
+            }
+
+            return list[activeIndex].value;
+        }
+
+        if (defaultText) {
+            return `${defaultText} ${list[activeIndex].value.toLowerCase()}`;
+        }
+
+        return list[activeIndex].value;
+    }
+
     render() {
-        const { isOpen, activeIndex } = this.state;
-        const { list, toggleClassName, defaultText, disabled } = this.props;
+        const { isOpen } = this.state;
+        const { list, toggleClassName, disabled, hideDefaultItem } = this.props;
 
         return (
             <div className={cx('dropdown', {
@@ -75,22 +96,25 @@ class Dropdown extends PureComponent {
                     type="button"
                     data-toggle="dropdown"
                 >
-                    {defaultText
-                        ? `${defaultText} ${list[activeIndex].value.toLowerCase()}`
-                        : list[activeIndex].value}
+                    {this.renderToggleText()}
                 </button>
                 <div className={cx('dropdown-menu', {
                     'show': isOpen
                 })}>{
-                    list.map((item, index) => (
-                        <span
-                            key={index}
-                            onClick={this.handleSelectItem.bind(this, index)}
-                            className={cx('dropdown-item')}
-                        >
-                            {item.value}
-                        </span>
-                    ))
+                    list.map((item, index) => {
+                        if (hideDefaultItem && index === 0) {
+                            return null;
+                        }
+                        return (
+                            <span
+                                key={index}
+                                onClick={this.handleSelectItem.bind(this, index)}
+                                className={cx('dropdown-item')}
+                            >
+                                {item.value}
+                            </span>
+                        );
+                    })
                 }</div>
             </div>
         );

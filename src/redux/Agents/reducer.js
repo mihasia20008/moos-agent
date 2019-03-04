@@ -1,8 +1,10 @@
 import * as types from './actionTypes';
 
 const initialState = {
-    isFetching: false,
-    isUsersFetching: false,
+    isFetching: true,
+    getUsersFetching: false,
+    addUserFetching: false,
+    addUserStatus: false,
     agents: [],
     stat: {},
     users: [],
@@ -27,19 +29,19 @@ export default (state = initialState, action) => {
         case types.AGENT_USERS_FETCH: {
             return {
                 ...state,
-                isUsersFetching: true,
+                getUsersFetching: true,
                 users: [],
             };
         }
         case types.AGENT_USERS_SUCCESS: {
             return {
                 ...state,
-                isUsersFetching: false,
+                getUsersFetching: false,
                 ...action.data,
             }
         }
         case types.AGENT_USERS_ERROR: {
-            return { ...state, isUsersFetching: false };
+            return { ...state, getUsersFetching: false };
         }
         case types.AGENT_USER_CHANGE_STATUS_FETCH: {
             return { ...state, changingUser: action.user };
@@ -60,6 +62,32 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 changingUser: '',
+            };
+        }
+        case types.AGENT_USER_ADD_FETCH: {
+            return {
+                ...state,
+                addUserFetching: true,
+            };
+        }
+        case types.AGENT_USER_ADD_SUCCESS: {
+            return {
+                ...state,
+                addUserFetching: false,
+                addUserStatus: true,
+            };
+        }
+        case types.AGENT_USER_ADD_ERROR: {
+            return {
+                ...state,
+                addUserFetching: false,
+            };
+        }
+        case types.AGENT_USER_ADD_RESET: {
+            return {
+                ...state,
+                addUserFetching: false,
+                addUserStatus: false,
             };
         }
         default: {

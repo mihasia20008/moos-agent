@@ -207,8 +207,12 @@ class Layout extends PureComponent {
                                     modalClass="user-edit-form"
                                     contentClass="modal-content--centred"
                                     onCloseModal={matchProps.history.goBack}
+                                    preventOutsideClick
                                 >
-                                    <AddModalAgent />
+                                    <AddModalAgent
+                                        companyId={match.params.agent}
+                                        onCloseForm={matchProps.history.push}
+                                    />
                                 </Modal>
                             );
                             break;

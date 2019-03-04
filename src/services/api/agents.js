@@ -105,3 +105,34 @@ export const setDisableStatus = async (session_id, username) => {
         }
     }
 };
+
+export const createUser = async (session_id, data) => {
+    try {
+        const { data: { error_code: status, ...rest } } = await axios({
+            method: 'POST',
+            url: `${SERVER.HOST}${SERVER.API_ENDPOINT}/manager/agent/user/add`,
+            data: {
+                session_id,
+                ...data,
+            }
+        });
+        console.log(status, rest);
+        if (status === 0) {
+            return {
+                isSuccess: true,
+                ...rest,
+            };
+        }
+        return {
+            isSuccess: false,
+            needLogout: status === 5,
+            message: rest.error,
+        };
+    } catch (err) {
+        console.log(err);
+        return {
+            isSuccess: false,
+            message: err.message,
+        }
+    }
+};

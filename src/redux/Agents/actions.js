@@ -87,3 +87,35 @@ export function setUserDisable(session_id, username) {
         }
     };
 }
+
+export function addNewUser(session_id, { name, ismanager, ...restData }) {
+    return async dispatch => {
+        try {
+            dispatch({ type: types.AGENT_USER_ADD_FETCH });
+            const names = name.split(' ');
+            const data = Object.assign({}, restData, {
+                lastName: names[0],
+                firstName: names[1],
+                ismanager: +ismanager,
+            });
+            const { isSuccess, ...res } = await Agents.createUser(session_id, data);
+            console.log(isSuccess, res);
+            if (!isSuccess) {
+                if (res.needLogout) {
+                    dispatch(logoutProcess(res.message));
+                    return;
+                }
+                throw new Error(res.message);
+            }
+            dispatch({ type: types.AGENT_USER_ADD_SUCCESS });
+        } catch (err) {
+            console.log(err);
+            dispatch(setErrorContent(err.message));
+            dispatch({ type: types.AGENT_USER_ADD_ERROR });
+        }
+    };
+}
+
+export function resetAddingUserStatus() {
+    return dispatch => dispatch({ type: types.AGENT_USER_ADD_RESET })
+}

@@ -270,6 +270,15 @@
   }
 }
 
+.form-error {
+  display: block;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  color: #FF9494;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
 .fz-c-order__modal {
   width: 1000px !important;
 }
