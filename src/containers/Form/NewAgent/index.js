@@ -27,11 +27,11 @@ class NewAgentForm extends PureComponent {
     };
 
     componentDidUpdate(prevProps) {
-        const { companyId, onCloseForm, addUserInfo: nowAddUserInfo, dispatch } = this.props;
+        const { onCloseForm, addUserInfo: nowAddUserInfo, dispatch } = this.props;
         const { addUserInfo: prevAddUserInfo } = prevProps;
 
         if (!prevAddUserInfo.status && nowAddUserInfo.status) {
-            onCloseForm(`/agents/${companyId}/users`);
+            onCloseForm();
             dispatch(resetAddingUserStatus());
         }
     }

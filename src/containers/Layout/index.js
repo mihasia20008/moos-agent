@@ -212,7 +212,7 @@ class Layout extends PureComponent {
                                 >
                                     <NewAgentForm
                                         companyId={match.params.agent}
-                                        onCloseForm={matchProps.history.push}
+                                        onCloseForm={matchProps.history.goBack}
                                     />
                                 </Modal>
                             );
@@ -230,7 +230,7 @@ class Layout extends PureComponent {
                                     <EditAgentForm
                                         companyId={match.params.agent}
                                         userId={match.params.user}
-                                        onCloseForm={matchProps.history.push}
+                                        onCloseForm={matchProps.history.goBack}
                                     />
                                 </Modal>
                             );

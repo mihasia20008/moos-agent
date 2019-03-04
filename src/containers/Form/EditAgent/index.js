@@ -43,10 +43,10 @@ class EditAgentForm extends PureComponent {
 
 
     componentDidUpdate(prevProps) {
-        const { companyId, onCloseForm, editUserInfo: nowEditUserInfo, dispatch } = this.props;
+        const { onCloseForm, editUserInfo: nowEditUserInfo, dispatch } = this.props;
         const { editUserInfo: prevEditUserInfo } = prevProps;
         if (!prevEditUserInfo.status && nowEditUserInfo.status) {
-            onCloseForm(`/agents/${companyId}/users`);
+            onCloseForm();
             dispatch(resetEditingUserStatus());
         }
     }
