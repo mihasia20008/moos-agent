@@ -15,7 +15,7 @@ export default async (session_id, username) => {
         }
         return {
             isSuccess: false,
-            needLogout: status === 5,
+            needLogout: status === 2,
             message: rest.error,
         };
     } catch (err) {

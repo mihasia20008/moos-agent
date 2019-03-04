@@ -15,7 +15,7 @@ export const setEnable = async (session_id, username) => {
         }
         return {
             isSuccess: false,
-            needLogout: status === 5,
+            needLogout: status === 2,
             message: rest.error,
         };
     } catch (err) {
@@ -41,7 +41,7 @@ export const setDisable = async (session_id, username) => {
         }
         return {
             isSuccess: false,
-            needLogout: status === 5,
+            needLogout: status === 2,
             message: rest.error,
         };
     } catch (err) {
