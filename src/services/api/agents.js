@@ -116,7 +116,6 @@ export const createUser = async (session_id, data) => {
                 ...data,
             }
         });
-        console.log(status, rest);
         if (status === 0) {
             return {
                 isSuccess: true,

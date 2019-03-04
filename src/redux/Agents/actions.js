@@ -99,7 +99,6 @@ export function addNewUser(session_id, { name, ismanager, ...restData }) {
                 ismanager: +ismanager,
             });
             const { isSuccess, ...res } = await Agents.createUser(session_id, data);
-            console.log(isSuccess, res);
             if (!isSuccess) {
                 if (res.needLogout) {
                     dispatch(logoutProcess(res.message));
