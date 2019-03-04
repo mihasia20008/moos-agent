@@ -6,7 +6,7 @@ export const login = async (authData) => {
     try {
         const { data: { error_code: status, ...rest } } = await axios({
             method: 'POST',
-            url: `${SERVER.HOST}${SERVER.SPA_ENDPOINT}/login`,
+            url: `${SERVER.HOST}${SERVER.API_ENDPOINT}/login`,
             data: authData,
         });
         if (status === 0) {
@@ -64,7 +64,7 @@ export const logout = async (session_id) => {
     try {
         const { data: { error_code: status, ...rest } } = await axios({
             method: 'GET',
-            url: `${SERVER.HOST}${SERVER.SPA_ENDPOINT}/logout?session_id=${session_id}`,
+            url: `${SERVER.HOST}${SERVER.API_ENDPOINT}/logout?session_id=${session_id}`,
         });
         if (status === 0) {
             return { isSuccess: true };
