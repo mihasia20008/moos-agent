@@ -7,11 +7,11 @@ import cx from 'classnames';
 import Modal from '../../containers/Modal';
 import FormLogin from '../../containers/Form/Login';
 import FormRestore from '../../containers/Form/Restore';
+import SnackBar from "../../containers/SnackBar";
 
 import { loginUser, authenticationUser } from '../../redux/User/actions';
 
-import * as CONTENT from '../../contentConstants';
-import SnackBar from "../../containers/SnackBar";
+import CONTENT from '../../contentConstants';
 
 class Login extends PureComponent {
     static propTypes = {
@@ -114,7 +114,7 @@ class Login extends PureComponent {
                         onFormSubmit={this.handleFormSubmit}
                     />
                     <div className={cx('fr-login-sidebar__bottom')}>
-                        <span>{CONTENT.COPYRIGHT}</span>
+                        <span>{CONTENT.COPYRIGHT.replace('#ACTUAL_DATE#', new Date().getFullYear())}</span>
                         <a href={`mailto:${CONTENT.EMAIL}`}>{CONTENT.EMAIL}</a>
                     </div>
                 </section>

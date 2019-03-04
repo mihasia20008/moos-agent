@@ -1,0 +1,141 @@
+.fr-agents-list {
+  margin: 0 0 20px;
+}
+.fr-agent-card {
+  background-color: $color-white;
+  margin-bottom: 8px;
+
+  $ac: &;
+
+  &__body {
+    display: flex;
+    padding: 32px;
+    justify-content: space-between;
+    align-items: stretch;
+  }
+  &__footer {
+    display: flex;
+    align-items: stretch;
+  }
+  &__main {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    span {
+      font: {
+        size: 12px;
+      };
+      letter-spacing: 0.3px;
+      color: #505050;
+
+      &:not(:last-child) {
+        margin-bottom: 8px;
+      }
+    }
+
+    #{$ac}__title {
+      font: {
+        size: 20px;
+        weight: 500;
+      };
+      letter-spacing: 0.5px;
+      color: #242232;
+      line-height: 1.2;
+    }
+  }
+  &__stats {
+    display: flex;
+
+    &-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      &:not(:last-child) {
+        margin-right: 20px;
+      }
+
+      &:hover {
+        text-decoration: none;
+      }
+    }
+    &-value {
+      display: inline-block;
+      margin: 3px 0 5px;
+      font: {
+        size: 30px;
+        weight: 600;
+      };
+      letter-spacing: 0.7px;
+      color: #242232;
+    }
+    &-text {
+      font: {
+        size: 14px;
+        weight: 400;
+      };
+      letter-spacing: 0.3px;
+      color: #505050;
+    }
+  }
+  &__footer-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex: 1 1 auto;
+    padding: 12px 20px;
+
+    span {
+      color: $color-white;
+    }
+
+    &--purple {
+      background-color: $color-purple;
+    }
+    &--yellow {
+      background-color: $color-yellow;
+    }
+    &--red {
+      background-color: $color-red;
+    }
+    &--green {
+      background-color: $color-green;
+    }
+
+    &-counter {
+
+      .icon {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        transform: translateY(2px);
+      }
+
+      &-value {
+        display: inline-block;
+        margin: 0 3px;
+        font: {
+          size: 18px;
+        };
+        letter-spacing: 0.3px;
+      }
+    }
+    &-cost {
+      span {
+        font: {
+          size: 14px;
+          weight: 500;
+        };
+        letter-spacing: 0.3px;
+      }
+    }
+  }
+}
+
+.agent-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}

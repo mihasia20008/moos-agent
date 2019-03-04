@@ -1,0 +1,31 @@
+{
+    "COPYRIGHT": "FarZoom #ACTUAL_DATE# © v. 1.2.9.1 ßeta 2",
+    "PHONE": "+7 (495) 799–09–83",
+    "EMAIL": "support@farzoom.com",
+    "statusItems": [
+        {
+            "key": "total",
+            "text": "Всего"
+        },
+        {
+            "key": "assigned",
+            "text": "К выполнению",
+            "className": "purple"
+        },
+        {
+            "key": "inprogress",
+            "text": "На стороне банка",
+            "className": "yellow"
+        },
+        {
+            "key": "lost",
+            "text": "Отказано",
+            "className": "red"
+        },
+        {
+            "key": "sold",
+            "text": "Одобрено",
+            "className": "green"
+        }
+    ]
+}

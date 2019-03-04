@@ -17,7 +17,7 @@ export default (state = initialState, action) => {
         }
         case types.SEARCH_ERROR:
         default: {
-            return { ...state };
+            return state;
         }
     }
 };

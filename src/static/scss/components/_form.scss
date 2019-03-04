@@ -215,6 +215,11 @@
     }
   }
 }
+.form-group {
+  &--mb {
+    margin-bottom: 16px;
+  }
+}
 .bf-form {
   display: flex;
   flex-direction: column;
@@ -263,6 +268,15 @@
   &::placeholder {
     color: #fff;
   }
+}
+
+.form-error {
+  display: block;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  color: #FF9494;
+  text-align: center;
+  margin-bottom: 16px;
 }
 
 .fz-c-order__modal {

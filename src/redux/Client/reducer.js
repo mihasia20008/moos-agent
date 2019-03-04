@@ -24,7 +24,7 @@ export default (state = initialState, action) => {
             return { ...state, company: {} };
         }
         default: {
-            return { ...state };
+            return state;
         }
     }
 };

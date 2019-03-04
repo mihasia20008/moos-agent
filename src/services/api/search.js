@@ -6,7 +6,7 @@ export const findByString = async (session_id, query) => {
   try {
       const { data: { error_code: status, ...rest } } = await axios({
           method: 'GET',
-          url: `${SERVER.HOST}/company/list?session_id=${session_id}&q=${query}`,
+          url: `${SERVER.HOST}${SERVER.SPA_ENDPOINT}/company/list?session_id=${session_id}&q=${query}`,
       });
       if (status === 0) {
           return {

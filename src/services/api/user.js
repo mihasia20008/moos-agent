@@ -6,7 +6,7 @@ export const login = async (authData) => {
     try {
         const { data: { error_code: status, ...rest } } = await axios({
             method: 'POST',
-            url: `${SERVER.HOST}/login`,
+            url: `${SERVER.HOST}${SERVER.API_ENDPOINT}/login`,
             data: authData,
         });
         if (status === 0) {
@@ -17,7 +17,7 @@ export const login = async (authData) => {
         }
         return {
             isSuccess: false,
-            needLogout: status === 5,
+            needLogout: status === 2,
             message: rest.error,
         };
     } catch (err) {
@@ -33,7 +33,7 @@ export const auth = async (session_id) => {
     try {
         const { data: { error_code: status, ...rest } } = await axios({
             method: 'GET',
-            url: `${SERVER.HOST}/session?session_id=${session_id}`,
+            url: `${SERVER.HOST}${SERVER.SPA_ENDPOINT}/session?session_id=${session_id}`,
         });
         if (status === 0) {
             return {
@@ -64,14 +64,14 @@ export const logout = async (session_id) => {
     try {
         const { data: { error_code: status, ...rest } } = await axios({
             method: 'GET',
-            url: `${SERVER.HOST}/logout?session_id=${session_id}`,
+            url: `${SERVER.HOST}${SERVER.API_ENDPOINT}/logout?session_id=${session_id}`,
         });
         if (status === 0) {
             return { isSuccess: true };
         }
         return {
             isSuccess: false,
-            needLogout: status === 5,
+            needLogout: status === 2,
             message: rest.error,
         };
     } catch (err) {

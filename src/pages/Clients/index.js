@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import cx from 'classnames';
 
-import Sidebar from '../../containers/Sidebar';
 // import ClientsFilter from '../../containers/Filter/Clients';
 import ClientsList from '../../containers/List/Clients';
-// import ClientsStats from '../../components/ClientsStats';
+// import ClientsStatsPanel from '../../components/StatsPanel/Clients';
 import EmptyClientsList from '../../components/Empty/ClientsList';
 
 import { getClientsList, getNextClientsList } from '../../redux/Clients/actions';
@@ -19,15 +18,14 @@ class Clients extends PureComponent {
         nextPage: PropTypes.number,
         hasMorePage: PropTypes.bool,
         session_id: PropTypes.string.isRequired,
-        getClientsList: PropTypes.func.isRequired,
-        getNextClientsList: PropTypes.func.isRequired,
+        dispatch: PropTypes.func.isRequired,
     };
 
     componentDidMount() {
-        const { session_id, getClientsList } = this.props;
+        const { session_id, dispatch } = this.props;
         
         if (typeof session_id !== 'undefined') {
-            getClientsList(session_id);
+            dispatch(getClientsList(session_id));
         } 
         window.addEventListener('scroll', this.handleScroll);
     }
@@ -43,22 +41,21 @@ class Clients extends PureComponent {
             isFetchingNext,
             nextPage,
             hasMorePage,
-            getNextClientsList,
+            dispatch,
         } = this.props;
         const { height } = document.querySelector('.block-list.block-list--clients').getBoundingClientRect();
 
         if (!isFetchingNext && company.length > 0 && hasMorePage && height - window.scrollY < 1000) {
-            getNextClientsList(session_id, nextPage);
+            dispatch(getNextClientsList(session_id, nextPage));
         }
     };
     
     render() {
         const { company, isFetching, isFetchingNext } = this.props;
-        // {/*<ClientsStats key={0} />,*/}
+        // {/*<ClientsStatsPanel key={0} />,*/}
 
-        return [
-            <Sidebar key={0} />,
-            <section key={1} className={cx('fr-content')}>
+        return (
+            <section className={cx('fr-content')}>
                 {/*<ClientsFilter isDisable={!company.length} />*/}
                 {!company.length && !isFetching
                     ? <EmptyClientsList />
@@ -68,7 +65,7 @@ class Clients extends PureComponent {
                         isLoadingNext={isFetchingNext}
                     />}
             </section>
-        ];
+        );
     }
 }
 
@@ -83,14 +80,4 @@ const mapStateToProps = ({ Clients, User }) => {
     };
 };
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        getClientsList: (session_id) => dispatch(getClientsList(session_id)),
-        getNextClientsList: (session_id, page) => dispatch(getNextClientsList(session_id, page)),
-    };
-};
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(Clients);
+export default connect(mapStateToProps)(Clients);

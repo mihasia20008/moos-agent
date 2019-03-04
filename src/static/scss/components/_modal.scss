@@ -74,11 +74,13 @@
 
   .modal-dialog {
     max-width: 380px;
-    max-height: calc(100vh - 2.5rem);
     overflow-y: scroll;
 
     &--medium {
       max-width: 500px;
+    }
+    &--md {
+      max-width: 600px;
     }
     &--lg {
       max-width: 800px;
@@ -293,6 +295,21 @@
   }
   &__chart-stats {
     
+  }
+  &--centred {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    h3 {
+      font: {
+        size: 24px;
+        weight: 600;
+      };
+      color: $color-white;
+      margin-bottom: 40px;
+    }
   }
 }
 

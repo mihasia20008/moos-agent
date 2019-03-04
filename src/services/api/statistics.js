@@ -6,7 +6,7 @@ export const getWidget = async (session_id) => {
     try {
         const { data: { error_code: status, ...rest } } = await axios({
             method: 'GET',
-            url: `${SERVER.HOST}/stat/summary?session_id=${session_id}`,
+            url: `${SERVER.HOST}${SERVER.SPA_ENDPOINT}/stat/summary?session_id=${session_id}`,
         });
         if (status === 0) {
             return {
@@ -32,7 +32,7 @@ export const getPeriods = async (session_id) => {
     try {
         const { data: { error_code: status, ...rest } } = await axios({
             method: 'GET',
-            url: `${SERVER.HOST}/stat/periods?session_id=${session_id}`,
+            url: `${SERVER.HOST}${SERVER.SPA_ENDPOINT}/stat/periods?session_id=${session_id}`,
         });
         if (status === 0) {
             return {
@@ -59,7 +59,7 @@ export const getEmployeeStats = async (session_id, period, username = '') => {
         const user = username ? `&username=${username}`: '';
         const { data: { error_code: status, ...rest } } = await axios({
             method: 'GET',
-            url: `${SERVER.HOST}/stat/summary?session_id=${session_id}&period=${period}${user}`,
+            url: `${SERVER.HOST}${SERVER.SPA_ENDPOINT}/stat/summary?session_id=${session_id}&period=${period}${user}`,
         });
         if (status === 0) {
             return {
@@ -85,7 +85,7 @@ export const getCompanyStats = async (session_id, period) => {
     try {
         const { data: { error_code: status, ...rest } } = await axios({
             method: 'GET',
-            url: `${SERVER.HOST}/stat/company?session_id=${session_id}&period=${period}`,
+            url: `${SERVER.HOST}${SERVER.SPA_ENDPOINT}/stat/company?session_id=${session_id}&period=${period}`,
         });
         if (status === 0) {
             return {

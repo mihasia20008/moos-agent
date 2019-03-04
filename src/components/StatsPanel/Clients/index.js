@@ -1,7 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 
-const ClientsStats = () => {
+const ClientsStatsPanel = () => {
     return (
         <div className={cx('main-stats')}>
             <div className={cx('main-stats__item')}>
@@ -26,4 +26,4 @@ const ClientsStats = () => {
     );
 };
 
-export default ClientsStats;
+export default ClientsStatsPanel;

@@ -5,14 +5,18 @@ import { Route, Link, Redirect } from 'react-router-dom';
 import cx from 'classnames';
 import { CSSTransition } from 'react-transition-group';
 
+import Sidebar from '../Sidebar';
 import Modal from '../Modal';
 import AddModalSelect from '../AddModal/Select';
 import AddModalForm from '../AddModal/Form';
+import NewAgentForm from '../Form/NewAgent';
+import EditAgentForm from '../Form/EditAgent';
 import FormRestore from '../Form/Restore';
 import FormSearch from '../Form/Search';
 import UserStatistics from '../UserStatistics';
 import ClientDetail from '../Detail/Client';
 import TaskDetail from '../Detail/Task';
+import AgentList from '../Detail/Agent';
 import SnackBar from '../SnackBar';
 
 import Overlay from '../../components/Overlay';
@@ -25,6 +29,7 @@ class Layout extends PureComponent {
         isAuth: PropTypes.bool.isRequired,
         showAddButton: PropTypes.bool.isRequired,
         showAddHelp: PropTypes.bool.isRequired,
+        isManager: PropTypes.bool,
         isNotFound: PropTypes.bool,
         showSnackBar: PropTypes.bool.isRequired,
         session_id: PropTypes.string.isRequired,
@@ -32,6 +37,7 @@ class Layout extends PureComponent {
     };
     static defaultProps = {
         isNotFound: false,
+        isManager: false,
     };
 
     componentDidUpdate(prevProps) {
@@ -54,6 +60,7 @@ class Layout extends PureComponent {
         const {
             component: Component,
             isNotFound,
+            isManager,
             showAddButton,
             showAddHelp,
             isAuth,
@@ -80,6 +87,17 @@ class Layout extends PureComponent {
                 }
         
                 const { location: { search, state: routeState = {} }, match } = matchProps;
+
+                if (match.path.search('/agents/') !== -1 && !isManager) {
+                    return (
+                        <Redirect
+                            to={{
+                                pathname: "/tasks",
+                                search: "",
+                            }}
+                        />
+                    );
+                }
 
                 let contentNode;
 
@@ -182,6 +200,58 @@ class Layout extends PureComponent {
                         );
                         break;
                     }
+                    case match.path.search('/agents/') !== -1 && typeof match.params.agent !== 'undefined': {
+                        if (match.path.search('/users/new') !== -1) {
+                            contentNode = (
+                                <Modal
+                                    centerPosition
+                                    modalClass="user-edit-form"
+                                    contentClass="modal-content--centred"
+                                    onCloseModal={matchProps.history.goBack}
+                                    preventOutsideClick
+                                >
+                                    <NewAgentForm
+                                        companyId={match.params.agent}
+                                        onCloseForm={matchProps.history.push}
+                                    />
+                                </Modal>
+                            );
+                            break;
+                        }
+                        if (typeof match.params.user !== 'undefined') {
+                            contentNode = (
+                                <Modal
+                                    centerPosition
+                                    modalClass="user-edit-form"
+                                    contentClass="modal-content--centred"
+                                    onCloseModal={matchProps.history.goBack}
+                                    preventOutsideClick
+                                >
+                                    <EditAgentForm
+                                        companyId={match.params.agent}
+                                        userId={match.params.user}
+                                        onCloseForm={matchProps.history.push}
+                                    />
+                                </Modal>
+                            );
+                            break;
+                        }
+                        if (match.path.search('/users') !== -1) {
+                            contentNode = (
+                                <Modal
+                                    centerPosition
+                                    modalClass="users-list"
+                                    dialogClass="modal-dialog--md"
+                                    contentClass="modal-content--centred"
+                                    onCloseModal={matchProps.history.goBack}
+                                >
+                                    <AgentList id={match.params.agent} />
+                                </Modal>
+                            );
+                            break;
+                        }
+                        break;
+                    }
                     default: {
                         contentNode = null;
                     }
@@ -192,6 +262,7 @@ class Layout extends PureComponent {
                         <div className={cx('fr-container', {
                             'fr-container--error': isNotFound,
                         })}>
+                            {!isNotFound && <Sidebar />}
                             <Component {...matchProps} />
                         </div>
                         {showAddButton && (
@@ -232,6 +303,7 @@ const mapStateToProps = (state, ownProps) => {
         showAddHelp: isTaskEmpty,
         isAuth: User.isAuth,
         session_id: User.session_id,
+        isManager: User.ismanager,
         showSnackBar: Error.show,
     };
 };
