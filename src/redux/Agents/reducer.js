@@ -9,6 +9,14 @@ const initialState = {
     stat: {},
     users: [],
     changingUser: '',
+    addUser: {
+        fetching: false,
+        status: false,
+    },
+    editUser: {
+        fetching: false,
+        status: false,
+    }
 };
 
 export default (state = initialState, action) => {
@@ -67,27 +75,49 @@ export default (state = initialState, action) => {
         case types.AGENT_USER_ADD_FETCH: {
             return {
                 ...state,
-                addUserFetching: true,
+                addUser: { ...state.addUser, fetching: true },
             };
         }
         case types.AGENT_USER_ADD_SUCCESS: {
             return {
                 ...state,
-                addUserFetching: false,
-                addUserStatus: true,
+                addUser: { ...state.addUser, fetching: false, status: true },
             };
         }
         case types.AGENT_USER_ADD_ERROR: {
             return {
                 ...state,
-                addUserFetching: false,
+                addUser: { ...state.addUser, fetching: false },
             };
         }
         case types.AGENT_USER_ADD_RESET: {
             return {
                 ...state,
-                addUserFetching: false,
-                addUserStatus: false,
+                addUser: { ...initialState.addUser },
+            };
+        }
+        case types.AGENT_USER_EDIT_FETCH: {
+            return {
+                ...state,
+                editUser: { ...state.editUser, fetching: true },
+            };
+        }
+        case types.AGENT_USER_EDIT_SUCCESS: {
+            return {
+                ...state,
+                editUser: { ...state.editUser, fetching: false, status: true },
+            };
+        }
+        case types.AGENT_USER_EDIT_ERROR: {
+            return {
+                ...state,
+                editUser: { ...state.editUser, fetching: false },
+            };
+        }
+        case types.AGENT_USER_EDIT_RESET: {
+            return {
+                ...state,
+                editUser: { ...initialState.editUser },
             };
         }
         default: {

@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { reduxForm, Field, getFormValues, getFormSyncErrors, change as changeFormValue } from 'redux-form';
+import { reduxForm, Field, initialize, getFormValues, getFormSyncErrors, change as changeFormValue } from 'redux-form';
 import { connect } from 'react-redux';
 import cx from 'classnames';
 
@@ -9,36 +9,56 @@ import Overlay from "../../../components/Overlay";
 
 import validationForm from './helpers/validationForm';
 
-import { addNewUser, resetAddingUserStatus } from "../../../redux/Agents/actions";
+import { editUser, resetEditingUserStatus } from "../../../redux/Agents/actions";
+import { setErrorContent } from "../../../redux/Error/actions";
+import { Agents } from "../../../services/api";
 
 const formSettings = {
-    form: 'newUser',
+    form: 'editUser',
     validate: validationForm
 };
 
-class AddModalAgent extends PureComponent {
+class EditAgentForm extends PureComponent {
     static propTypes = {
         companyId: PropTypes.string.isRequired,
         onCloseForm: PropTypes.func.isRequired,
+        editUserInfo: PropTypes.shape({
+            fetching: PropTypes.bool.isRequired,
+            status: PropTypes.bool.isRequired,
+        }),
     };
 
+    componentDidMount() {
+        const { session_id, userId, dispatch } = this.props;
+        Agents.getUserData(session_id, userId)
+            .then(({ user }) => {
+                dispatch(initialize(formSettings.form, {
+                    name: `${user.lastName} ${user.firstName}`,
+                    email: user.email,
+                    ismanager: user.ismanager ? '1' : '0'
+                }));
+            })
+            .catch(err => dispatch(setErrorContent(err.message)));
+    }
+
+
     componentDidUpdate(prevProps) {
-        const { companyId, onCloseForm, nowAddUserStatus, dispatch } = this.props;
-        const { addUserStatus: prevAddUserStatus } = prevProps;
-        if (!prevAddUserStatus && nowAddUserStatus) {
+        const { companyId, onCloseForm, editUserInfo: nowEditUserInfo, dispatch } = this.props;
+        const { editUserInfo: prevEditUserInfo } = prevProps;
+        if (!prevEditUserInfo.status && nowEditUserInfo.status) {
             onCloseForm(`/agents/${companyId}/users`);
-            dispatch(resetAddingUserStatus());
+            dispatch(resetEditingUserStatus());
         }
     }
 
     onFormSubmit = (values) => {
-        const { session_id, companyId, dispatch } = this.props;
-        dispatch(addNewUser(session_id, { companyId, ...values }));
+        const { session_id, companyId, userId, dispatch } = this.props;
+        dispatch(editUser(session_id, { companyId, username: userId, ...values }));
     };
 
     handleSubmitForm = (event) => {
-        const { addUserFetching, handleSubmit } = this.props;
-        if (addUserFetching) {
+        const { editUserInfo, handleSubmit } = this.props;
+        if (editUserInfo.fetching) {
             return;
         }
         handleSubmit(this.onFormSubmit)(event);
@@ -84,10 +104,10 @@ class AddModalAgent extends PureComponent {
     };
 
     render() {
-        const { addUserFetching } = this.props;
+        const { editUserInfo } = this.props;
         return (
             <form onSubmit={this.handleSubmitForm}>
-                <div className={cx('restore-pass__title')}>Добавление пользователя</div>
+                <div className={cx('restore-pass__title')}>Изменение пользователя</div>
                 <Field
                     component={this.renderFieldItem}
                     name="name"
@@ -108,8 +128,8 @@ class AddModalAgent extends PureComponent {
                 />
                 <div className={cx('form-group')}>
                     <button type="submit" className={cx('btn btn-block btn-white')}>
-                        Сохранить
-                        {addUserFetching && <Overlay size="small" />}
+                        Изменить
+                        {editUserInfo.fetching && <Overlay size="small" />}
                     </button>
                 </div>
             </form>
@@ -121,13 +141,12 @@ const mapStateToProps = (state) => {
     const { User, Agents } = state;
     return {
         session_id: User.session_id,
-        addUserFetching: Agents.addUserFetching,
-        addUserStatus: Agents.addUserStatus,
+        editUserInfo: Agents.editUser,
         formValues: getFormValues(formSettings.form)(state),
         formErrors: getFormSyncErrors(formSettings.form)(state),
     };
 };
 
 export default reduxForm(formSettings)(
-    connect(mapStateToProps)(AddModalAgent)
+    connect(mapStateToProps)(EditAgentForm)
 );

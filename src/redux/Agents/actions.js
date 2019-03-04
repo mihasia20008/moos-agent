@@ -50,7 +50,7 @@ export function setUserEnable(session_id, username) {
     return async dispatch => {
         try {
             dispatch({ type: types.AGENT_USER_CHANGE_STATUS_FETCH, user: username });
-            const { isSuccess, ...res } = await Agents.setEnableStatus(session_id, username);
+            const { isSuccess, ...res } = await Agents.changeUserStatus.setEnable(session_id, username);
             if (!isSuccess) {
                 if (res.needLogout) {
                     dispatch(logoutProcess(res.message));
@@ -71,7 +71,7 @@ export function setUserDisable(session_id, username) {
     return async dispatch => {
         try {
             dispatch({ type: types.AGENT_USER_CHANGE_STATUS_FETCH, user: username });
-            const { isSuccess, ...res } = await Agents.setDisableStatus(session_id, username);
+            const { isSuccess, ...res } = await Agents.changeUserStatus.setDisable(session_id, username);
             if (!isSuccess) {
                 if (res.needLogout) {
                     dispatch(logoutProcess(res.message));
@@ -88,7 +88,7 @@ export function setUserDisable(session_id, username) {
     };
 }
 
-export function addNewUser(session_id, { name, ismanager, ...restData }) {
+export function addUser(session_id, { name, ismanager, ...restData }) {
     return async dispatch => {
         try {
             dispatch({ type: types.AGENT_USER_ADD_FETCH });
@@ -117,4 +117,35 @@ export function addNewUser(session_id, { name, ismanager, ...restData }) {
 
 export function resetAddingUserStatus() {
     return dispatch => dispatch({ type: types.AGENT_USER_ADD_RESET })
+}
+
+export function editUser(session_id, { name, ismanager, ...restData }) {
+    return async dispatch => {
+        try {
+            dispatch({ type: types.AGENT_USER_EDIT_FETCH });
+            const names = name.split(' ');
+            const data = Object.assign({}, restData, {
+                lastName: names[0],
+                firstName: names[1],
+                ismanager: +ismanager,
+            });
+            const { isSuccess, ...res } = await Agents.editUser(session_id, data);
+            if (!isSuccess) {
+                if (res.needLogout) {
+                    dispatch(logoutProcess(res.message));
+                    return;
+                }
+                throw new Error(res.message);
+            }
+            dispatch({ type: types.AGENT_USER_EDIT_SUCCESS });
+        } catch (err) {
+            console.log(err);
+            dispatch(setErrorContent(err.message));
+            dispatch({ type: types.AGENT_USER_EDIT_ERROR });
+        }
+    };
+}
+
+export function resetEditingUserStatus() {
+    return dispatch => dispatch({ type: types.AGENT_USER_EDIT_RESET })
 }

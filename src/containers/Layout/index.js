@@ -9,7 +9,8 @@ import Sidebar from '../Sidebar';
 import Modal from '../Modal';
 import AddModalSelect from '../AddModal/Select';
 import AddModalForm from '../AddModal/Form';
-import AddModalAgent from '../AddModal/Agent';
+import NewAgentForm from '../Form/NewAgent';
+import EditAgentForm from '../Form/EditAgent';
 import FormRestore from '../Form/Restore';
 import FormSearch from '../Form/Search';
 import UserStatistics from '../UserStatistics';
@@ -209,8 +210,26 @@ class Layout extends PureComponent {
                                     onCloseModal={matchProps.history.goBack}
                                     preventOutsideClick
                                 >
-                                    <AddModalAgent
+                                    <NewAgentForm
                                         companyId={match.params.agent}
+                                        onCloseForm={matchProps.history.push}
+                                    />
+                                </Modal>
+                            );
+                            break;
+                        }
+                        if (typeof match.params.user !== 'undefined') {
+                            contentNode = (
+                                <Modal
+                                    centerPosition
+                                    modalClass="user-edit-form"
+                                    contentClass="modal-content--centred"
+                                    onCloseModal={matchProps.history.goBack}
+                                    preventOutsideClick
+                                >
+                                    <EditAgentForm
+                                        companyId={match.params.agent}
+                                        userId={match.params.user}
                                         onCloseForm={matchProps.history.push}
                                     />
                                 </Modal>
