@@ -13,7 +13,7 @@ const AgentsStatsPanel = ({ list }) => {
     return (
         <div className={cx('fr-stats-panel')}>
             <div className={cx('fr-stats-panel__item')}>
-                <span className={cx('fr-stats-panel__title')}>Клиенты</span>
+                <span className={cx('fr-stats-panel__title')}>Агенты</span>
                 <div className={cx('fr-stats-panel__stats')}>
                     <span className={cx('fr-stats-panel__stats-value')}>
                         {company.count ? company.count : 0}
@@ -21,7 +21,7 @@ const AgentsStatsPanel = ({ list }) => {
                 </div>
             </div>
             <div className={cx('fr-stats-panel__item')}>
-                <span className={cx('fr-stats-panel__title')}>Сделки</span>
+                <span className={cx('fr-stats-panel__title')}>Заявки</span>
                 <div className={cx('fr-stats-panel__stats')}>
                     {statusItems.map(({ key, text, className }) => {
                         return (typeof order[key] !== 'undefined')
