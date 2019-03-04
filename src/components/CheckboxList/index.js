@@ -10,17 +10,22 @@ const CheckboxList = ({ activeValue, onChangeItem }) => {
     const { statusItems } = CONTENT;
     return (
         <div className={cx('checkbox-list')}>{
-            statusItems.map(({ key, text, className }, index) => (
-                <Item
-                    key={index}
-                    onChange={onChangeItem}
-                    name="status"
-                    value={key}
-                    text={text}
-                    isChecked={activeValue === key}
-                    className={className}
-                />
-            ))
+            statusItems.map(({ key, text, className }, index) => {
+                if (key === 'total') {
+                    return null;
+                }
+                return (
+                    <Item
+                        key={index}
+                        onChange={onChangeItem}
+                        name="status"
+                        value={key}
+                        text={text}
+                        isChecked={activeValue === key}
+                        className={className}
+                    />
+                );
+            })
         }</div>
     );
 };
