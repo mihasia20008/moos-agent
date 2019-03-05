@@ -18,7 +18,10 @@ const ClientCard = ({
                         <span className={cx('icon icon-user')} />
                         <span dangerouslySetInnerHTML={{ __html: displayName }} />
                     </div>
-                    <div className={cx('block-list__info')} dangerouslySetInnerHTML={{ __html: INN }} />
+                    <div className={cx('block-list__info')}>
+                        <span style={{ marginRight: '5px' }}>ИНН:</span>
+                        <span dangerouslySetInnerHTML={{ __html: INN }} />
+                    </div>
                 </div>
                 {/*<div className={cx('block-list__location')}>*/}
                     {/*г. Ярославль*/}

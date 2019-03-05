@@ -11,7 +11,7 @@ import AddModalSelect from '../AddModal/Select';
 import AddModalForm from '../AddModal/Form';
 import NewAgentForm from '../Form/NewAgent';
 import EditAgentForm from '../Form/EditAgent';
-import FormRestore from '../Form/Restore';
+import FormForgotPassword from '../Form/ForgotPassword';
 import FormSearch from '../Form/Search';
 import UserStatistics from '../UserStatistics';
 import ClientDetail from '../Detail/Client';
@@ -109,7 +109,9 @@ class Layout extends PureComponent {
                                 modalClass="restore-pass-form"
                                 onCloseModal={matchProps.history.goBack}
                             >
-                                <FormRestore />
+                                <FormForgotPassword
+                                    onCloseModal={matchProps.history.goBack}
+                                />
                             </Modal>
                         );
                         break;
