@@ -6,7 +6,7 @@ import cx from 'classnames';
 
 import Modal from '../../containers/Modal';
 import FormLogin from '../../containers/Form/Login';
-import FormRestore from '../../containers/Form/Restore';
+import FormForgotPassword from '../../containers/Form/ForgotPassword';
 import SnackBar from "../../containers/SnackBar";
 
 import { loginUser, authenticationUser } from '../../redux/User/actions';
@@ -92,8 +92,15 @@ class Login extends PureComponent {
 
     renderRestorePassword() {
         return (
-            <Modal key={1} centerPosition onCloseModal={this.props.history.goBack}>
-                <FormRestore />
+            <Modal
+                key={1}
+                centerPosition
+                preventOutsideClick
+                onCloseModal={this.props.history.goBack}
+            >
+                <FormForgotPassword
+                    onCloseModal={this.props.history.goBack}
+                />
             </Modal>
         );
     }
@@ -134,7 +141,7 @@ class Login extends PureComponent {
 
         return [
             this.renderMainContent(),
-            search === '?restore-password' ? this.renderRestorePassword() : null,
+            search === '?forgot-password' ? this.renderRestorePassword() : null,
             search === '?e-login' ? this.renderELogin() : null,
             showSnackBar ? <SnackBar key={2} /> : null
         ];

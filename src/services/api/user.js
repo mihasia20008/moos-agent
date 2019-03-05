@@ -82,3 +82,26 @@ export const logout = async (session_id) => {
         };
     }
 };
+
+export const recoverPassword = async (username) => {
+    try {
+        const { data: { error_code: status, ...rest } } = await axios({
+            method: 'POST',
+            url: `${SERVER.HOST}${SERVER.API_ENDPOINT}/recover`,
+            data: { username }
+        });
+        if (status === 0) {
+            return { isSuccess: true };
+        }
+        return {
+            isSuccess: false,
+            message: rest.error,
+        };
+    } catch (err) {
+        console.log(err);
+        return {
+            isSuccess: false,
+            message: err.message,
+        };
+    }
+};
