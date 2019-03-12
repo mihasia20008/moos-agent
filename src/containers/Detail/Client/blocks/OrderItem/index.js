@@ -26,9 +26,13 @@ class OrderItem extends PureComponent {
                         <span className={cx('orders-list__title-name')}>{orderNumber}</span>
                         <span className={cx('orders-list__title-date')}>от {createdDate}</span>
                     </div>
-                    <span className={cx('badge', {
-                        [`badge--${activePhase.status}`]: activePhase.status
-                    })}>{activePhase.phaseName}</span>
+                    {activePhase && (
+                        <span className={cx('badge', {
+                            [`badge--${activePhase.status}`]: activePhase.status
+                        })}>
+                        {activePhase.phaseName}
+                    </span>
+                    )}
                 </div>
             );
         }
@@ -43,9 +47,13 @@ class OrderItem extends PureComponent {
                     <span className={cx('orders-list__title-name')}>{orderNumber}</span>
                     <span className={cx('orders-list__title-date')}>от {createdDate}</span>
                 </div>
-                <span className={cx('badge', {
-                    [`badge--${activePhase.status}`]: activePhase.status
-                })}>{activePhase.phaseName}</span>
+                {activePhase && (
+                    <span className={cx('badge', {
+                        [`badge--${activePhase.status}`]: activePhase.status
+                    })}>
+                        {activePhase.phaseName}
+                    </span>
+                )}
             </button>
         );
     }
