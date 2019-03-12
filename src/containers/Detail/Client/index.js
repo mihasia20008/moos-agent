@@ -157,10 +157,10 @@ class DetailClient extends PureComponent {
                                     <a
                                         target="_blank"
                                         href={doc.files[0].url}
+                                        download
                                         rel="noopener noreferrer"
                                     >
                                         <span>{`${doc.name} ${doc.files[0].name}`}</span>
-                                        {/*<span>(1,2мб)</span>*/}
                                     </a>
                                 </span>
                             );
