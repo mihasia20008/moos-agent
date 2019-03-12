@@ -151,20 +151,32 @@ class DetailClient extends PureComponent {
                         Документы
                     </div>
                     <div className={cx('info-block__item info-block__item--fullwidth')}>
-                        {docs.map(doc => {
-                            return (
-                                <span className={cx('info-block__item-value')}>
-                                    <a
-                                        target="_blank"
-                                        href={doc.files[0].url}
-                                        download
-                                        rel="noopener noreferrer"
-                                    >
-                                        <span>{`${doc.name} ${doc.files[0].name}`}</span>
-                                    </a>
-                                </span>
-                            );
-                        })}
+                        <div className={cx('documents-list')}>
+                            {docs.map(doc => doc.files.map(file => (
+                                <a
+                                    key={file.name}
+                                    href={file.url}
+                                    className={cx('documents-list__item')}
+                                    target="_blank"
+                                    download
+                                    rel="noopener noreferrer"
+                                >
+                                    <div className={cx('documents-list__item-body')}>
+                                        <div className={cx('documents-list__item-icon')}>
+                                            <i className={cx('icon icon-doc-2')} />
+                                        </div>
+                                        <span className={cx('documents-list__item-title')}>
+                                                {doc.name}
+                                            </span>
+                                    </div>
+                                    <div className={cx('documents-list__item-footer')}>
+                                        <span className={cx('documents-list__item-size')}>
+                                            {file.name}
+                                        </span>
+                                    </div>
+                                </a>
+                            )))}
+                        </div>
                     </div>
                 </div>
                 <div className={cx('orders-list')}>{
