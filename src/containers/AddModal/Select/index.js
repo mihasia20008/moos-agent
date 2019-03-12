@@ -30,8 +30,8 @@ class AddModalSelect extends PureComponent {
         this.props.onCloseModal();
     };
 
-    handleOpenForm = ({ target }) => {
-        const { processKey } = target.dataset;
+    handleOpenForm = ({ currentTarget }) => {
+        const { processKey } = currentTarget.dataset;
         const { session_id, onProgrammingRedirect, dispatch } = this.props;
         dispatch(authenticationUser(session_id, true))
             .then(() => onProgrammingRedirect(`?add-modal=${processKey}`))
