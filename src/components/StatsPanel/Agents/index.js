@@ -16,7 +16,7 @@ const AgentsStatsPanel = ({ list }) => {
                 <span className={cx('fr-stats-panel__title')}>Агенты</span>
                 <div className={cx('fr-stats-panel__stats')}>
                     <span className={cx('fr-stats-panel__stats-value')}>
-                        {company.count ? company.count : 0}
+                        {formatNumber(company.count ? company.count : 0)}
                     </span>
                 </div>
             </div>
@@ -33,7 +33,7 @@ const AgentsStatsPanel = ({ list }) => {
                                     })}
                                     title={text}
                                 >
-                                    {order[key].count}
+                                    {formatNumber(order[key].count)}
                                 </span>
                             ) : null;
                     })}
