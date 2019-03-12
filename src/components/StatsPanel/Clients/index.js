@@ -1,12 +1,15 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cx from 'classnames';
 
-const ClientsStatsPanel = () => {
+import { formatNumber } from '../../../services/utility';
+
+const ClientsStatsPanel = ({ clientsCount }) => {
     return (
-        <div className={cx('main-stats')}>
+        <div className={cx('main-stats', 'fr-stats-panel')}>
             <div className={cx('main-stats__item')}>
                 <span className={cx('main-stats__title')}>Клиенты</span>
-                <span className={cx('main-stats__value')}>122 871</span>
+                <span className={cx('main-stats__value')}>{formatNumber(clientsCount)}</span>
             </div>
             <div className={cx('main-stats__item')}>
                 <span className={cx('main-stats__title')}>Сделки</span>
@@ -24,6 +27,14 @@ const ClientsStatsPanel = () => {
             </div>
         </div>
     );
+};
+
+ClientsStatsPanel.propTypes = {
+    clientsCount: PropTypes.number,
+};
+
+ClientsStatsPanel.defaultProps = {
+    clientsCount: 0,
 };
 
 export default ClientsStatsPanel;

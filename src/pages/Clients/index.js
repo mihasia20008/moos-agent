@@ -5,7 +5,7 @@ import cx from 'classnames';
 
 // import ClientsFilter from '../../containers/Filter/Clients';
 import ClientsList from '../../containers/List/Clients';
-// import ClientsStatsPanel from '../../components/StatsPanel/Clients';
+import ClientsStatsPanel from '../../components/StatsPanel/Clients';
 import EmptyClientsList from '../../components/Empty/ClientsList';
 
 import { getClientsList, getNextClientsList } from '../../redux/Clients/actions';
@@ -15,6 +15,7 @@ class Clients extends PureComponent {
         isFetching: PropTypes.bool.isRequired,
         isFetchingNext: PropTypes.bool.isRequired,
         company: PropTypes.array,
+        clientsCount: PropTypes.number,
         nextPage: PropTypes.number,
         hasMorePage: PropTypes.bool,
         session_id: PropTypes.string.isRequired,
@@ -51,7 +52,7 @@ class Clients extends PureComponent {
     };
     
     render() {
-        const { company, isFetching, isFetchingNext } = this.props;
+        const { company, clientsCount, isFetching, isFetchingNext } = this.props;
         // {/*<ClientsStatsPanel key={0} />,*/}
 
         return (
@@ -59,11 +60,18 @@ class Clients extends PureComponent {
                 {/*<ClientsFilter isDisable={!company.length} />*/}
                 {!company.length && !isFetching
                     ? <EmptyClientsList />
-                    : <ClientsList
-                        list={company}
-                        isLoading={isFetching}
-                        isLoadingNext={isFetchingNext}
-                    />}
+                    : [
+                        <ClientsStatsPanel
+                            key={0}
+                            clientsCount={clientsCount}
+                        />,
+                        <ClientsList
+                            key={1}
+                            list={company}
+                            isLoading={isFetching}
+                            isLoadingNext={isFetchingNext}
+                        />,
+                    ]}
             </section>
         );
     }
@@ -74,6 +82,7 @@ const mapStateToProps = ({ Clients, User }) => {
         isFetching: Clients.isFetching,
         isFetchingNext: Clients.isFetchingNext,
         company: Clients.company,
+        clientsCount: Clients.total,
         nextPage: Clients.page + 1,
         hasMorePage: Clients.more,
         session_id: User.session_id,
