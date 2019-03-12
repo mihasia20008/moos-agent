@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import cx from 'classnames';
 
-// import ClientsFilter from '../../containers/Filter/Clients';
+import ClientsFilter from '../../containers/Filter/Clients';
 import ClientsList from '../../containers/List/Clients';
 import ClientsStatsPanel from '../../components/StatsPanel/Clients';
 import EmptyClientsList from '../../components/Empty/ClientsList';
 
-import { getClientsList, getNextClientsList } from '../../redux/Clients/actions';
+import { getClientsList, getNextClientsList, setClientsFilter } from '../../redux/Clients/actions';
 
 class Clients extends PureComponent {
     static propTypes = {
@@ -31,6 +31,13 @@ class Clients extends PureComponent {
         window.addEventListener('scroll', this.handleScroll);
     }
 
+    componentWillReceiveProps(nextProps) {
+        const { session_id, filters, dispatch } = this.props;
+        if (JSON.stringify(filters) !== JSON.stringify(nextProps.filters)) {
+            dispatch(getClientsList(session_id, nextProps.filters));
+        }
+    }
+
     componentWillUnmount() {
         window.removeEventListener('scroll', this.handleScroll);
     }
@@ -40,6 +47,7 @@ class Clients extends PureComponent {
             session_id,
             company,
             isFetchingNext,
+            filters,
             nextPage,
             hasMorePage,
             dispatch,
@@ -47,16 +55,25 @@ class Clients extends PureComponent {
         const { height } = document.querySelector('.block-list.block-list--clients').getBoundingClientRect();
 
         if (!isFetchingNext && company.length > 0 && hasMorePage && height - window.scrollY < 1000) {
-            dispatch(getNextClientsList(session_id, nextPage));
+            dispatch(getNextClientsList(session_id, nextPage, filters));
         }
+    };
+
+    handleChangeFilter = (filters) => {
+        const { dispatch } = this.props;
+        dispatch(setClientsFilter(filters));
     };
     
     render() {
-        const { company, clientsCount, isFetching, isFetchingNext } = this.props;
+        const { company, clientsCount, isFetching, isFetchingNext, filters } = this.props;
 
         return (
-            <section className={cx('fr-content')}>
-                {/*<ClientsFilter isDisable={!company.length} />*/}
+            <section className={cx('fr-content fr-content--with-filter')}>
+                <ClientsFilter
+                    isDisable={!company.length && !Object.keys(filters).length}
+                    filters={filters}
+                    onChangeFilter={this.handleChangeFilter}
+                />
                 {!company.length && !isFetching
                     ? <EmptyClientsList />
                     : [
@@ -81,6 +98,7 @@ const mapStateToProps = ({ Clients, User }) => {
         isFetching: Clients.isFetching,
         isFetchingNext: Clients.isFetchingNext,
         company: Clients.company,
+        filters: Clients.filters,
         clientsCount: Clients.total,
         nextPage: Clients.page + 1,
         hasMorePage: Clients.more,

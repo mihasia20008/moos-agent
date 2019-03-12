@@ -3,6 +3,7 @@ import * as types from './actionTypes';
 const initialState = {
   isFetching: false,
   isFetchingNext: false,
+  filters: {},
   company: [],
   total: 0,
 };
@@ -37,6 +38,13 @@ export default (state = initialState, action) => {
     }
     case types.NEXT_CLIENTS_ERROR: {
       return { ...state, isFetching: false };
+    }
+    case types.CLIENTS_SET_FILTER: {
+      const { filters } = action.data;
+      return {
+        ...state,
+        filters: Object.assign({}, state.filters, filters),
+      }
     }
     default: {
       return state;

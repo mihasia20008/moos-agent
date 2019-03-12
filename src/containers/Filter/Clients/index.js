@@ -3,19 +3,23 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import cx from 'classnames';
 
-import ReactBootstrapSlider from 'react-bootstrap-slider';
+import TextField from '../../../components/TextField';
 
 class ClientsFilter extends PureComponent {
-    static propTypes = { isDisable: PropTypes.bool };
+    static propTypes = {
+        isDisable: PropTypes.bool,
+        filters: PropTypes.object,
+        onChangeFilter: PropTypes.func.isRequired,
+    };
     static defaultProps = { isDisable: false };
     
     state = { isFixed: false };
 
-    componentDidMount = () => {
+    componentDidMount() {
         window.addEventListener('scroll', this.handleScroll);
     }
 
-    componentWillUnmount = () => {
+    componentWillUnmount() {
         window.removeEventListener('scroll', this.handleScroll);
     }
 
@@ -27,16 +31,18 @@ class ClientsFilter extends PureComponent {
         if (this.state.isFixed && window.scrollY === 0) {
             this.setState({ isFixed: false });
         }
-    }
+    };
 
-    changeValue = (event) => console.log(event);
+    handleTypeText = ({ target }) => this.props.onChangeFilter({ [`${target.name}`]: target.value });
+
+    handleClearField = (name, value) => this.props.onChangeFilter({ [`${name}`]: value });
 
     render() {
         const { isFixed } = this.state;
-        const { isDisable } = this.props;
+        const { isDisable, filters } = this.props;
 
         return (
-            <div className={cx('main-filter main-filter--fixed-width', {
+            <div className={cx('main-filter', {
                 'main-filter--fixed': isFixed,
             })}>
                 <div className={cx('main-filter__container')}>
@@ -44,64 +50,17 @@ class ClientsFilter extends PureComponent {
                         <div className={cx('main-filter__row', {
                             'main-filter__row--disabled': isDisable,
                         })}>
-                            <div className={cx('main-filter__control main-filter__control--icon-right')}>
-                                <div className={cx('dropdown')}>
-                                    <button type="button" className={cx('btn btn-dropdown dropdown-toggle')} data-toggle="dropdown">
-                                        Индивидуальные предприятия
-                                    </button>
-                                    <div className={cx('dropdown-menu')}>
-                                        <span className={cx('dropdown-item')}>Предприятие 1</span>
-                                        <span className={cx('dropdown-item')}>Предприятие 2</span>
-                                        <span className={cx('dropdown-item')}>Предприятие 3</span>
-                                    </div>
-                                </div>
-                                <i className={cx('icon icon-chevron-down')} />
-                            </div>
-                            <div className={cx('main-filter__control main-filter__control--icon-right')}>
-                                <div className={cx('dropdown')}>
-                                    <button type="button" className={cx('btn btn-dropdown dropdown-toggle')} data-toggle="dropdown">
-                                        Я→А
-                                    </button>
-                                    <div className={cx('dropdown-menu')}>
-                                        <span className={cx('dropdown-item')}>А→Я</span>
-                                        <span className={cx('dropdown-item')}>Я→А</span>
-                                    </div>
-                                </div>
-                                <i className={cx('icon icon-chevron-down')} />
-                            </div>
-                            <div className={cx('main-filter__control main-filter__control--icon-right')}>
-                                <div className={cx('dropdown')}>
-                                    <button type="button" className={cx('btn btn-dropdown dropdown-toggle')} data-toggle="dropdown">
-                                        По дате последнего платежа
-                                    </button>
-                                    <div className={cx('dropdown-menu')}>
-                                        <span className={cx('dropdown-item')}>По дате последнего платежа 1</span>
-                                        <span className={cx('dropdown-item')}>По дате последнего платежа 2</span>
-                                        <span className={cx('dropdown-item')}>По дате последнего платежа 3</span>
-                                    </div>
-                                </div>
-                                <i className={cx('icon icon-chevron-down')} />
-                            </div>
+                            <TextField
+                                name="q"
+                                placeholder="Клиент"
+                                value={filters.q}
+                                onChange={this.handleTypeText}
+                                onClear={this.handleClearField}
+                            />
                             <div className={cx('main-filter__control main-filter__control--button')}>
                                 <Link className={cx('btn btn-search')} to="?search">
                                     <i className={cx('icon icon-seacrh-m')} />
                                 </Link>
-                            </div>
-                        </div>
-                        <div className={cx('main-filter__row', {
-                            'main-filter__row--disabled': isDisable,
-                        })}>
-                            <div className={cx('filter-slider filter-slider--full-size')}>
-                                <span>От 30К ₽</span>
-                                <ReactBootstrapSlider
-                                    className={cx('filter-slider__control')}
-                                    value={[45000, 5900000]}
-                                    change={this.changeValue}
-                                    slideStop={this.changeValue}
-                                    step={10}
-                                    max={6900000}
-                                    min={30000} />
-                                <span>До 6.9М ₽</span>
                             </div>
                         </div>
                     </div>

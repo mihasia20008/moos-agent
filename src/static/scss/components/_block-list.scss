@@ -1,6 +1,5 @@
 .block-list {
   position: relative;
-  padding-top: 160px;
 
   $r: &;
 
@@ -10,8 +9,6 @@
   }
 
   &--clients {
-    padding-top: 0;
-
     #{$r}__item {
       padding-bottom: 24px;
     }

@@ -64,9 +64,9 @@ class Tasks extends PureComponent {
         }
     };
 
-    handleChangeFilter = (name, value) => {
+    handleChangeFilter = (filters) => {
         const { dispatch } = this.props;
-        dispatch(setTasksFilter(name, value));
+        dispatch(setTasksFilter(filters));
     };
 
     handleOpenDetail = (taskId, taskName) => {
@@ -89,7 +89,7 @@ class Tasks extends PureComponent {
         } = this.props;
 
         return (
-            <section className={cx('fr-content')}>
+            <section className={cx('fr-content fr-content--with-filter')}>
                 <TasksFilter
                     isDisable={!list.length && !Object.keys(filters).length}
                     filters={filters}

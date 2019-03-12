@@ -166,6 +166,7 @@ class TasksFilter extends PureComponent {
                             />
                             <TextField
                                 name="orderNumber"
+                                placeholder="Номер заявки"
                                 value={filters.orderNumber}
                                 onChange={this.handleTypeText}
                                 onClear={this.handleClearField}

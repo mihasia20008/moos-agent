@@ -6,7 +6,7 @@ import { prepareFiltersToQuery } from '../utility';
 export const getData = async (session_id, filters = {}, limit = 20) => {
   try {
       const query = prepareFiltersToQuery(filters);
-      console.log(query);
+      console.log('tasks filter', query);
       const { data: { error_code: status, ...rest } } = await axios({
           method: 'GET',
           url: `${SERVER.HOST}${SERVER.SPA_ENDPOINT}/order/list?session_id=${session_id}&limit=${limit}${query}`,

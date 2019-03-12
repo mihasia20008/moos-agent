@@ -6,7 +6,7 @@ import { formatNumber } from '../../../services/utility';
 
 const ClientsStatsPanel = ({ clientsCount }) => {
     return (
-        <div className={cx('main-stats', 'fr-stats-panel')}>
+        <div className={cx('main-stats')}>
             <div className={cx('main-stats__item')}>
                 <span className={cx('main-stats__title')}>Клиенты</span>
                 <span className={cx('main-stats__value')}>{formatNumber(clientsCount)}</span>
