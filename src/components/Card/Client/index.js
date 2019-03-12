@@ -3,13 +3,20 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 import { Link } from 'react-router-dom';
 
+import CONTENT from '../../../contentConstants';
+
+import { formatNumber } from '../../../services/utility';
+
 const ClientCard = ({
     id,
     displayName,
     INN,
     KPP,
     OGRN,
+    stats,
 }) => {
+    const { statusItems } = CONTENT;
+
     return (
         <div className={cx('block-list__item')}>
             <div className={cx('block-list__row')}>
@@ -29,18 +36,20 @@ const ClientCard = ({
             </div>
             <div className={cx('block-list__row')}>
                 <ul className={cx('stats-list')}>
-                    {/*<li className={cx('stats-list__item stats-list__item--purple')}>*/}
-                        {/*<i className={cx('icon icon-ok')} />*/}
-                        {/*<span>1</span>*/}
-                    {/*</li>*/}
-                    {/*<li className={cx('stats-list__item stats-list__item--yellow')}>*/}
-                        {/*<i className={cx('icon icon-ok')} />*/}
-                        {/*<span>2</span>*/}
-                    {/*</li>*/}
-                    {/*<li className={cx('stats-list__item stats-list__item--green')}>*/}
-                        {/*<i className={cx('icon icon-ok')} />*/}
-                        {/*<span>10</span>*/}
-                    {/*</li>*/}
+                    {statusItems.map(({ key, className }) => {
+                        return (typeof stats[key] !== 'undefined' && stats[key])
+                            ? (
+                                <li
+                                    key={key}
+                                    className={cx('stats-list__item', {
+                                        [`stats-list__item--${className}`]: className
+                                    })}
+                                >
+                                    <i className={cx('icon icon-ok')} />
+                                    <span>{stats[key]}</span>
+                                </li>
+                            ) : null;
+                    })}
                 </ul>
                 <div>
                     <table className={cx('table block-list__table')}>
@@ -51,7 +60,9 @@ const ClientCard = ({
                                 <th>ОГРН</th>
                             </tr>
                             <tr>
-                                <td>7 896 124 ₽</td>
+                                <td>
+                                    {`${formatNumber(stats.amount ? stats.amount : 0, true)} ₽`}
+                                </td>
                                 <td dangerouslySetInnerHTML={{ __html: KPP }} />
                                 <td dangerouslySetInnerHTML={{ __html: OGRN }} />
                             </tr>
@@ -70,6 +81,13 @@ ClientCard.propTypes = {
     INN: PropTypes.string,
     KPP: PropTypes.string,
     OGRN: PropTypes.string,
+    stats: PropTypes.shape({
+        amount: PropTypes.number,
+        assigned: PropTypes.number,
+        inprogress: PropTypes.number,
+        lost: PropTypes.number,
+        sold: PropTypes.number,
+    }).isRequired,
 };
 
 ClientCard.defaultProps = {
