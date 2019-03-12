@@ -46,7 +46,7 @@ const ClientCard = ({
                                     })}
                                 >
                                     <i className={cx('icon icon-ok')} />
-                                    <span>{stats[key]}</span>
+                                    <span>{formatNumber(stats[key])}</span>
                                 </li>
                             ) : null;
                     })}

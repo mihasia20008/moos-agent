@@ -53,7 +53,6 @@ class Clients extends PureComponent {
     
     render() {
         const { company, clientsCount, isFetching, isFetchingNext } = this.props;
-        // {/*<ClientsStatsPanel key={0} />,*/}
 
         return (
             <section className={cx('fr-content')}>

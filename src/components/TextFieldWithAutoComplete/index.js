@@ -125,27 +125,3 @@ const mapStateToProp = ({ User, Search }) => {
 };
 
 export default connect(mapStateToProp)(TextFieldWithAutoComplete);
-
-/*
-<div className="easy-autocomplete-container" id="eac-container-clientsControl">
-    <ul style="display: none;">
-        <li className="selected">
-            <div className="eac-item">Central African <b>Re</b>public</div>
-        </li>
-        <li>
-            <div className="eac-item">Congo, The Democratic <b>Re</b>public of the</div>
-        </li>
-        <li>
-            <div className="eac-item">Cote D"Ivoi<b>re</b></div>
-        </li>
-        <li>
-            <div className="eac-item">Czech <b>Re</b>public</div>
-        </li>
-        <li>
-            <div className="eac-item">Dominican <b>Re</b>public</div>
-        </li>
-        <li>
-            <div className="eac-item">Erit<b>re</b>a</div>
-        </li>
-    </ul>
-</div>*/
