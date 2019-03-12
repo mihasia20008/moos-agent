@@ -12,7 +12,7 @@ const ClientsStatsPanel = ({ clientsCount }) => {
                 <span className={cx('main-stats__value')}>{formatNumber(clientsCount)}</span>
             </div>
             <div className={cx('main-stats__item')}>
-                <span className={cx('main-stats__title')}>Сделки</span>
+                <span className={cx('main-stats__title')}>Заявки</span>
                 <ul className={cx('deals-list')}>
                     <li className={cx('deals-list__item')}>192 821</li>
                     <li className={cx('deals-list__item deals-list__item--purple')}>1241</li>

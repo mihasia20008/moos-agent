@@ -110,6 +110,8 @@ class Layout extends PureComponent {
                                 onCloseModal={matchProps.history.goBack}
                             >
                                 <FormForgotPassword
+                                    title="Изменение пароля"
+                                    buttonText="Изменить"
                                     onCloseModal={matchProps.history.goBack}
                                 />
                             </Modal>
