@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import cx from "classnames";
 import ReactBootstrapSlider from "react-bootstrap-slider";
 
+import { formatNumber } from '../../services/utility';
+
 class RangeSlider extends PureComponent {
     static propTypes = {
         name: PropTypes.string.isRequired,
@@ -51,7 +53,7 @@ class RangeSlider extends PureComponent {
         if (!millionRemainder) {
             return `${thousandRemainder}К`;
         }
-        return `${millionRemainder}М`;
+        return `${formatNumber(millionRemainder, false)}М`;
     }
 
     changeValue = ({ target }) => this.setState({
