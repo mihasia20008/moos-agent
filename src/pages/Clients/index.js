@@ -9,11 +9,13 @@ import ClientsStatsPanel from '../../components/StatsPanel/Clients';
 import EmptyClientsList from '../../components/Empty/ClientsList';
 
 import { getClientsList, getNextClientsList, setClientsFilter, clearAllFilters } from '../../redux/Clients/actions';
+import { getAgentsList } from "../../redux/Agents/actions";
 
 class Clients extends PureComponent {
     static propTypes = {
         isFetching: PropTypes.bool.isRequired,
         isFetchingNext: PropTypes.bool.isRequired,
+        agents: PropTypes.array,
         company: PropTypes.array,
         filters: PropTypes.object,
         clientsCount: PropTypes.number,
@@ -28,7 +30,8 @@ class Clients extends PureComponent {
         
         if (typeof session_id !== 'undefined') {
             dispatch(getClientsList(session_id, filters));
-        } 
+            dispatch(getAgentsList(session_id));
+        }
         window.addEventListener('scroll', this.handleScroll);
     }
 
@@ -68,12 +71,13 @@ class Clients extends PureComponent {
     };
     
     render() {
-        const { company, clientsCount, isFetching, isFetchingNext, filters } = this.props;
+        const { agents, company, clientsCount, isFetching, isFetchingNext, filters } = this.props;
 
         return (
             <section className={cx('fr-content fr-content--with-filter')}>
                 <ClientsFilter
                     isDisable={!company.length && !Object.keys(filters).length}
+                    agents={agents}
                     filters={filters}
                     onChangeFilter={this.handleChangeFilter}
                 />
@@ -96,7 +100,7 @@ class Clients extends PureComponent {
     }
 }
 
-const mapStateToProps = ({ Clients, User }) => {
+const mapStateToProps = ({ Agents, Clients, User }) => {
     return {
         isFetching: Clients.isFetching,
         isFetchingNext: Clients.isFetchingNext,
@@ -105,6 +109,7 @@ const mapStateToProps = ({ Clients, User }) => {
         clientsCount: Clients.total,
         nextPage: Clients.page + 1,
         hasMorePage: Clients.more,
+        agents: Agents.agents,
         session_id: User.session_id,
     };
 };

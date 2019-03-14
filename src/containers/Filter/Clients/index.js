@@ -4,14 +4,19 @@ import { Link } from 'react-router-dom';
 import cx from 'classnames';
 
 import TextField from '../../../components/TextField';
+import Dropdown from "../../../components/Dropdown";
 
 class ClientsFilter extends PureComponent {
     static propTypes = {
         isDisable: PropTypes.bool,
+        agents: PropTypes.array,
         filters: PropTypes.object,
         onChangeFilter: PropTypes.func.isRequired,
     };
-    static defaultProps = { isDisable: false };
+    static defaultProps = {
+        isDisable: false,
+        agents: []
+    };
     
     state = { isFixed: false };
 
@@ -21,6 +26,31 @@ class ClientsFilter extends PureComponent {
 
     componentWillUnmount() {
         window.removeEventListener('scroll', this.handleScroll);
+    }
+
+    getAgentsFilter(agents, agentCompanyId = '') {
+        const { filters, onChangeFilter } = this.props;
+        let active = 0;
+        const list = agents.reduce((acc, agent) => {
+            if (agentCompanyId === agent.id) {
+                active = acc.length;
+            }
+            const name = typeof agent.displayName !== 'undefined' && agent.displayName
+                ? agent.displayName
+                : typeof agent.shortName !== 'undefined' && agent.shortName
+                    ? agent.shortName
+                    : typeof agent.fullName !== 'undefined' && agent.fullName
+                        ? agent.fullName
+                        : undefined;
+            return acc.concat([{ key: agent.id, value: name }]);
+        }, [{ key: 'all', value: 'Все агенты' }]);
+        if (list.length === 2) {
+            active = 1;
+            if (filters.agentCompanyId !== list[1].key) {
+                onChangeFilter({ agentCompanyId: list[1].key });
+            }
+        }
+        return { active, list };
     }
 
     handleScroll = () => {
@@ -33,13 +63,24 @@ class ClientsFilter extends PureComponent {
         }
     };
 
+    handleSelectDropdown = (name, key) => {
+        const { onChangeFilter } = this.props;
+        if (key === 'all') {
+            onChangeFilter({ [`${name}`]: '' });
+        } else {
+            onChangeFilter({ [`${name}`]: key });
+        }
+    };
+
     handleTypeText = ({ target }) => this.props.onChangeFilter({ [`${target.name}`]: target.value });
 
     handleClearField = (name, value) => this.props.onChangeFilter({ [`${name}`]: value });
 
     render() {
         const { isFixed } = this.state;
-        const { isDisable, filters } = this.props;
+        const { isDisable, agents, filters } = this.props;
+
+        const agentsFilter = this.getAgentsFilter(agents, filters.agentCompanyId);
 
         return (
             <div className={cx('main-filter', {
@@ -50,6 +91,17 @@ class ClientsFilter extends PureComponent {
                         <div className={cx('main-filter__row', {
                             'main-filter__row--disabled': isDisable,
                         })}>
+                            <div className={cx('main-filter__control main-filter__control--icon-right')}>
+                                <Dropdown
+                                    name="agentCompanyId"
+                                    toggleClassName="btn btn-dropdown--hidden-border"
+                                    defaultActive={agentsFilter.active}
+                                    list={agentsFilter.list}
+                                    disabled={agentsFilter.list.length < 3}
+                                    onSelectItem={this.handleSelectDropdown}
+                                />
+                                <i className={cx('icon icon-chevron-down')} />
+                            </div>
                             <TextField
                                 name="q"
                                 placeholder="Клиент"
