@@ -46,6 +46,12 @@ export default (state = initialState, action) => {
         filters: Object.assign({}, state.filters, filters),
       }
     }
+    case types.CLIENTS_CLEAR_FILTERS: {
+      return {
+        ...state,
+        filters: initialState.filters,
+      }
+    }
     default: {
       return state;
     }

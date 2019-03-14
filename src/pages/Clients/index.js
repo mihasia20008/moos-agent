@@ -8,13 +8,14 @@ import ClientsList from '../../containers/List/Clients';
 import ClientsStatsPanel from '../../components/StatsPanel/Clients';
 import EmptyClientsList from '../../components/Empty/ClientsList';
 
-import { getClientsList, getNextClientsList, setClientsFilter } from '../../redux/Clients/actions';
+import { getClientsList, getNextClientsList, setClientsFilter, clearAllFilters } from '../../redux/Clients/actions';
 
 class Clients extends PureComponent {
     static propTypes = {
         isFetching: PropTypes.bool.isRequired,
         isFetchingNext: PropTypes.bool.isRequired,
         company: PropTypes.array,
+        filters: PropTypes.object,
         clientsCount: PropTypes.number,
         nextPage: PropTypes.number,
         hasMorePage: PropTypes.bool,
@@ -23,10 +24,10 @@ class Clients extends PureComponent {
     };
 
     componentDidMount() {
-        const { session_id, dispatch } = this.props;
+        const { session_id, filters, dispatch } = this.props;
         
         if (typeof session_id !== 'undefined') {
-            dispatch(getClientsList(session_id));
+            dispatch(getClientsList(session_id, filters));
         } 
         window.addEventListener('scroll', this.handleScroll);
     }
@@ -39,6 +40,8 @@ class Clients extends PureComponent {
     }
 
     componentWillUnmount() {
+        const { dispatch } = this.props;
+        dispatch(clearAllFilters());
         window.removeEventListener('scroll', this.handleScroll);
     }
     

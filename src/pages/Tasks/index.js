@@ -7,7 +7,7 @@ import TasksFilter from '../../containers/Filter/Tasks';
 import TasksList from '../../containers/List/Tasks';
 import EmptyTasksList from '../../components/Empty/TasksList';
 
-import { getTasksList, getNextTasksPage, setTasksFilter } from '../../redux/Tasks/actions';
+import { getTasksList, getNextTasksPage, setTasksFilter, clearAllFilters } from '../../redux/Tasks/actions';
 import { authenticationUser } from "../../redux/User/actions";
 
 class Tasks extends PureComponent {
@@ -44,6 +44,8 @@ class Tasks extends PureComponent {
     }
 
     componentWillUnmount() {
+        const { dispatch } = this.props;
+        dispatch(clearAllFilters());
         window.removeEventListener('scroll', this.handleScroll);
     }
     

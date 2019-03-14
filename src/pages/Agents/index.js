@@ -8,6 +8,7 @@ import EmptyAgentsList from "../../components/Empty/AgentsList";
 import AgentsList from "../../containers/List/Agents";
 
 import { getAgentsList } from "../../redux/Agents/actions";
+import { setClientsFilter } from "../../redux/Clients/actions";
 
 class Agents extends PureComponent {
     static propTypes = {
@@ -16,6 +17,9 @@ class Agents extends PureComponent {
         statSummury: PropTypes.object,
         session_id: PropTypes.string.isRequired,
         dispatch: PropTypes.func.isRequired,
+        history: PropTypes.shape({
+            push: PropTypes.func.isRequired,
+        }).isRequired,
     };
 
     componentDidMount() {
@@ -25,6 +29,12 @@ class Agents extends PureComponent {
             dispatch(getAgentsList(session_id));
         }
     }
+
+    handleShowClients = (agentId) => {
+        const { history, dispatch } = this.props;
+        dispatch(setClientsFilter({ agentCompanyId: agentId }));
+        history.push('/clients');
+    };
 
     render() {
         const { isFetching, agents, statSummury } = this.props;
@@ -38,6 +48,7 @@ class Agents extends PureComponent {
                         <AgentsList
                             list={agents}
                             isLoading={isFetching}
+                            onShowClients={this.handleShowClients}
                         />
                     )}
             </section>

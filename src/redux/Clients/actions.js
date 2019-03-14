@@ -49,3 +49,7 @@ export function getNextClientsList(session_id, page, filters) {
 export function setClientsFilter(filters) {
     return dispatch => dispatch({ type: types.CLIENTS_SET_FILTER, data: { filters }});
 }
+
+export function clearAllFilters() {
+    return dispatch => dispatch({ type: types.CLIENTS_CLEAR_FILTERS });
+}

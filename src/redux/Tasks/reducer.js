@@ -46,8 +46,14 @@ export default (state = initialState, action) => {
     case types.TASKS_SET_FILTER: {
       const { filters } = action.data;
       return {
-          ...state,
-          filters: Object.assign({}, state.filters, filters),
+        ...state,
+        filters: Object.assign({}, state.filters, filters),
+      }
+    }
+    case types.TASKS_CLEAR_FILTERS: {
+      return {
+        ...state,
+        filters: initialState.filters,
       }
     }
     default: {
