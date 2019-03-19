@@ -149,3 +149,28 @@ export function editUser(session_id, { name, ismanager, ...restData }) {
 export function resetEditingUserStatus() {
     return dispatch => dispatch({ type: types.AGENT_USER_EDIT_RESET })
 }
+
+export function addSubagent(session_id, data) {
+    return async dispatch => {
+        try {
+            dispatch({ type: types.AGENT_SUB_NEW_FETCH });
+            const { isSuccess, ...res } = await Agents.createSubagent(session_id, data);
+            if (!isSuccess) {
+                if (res.needLogout) {
+                    dispatch(logoutProcess(res.message));
+                    return;
+                }
+                throw new Error(res.message);
+            }
+            dispatch({ type: types.AGENT_SUB_NEW_SUCCESS });
+        } catch (err) {
+            console.log(err);
+            dispatch(setErrorContent(err.message));
+            dispatch({ type: types.AGENT_SUB_NEW_ERROR });
+        }
+    };
+}
+
+export function resetAddingSubagentStatus() {
+    return dispatch => dispatch({ type: types.AGENT_SUB_NEW_RESET })
+}

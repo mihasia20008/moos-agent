@@ -10,6 +10,7 @@ import Modal from '../Modal';
 import AddModalSelect from '../AddModal/Select';
 import AddModalForm from '../AddModal/Form';
 import NewAgentForm from '../Form/NewAgent';
+import NewSubagentForm from '../Form/NewSubagent';
 import EditAgentForm from '../Form/EditAgent';
 import FormForgotPassword from '../Form/ForgotPassword';
 import FormSearch from '../Form/Search';
@@ -27,7 +28,8 @@ class Layout extends PureComponent {
     static propTypes = {
         component: PropTypes.func.isRequired,
         isAuth: PropTypes.bool.isRequired,
-        showAddButton: PropTypes.bool.isRequired,
+        showAddAgent: PropTypes.bool,
+        showAddTask: PropTypes.bool,
         showAddHelp: PropTypes.bool.isRequired,
         isManager: PropTypes.bool,
         isNotFound: PropTypes.bool,
@@ -38,6 +40,7 @@ class Layout extends PureComponent {
     static defaultProps = {
         isNotFound: false,
         isManager: false,
+        showAddTask: false,
     };
 
     componentDidUpdate(prevProps) {
@@ -55,14 +58,214 @@ class Layout extends PureComponent {
             authenticationUser(session_id);
         }
     }
+
+    renderAddButton() {
+        const {
+            showAddTask,
+            showAddHelp,
+            showAddAgent,
+        } = this.props;
+
+        if (showAddTask) {
+            return (
+                <div className={cx('btn-options')}>
+                    <Link to="?add-task" className={cx('btn-options__link')} />
+                    {showAddHelp && (
+                        <span className={cx('btn-options__tooltip')}>
+                            Однако, вам стоит подумать о будущем и создать пару задач…
+                        </span>
+                    )}
+                </div>
+            );
+        }
+
+        if (showAddAgent) {
+            return (
+                <div className={cx('btn-options')}>
+                    <Link to="?add-agent=true" className={cx('btn-options__link')} />
+                </div>
+            );
+        }
+
+        return null;
+    }
+
+    renderModalNode(props) {
+        const { location: { search, state: routeState = {} }, history, match } = props;
+
+        switch (true) {
+            case search === '?restore-password': {
+                return (
+                    <Modal
+                        centerPosition
+                        modalClass="restore-pass-form"
+                        onCloseModal={history.goBack}
+                    >
+                        <FormForgotPassword
+                            title="Изменение пароля"
+                            buttonText="Изменить"
+                            onCloseModal={history.goBack}
+                        />
+                    </Modal>
+                );
+            }
+            case search.search(/\?search/) !== -1: {
+                const query = decodeURIComponent(search).split('=')[1];
+                return (
+                    <Modal
+                        centerPosition
+                        modalClass="modal-search"
+                        onCloseModal={history.goBack}
+                    >
+                        <FormSearch defaultSearch={query} />
+                    </Modal>
+                );
+            }
+            case search === '?show-statistic': {
+                return (
+                    <Modal
+                        centerPosition
+                        dialogClass="modal-dialog--xl"
+                        contentClass="modal-content__p-0 modal-content__chart-stats"
+                        onCloseModal={history.goBack}
+                    >
+                        <UserStatistics />
+                    </Modal>
+                );
+            }
+            case search.search(/\?add-task/) !== -1: {
+                const addResult = search.match(/add-task=[a-z-]+/g);
+                if (addResult) {
+                    const definitionKey = addResult[0].split('=')[1];
+                    return (
+                        <Modal
+                            topPosition
+                            modalClass="modal-custom--wide-width"
+                            preventOutsideClick
+                            onCloseModal={() => history.go(-2)}
+                        >
+                            <AddModalForm
+                                activeDefinitionKey={definitionKey}
+                                onCloseModal={history.go}
+                            />
+                        </Modal>
+                    );
+                } else {
+                    return (
+                        <AddModalSelect
+                            onCloseModal={history.goBack}
+                            onProgrammingRedirect={history.push}
+                        />
+                    );
+                }
+            }
+            case search.search(/\?add-agent/) !== -1: {
+                return (
+                    <Modal
+                        centerPosition
+                        modalClass="user-edit-form"
+                        contentClass="modal-content--centred"
+                        onCloseModal={history.goBack}
+                        preventOutsideClick
+                    >
+                        <NewSubagentForm
+                            // companyId={match.params.agent}
+                            onCloseModal={history.goBack}
+                        />
+                    </Modal>
+                );
+            }
+            case match.path.search('/clients/') !== -1 && typeof match.params.id !== 'undefined': {
+                return (
+                    <Modal
+                        topPosition
+                        modalClass="modal-custom--with-help-block"
+                        onCloseModal={history.goBack}
+                    >
+                        <ClientDetail
+                            id={match.params.id}
+                            onProgrammingRedirect={history.push}
+                        />
+                    </Modal>
+                );
+            }
+            case match.path.search('/tasks/') !== -1 && typeof match.params.id !== 'undefined': {
+                const { title } = routeState;
+                return (
+                    <Modal
+                        topPosition
+                        modalClass="modal-custom--wide-width"
+                        preventOutsideClick
+                        onCloseModal={history.goBack}
+                    >
+                        <TaskDetail
+                            id={match.params.id}
+                            title={title}
+                            onCloseDetail={history.goBack}
+                        />
+                    </Modal>
+                );
+            }
+            case match.path.search('/agents/') !== -1 && typeof match.params.agent !== 'undefined': {
+                if (match.path.search('/users/new') !== -1) {
+                    return (
+                        <Modal
+                            centerPosition
+                            modalClass="user-edit-form"
+                            contentClass="modal-content--centred"
+                            onCloseModal={history.goBack}
+                            preventOutsideClick
+                        >
+                            <NewAgentForm
+                                companyId={match.params.agent}
+                                onCloseForm={history.goBack}
+                            />
+                        </Modal>
+                    );
+                }
+                if (typeof match.params.user !== 'undefined') {
+                    return (
+                        <Modal
+                            centerPosition
+                            modalClass="user-edit-form"
+                            contentClass="modal-content--centred"
+                            onCloseModal={history.goBack}
+                            preventOutsideClick
+                        >
+                            <EditAgentForm
+                                companyId={match.params.agent}
+                                userId={match.params.user}
+                                onCloseForm={history.goBack}
+                            />
+                        </Modal>
+                    );
+                }
+                if (match.path.search('/users') !== -1) {
+                    return (
+                        <Modal
+                            centerPosition
+                            modalClass="users-list"
+                            dialogClass="modal-dialog--md"
+                            contentClass="modal-content--centred"
+                            onCloseModal={history.goBack}
+                        >
+                            <AgentList id={match.params.agent} />
+                        </Modal>
+                    );
+                }
+                return null;
+            }
+            default: {
+                return null;
+            }
+        }
+    }
     
     render() {
         const {
             component: Component,
             isNotFound,
             isManager,
-            showAddButton,
-            showAddHelp,
             isAuth,
             session_id,
             showSnackBar,
@@ -86,7 +289,7 @@ class Layout extends PureComponent {
                     return <Overlay size="big" />;
                 }
         
-                const { location: { search, state: routeState = {} }, match } = matchProps;
+                const { match } = matchProps;
 
                 if (match.path.search('/agents/') !== -1 && !isManager) {
                     return (
@@ -99,168 +302,8 @@ class Layout extends PureComponent {
                     );
                 }
 
-                let contentNode;
+                const contentNode = this.renderModalNode(matchProps);
 
-                switch (true) {
-                    case search === '?restore-password': {
-                        contentNode = (
-                            <Modal
-                                centerPosition
-                                modalClass="restore-pass-form"
-                                onCloseModal={matchProps.history.goBack}
-                            >
-                                <FormForgotPassword
-                                    title="Изменение пароля"
-                                    buttonText="Изменить"
-                                    onCloseModal={matchProps.history.goBack}
-                                />
-                            </Modal>
-                        );
-                        break;
-                    }
-                    case search.search(/\?search/) !== -1: {
-                        const query = decodeURIComponent(search).split('=')[1];
-                        contentNode = (
-                            <Modal
-                                centerPosition
-                                modalClass="modal-search"
-                                onCloseModal={matchProps.history.goBack}
-                            >
-                                <FormSearch defaultSearch={query} />
-                            </Modal>
-                        );
-                        break;
-                    }
-                    case search === '?show-statistic': {
-                        contentNode = (
-                            <Modal
-                                centerPosition
-                                dialogClass="modal-dialog--xl"
-                                contentClass="modal-content__p-0 modal-content__chart-stats"
-                                onCloseModal={matchProps.history.goBack}
-                            >
-                                <UserStatistics />
-                            </Modal>
-                        );
-                        break;
-                    }
-                    case search.search(/\?add-modal/) !== -1: {
-                        const addResult = search.match(/add-modal=[a-z-]{1,}/g);
-                        if (addResult) {
-                            const definitionKey = addResult[0].split('=')[1];
-                            contentNode = (
-                                <Modal
-                                    topPosition
-                                    modalClass="modal-custom--wide-width"
-                                    preventOutsideClick
-                                    onCloseModal={() => matchProps.history.go(-2)}
-                                >
-                                    <AddModalForm
-                                        activeDefinitionKey={definitionKey}
-                                        onCloseModal={matchProps.history.go}
-                                    />
-                                </Modal>
-                            );
-                        } else {
-                            contentNode = (
-                                <AddModalSelect
-                                    onCloseModal={matchProps.history.goBack}
-                                    onProgrammingRedirect={matchProps.history.push}
-                                />
-                            );
-                        }
-                        break;
-                    }
-                    case match.path.search('/clients/') !== -1 && typeof match.params.id !== 'undefined': {
-                        contentNode = (
-                            <Modal
-                                topPosition
-                                modalClass="modal-custom--with-help-block"
-                                onCloseModal={matchProps.history.goBack}
-                            >
-                                <ClientDetail
-                                    id={match.params.id}
-                                    onProgrammingRedirect={matchProps.history.push}
-                                />
-                            </Modal>
-                        );
-                        break;
-                    }
-                    case match.path.search('/tasks/') !== -1 && typeof match.params.id !== 'undefined': {
-                        const { title } = routeState;
-                        contentNode = (
-                            <Modal
-                                topPosition
-                                modalClass="modal-custom--wide-width"
-                                preventOutsideClick
-                                onCloseModal={matchProps.history.goBack}
-                            >
-                                <TaskDetail
-                                    id={match.params.id}
-                                    title={title}
-                                    onCloseDetail={matchProps.history.goBack}
-                                />
-                            </Modal>
-                        );
-                        break;
-                    }
-                    case match.path.search('/agents/') !== -1 && typeof match.params.agent !== 'undefined': {
-                        if (match.path.search('/users/new') !== -1) {
-                            contentNode = (
-                                <Modal
-                                    centerPosition
-                                    modalClass="user-edit-form"
-                                    contentClass="modal-content--centred"
-                                    onCloseModal={matchProps.history.goBack}
-                                    preventOutsideClick
-                                >
-                                    <NewAgentForm
-                                        companyId={match.params.agent}
-                                        onCloseForm={matchProps.history.goBack}
-                                    />
-                                </Modal>
-                            );
-                            break;
-                        }
-                        if (typeof match.params.user !== 'undefined') {
-                            contentNode = (
-                                <Modal
-                                    centerPosition
-                                    modalClass="user-edit-form"
-                                    contentClass="modal-content--centred"
-                                    onCloseModal={matchProps.history.goBack}
-                                    preventOutsideClick
-                                >
-                                    <EditAgentForm
-                                        companyId={match.params.agent}
-                                        userId={match.params.user}
-                                        onCloseForm={matchProps.history.goBack}
-                                    />
-                                </Modal>
-                            );
-                            break;
-                        }
-                        if (match.path.search('/users') !== -1) {
-                            contentNode = (
-                                <Modal
-                                    centerPosition
-                                    modalClass="users-list"
-                                    dialogClass="modal-dialog--md"
-                                    contentClass="modal-content--centred"
-                                    onCloseModal={matchProps.history.goBack}
-                                >
-                                    <AgentList id={match.params.agent} />
-                                </Modal>
-                            );
-                            break;
-                        }
-                        break;
-                    }
-                    default: {
-                        contentNode = null;
-                    }
-                }
-        
                 return [
                     <div key={0} className={cx('fr-app')}>
                         <div className={cx('fr-container', {
@@ -269,16 +312,7 @@ class Layout extends PureComponent {
                             {!isNotFound && <Sidebar />}
                             <Component {...matchProps} />
                         </div>
-                        {showAddButton && (
-                            <div className={cx('btn-options')}>
-                                <Link to="?add-modal" className={cx('btn-options__link')} />
-                                {showAddHelp && (
-                                    <span className={cx('btn-options__tooltip')}>
-                                        Однако, вам стоит подумать о будущем и создать пару задач…
-                                    </span>
-                                )}
-                            </div>
-                        )}
+                        {this.renderAddButton()}
                     </div>,
                     <CSSTransition
                         key={1}
@@ -303,8 +337,9 @@ const mapStateToProps = (state, ownProps) => {
         !Tasks.isFetching;
     
     return {
-        showAddButton: ownProps.path && ownProps.path.search('/tasks') !== -1,
+        showAddTask: ownProps.path && ownProps.path.search('/tasks') !== -1,
         showAddHelp: isTaskEmpty,
+        showAddAgent: ownProps.path && ownProps.path.search('/agents') !== -1,
         isAuth: User.isAuth,
         session_id: User.session_id,
         isManager: User.ismanager,

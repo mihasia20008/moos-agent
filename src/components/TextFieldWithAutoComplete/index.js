@@ -122,6 +122,7 @@ class TextFieldWithAutoComplete extends PureComponent {
                 <div style={{ position: 'relative' }}>
                     <input
                         type="text"
+                        autoComplete="off"
                         className={classNames.input}
                         placeholder={placeholder}
                         name={name}
