@@ -176,6 +176,11 @@ class TasksFilter extends PureComponent {
                                 value={filters.principalCompanyId}
                                 onSelect={this.handleSearchSelect}
                                 onClear={this.handleClearField}
+                                placeholder="Клиент"
+                                classNames={{
+                                    container: cx('main-filter__control'),
+                                    input: cx('main-filter__control-field')
+                                }}
                             />
                             <div className={cx('main-filter__control main-filter__control--button')}>
                                 <Link className={cx('btn btn-search')} to="?search">

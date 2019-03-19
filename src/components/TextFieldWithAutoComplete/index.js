@@ -13,10 +13,31 @@ class TextFieldWithAutoComplete extends PureComponent {
         name: PropTypes.string.isRequired,
         onSelect: PropTypes.func.isRequired,
         onClear: PropTypes.func.isRequired,
+        placeholder: PropTypes.string,
         value: PropTypes.string,
+        classNames: PropTypes.shape({
+            container: PropTypes.string,
+            input: PropTypes.string
+        }),
+        meta: PropTypes.shape({
+            touched: PropTypes.bool,
+            error: PropTypes.string
+        }),
     };
 
-    static defaultProps = { value: '' };
+    static defaultProps = {
+        placeholder: '',
+        value: '',
+        classNames: {
+            container: '',
+            input: '',
+            error: ''
+        },
+        meta: {
+            touched: false,
+            error: ''
+        }
+    };
 
     state = {
         value: this.props.value,
@@ -90,28 +111,31 @@ class TextFieldWithAutoComplete extends PureComponent {
     }
 
     render() {
-        const { name } = this.props;
+        const { name, classNames, placeholder, meta: { touched, error } } = this.props;
         const { value } = this.state;
 
         return (
             <div
-                className={cx('main-filter__control')}
+                className={classNames.container}
                 ref={node => { this.textField = node; }}
             >
-                <input
-                    type="text"
-                    className={cx('main-filter__control-field')}
-                    placeholder="Клиент"
-                    name={name}
-                    value={value}
-                    onFocus={this.handleFocusInput}
-                    onChange={this.handleTypeValue}
-                />
-                <ClearButton
-                    onClear={this.handleClearField}
-                    isHidden={!value.length}
-                />
-                {this.renderSearchResults()}
+                <div style={{ position: 'relative' }}>
+                    <input
+                        type="text"
+                        className={classNames.input}
+                        placeholder={placeholder}
+                        name={name}
+                        value={value}
+                        onFocus={this.handleFocusInput}
+                        onChange={this.handleTypeValue}
+                    />
+                    <ClearButton
+                        onClear={this.handleClearField}
+                        isHidden={!value.length}
+                    />
+                    {this.renderSearchResults()}
+                </div>
+                {touched && error && <span className={classNames.error}>{error}</span>}
             </div>
         );
     }
