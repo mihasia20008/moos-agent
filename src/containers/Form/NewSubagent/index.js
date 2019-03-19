@@ -67,8 +67,10 @@ class NewSubagentForm extends PureComponent {
     }
 
     handleCloseForm = () => {
-        const { onCloseModal, dispatch } = this.props;
+        const { session_id, onCloseModal, dispatch } = this.props;
         onCloseModal();
+
+        dispatch(getAgentsList(session_id));
         dispatch(resetAddingSubagentStatus());
     };
 
@@ -211,12 +213,12 @@ class NewSubagentForm extends PureComponent {
                         <div className={cx('restore-pass__title')}>Добавление субагента</div>
                         <Field
                             component={this.renderSearchField}
-                            name="agentCompanyId"
+                            name="companyId"
                             placeholder="Клиент"
                         />
                         <Field
                             component={wasFetchingAgents ? this.renderDropdownItem : this.renderFieldItem}
-                            name="companyId"
+                            name="agentCompanyId"
                             placeholder="Агент"
                         />
                         <div className={cx('form-group')}>
