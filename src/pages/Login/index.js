@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import cx from 'classnames';
+import { withKeycloak } from 'react-keycloak';
 
 import Modal from '../../containers/Modal';
 import FormLogin from '../../containers/Form/Login';
@@ -17,9 +18,6 @@ class Login extends PureComponent {
     static propTypes = {
         isFetching: PropTypes.bool.isRequired,
         isAuth: PropTypes.bool.isRequired,
-        session_id: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.string]),
-        loginUser: PropTypes.func.isRequired,
-        authenticationUser: PropTypes.func.isRequired,
     };
 
     state = {
@@ -40,10 +38,8 @@ class Login extends PureComponent {
     };
 
     componentDidMount() {
-        const { session_id, authenticationUser } = this.props;
-        if (session_id) {
-            authenticationUser(session_id);
-        }
+        const { dispatch } = this.props;
+        dispatch(authenticationUser());
     }
 
     componentWillUnmount() {
@@ -71,7 +67,15 @@ class Login extends PureComponent {
             canSubmit = false;
         }
         if (canSubmit) {
-            this.props.loginUser(login.value, password.value);
+            const { dispatch, keycloak } = this.props;
+            // const data = {
+            //     url: keycloak.endpoints.token(),
+            //     client_id: keycloak.clientId,
+            //     username: login.value,
+            //     password: password.value,
+            // };
+            // dispatch(loginUser(data));
+            dispatch(loginUser(login.value, password.value));
         } else {
             this.errorTimeout = setTimeout(() => {
                 this.setState(prevState => ({
@@ -83,23 +87,25 @@ class Login extends PureComponent {
     };
 
     renderELogin() {
+        const { history } = this.props;
         return (
-            <Modal key={2} topPosition onCloseModal={this.props.history.goBack}>
+            <Modal key={2} topPosition onCloseModal={history.goBack}>
                 <div className={cx('modal-custom-header')}>Банковская гарантия 101-ЭГБ/17</div>
             </Modal>
         );
     }
 
     renderRestorePassword() {
+        const { history } = this.props;
         return (
             <Modal
                 key={1}
                 centerPosition
                 preventOutsideClick
-                onCloseModal={this.props.history.goBack}
+                onCloseModal={history.goBack}
             >
                 <FormForgotPassword
-                    onCloseModal={this.props.history.goBack}
+                    onCloseModal={history.goBack}
                 />
             </Modal>
         );
@@ -152,19 +158,8 @@ const mapStateToProps = ({ User, Error }) => {
     return {
         isFetching: User.isFetching,
         isAuth: User.isAuth,
-        session_id: User.session_id,
         showSnackBar: Error.show,
     };
 };
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        loginUser: (username, password) => dispatch(loginUser(username, password)),
-        authenticationUser: (session_id) => dispatch(authenticationUser(session_id)),
-    };
-};
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(Login);
+export default withKeycloak(connect(mapStateToProps)(Login));

@@ -8,7 +8,6 @@ import { authenticationUser } from "../../../redux/User/actions";
 class AddModalSelect extends PureComponent {
     static propTypes = {
         processDefinitionKeys: PropTypes.array,
-        session_id: PropTypes.string,
         onCloseModal: PropTypes.func.isRequired,
         onProgrammingRedirect: PropTypes.func.isRequired
     };
@@ -32,8 +31,8 @@ class AddModalSelect extends PureComponent {
 
     handleOpenForm = ({ currentTarget }) => {
         const { processKey } = currentTarget.dataset;
-        const { session_id, onProgrammingRedirect, dispatch } = this.props;
-        dispatch(authenticationUser(session_id, true))
+        const { onProgrammingRedirect, dispatch } = this.props;
+        dispatch(authenticationUser(true))
             .then(() => onProgrammingRedirect(`?add-modal=${processKey}`))
             .catch(err => console.log(err));
     };
@@ -85,7 +84,6 @@ class AddModalSelect extends PureComponent {
 const mapStateToProps = ({ User }) => {
     return {
         processDefinitionKeys: User.processDefinitionKeys,
-        session_id: User.session_id,
     };
 };
 

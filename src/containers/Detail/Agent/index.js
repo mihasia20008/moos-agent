@@ -14,8 +14,8 @@ class AgentList extends PureComponent {
     };
 
     componentDidMount() {
-        const { session_id, id, dispatch } = this.props;
-        dispatch(getAgentUsersList(session_id, id));
+        const { id, dispatch } = this.props;
+        dispatch(getAgentUsersList(id));
     }
 
     renderAgentList() {
@@ -76,9 +76,8 @@ class AgentList extends PureComponent {
     }
 }
 
-const mapStateToProps = ({ Agents, User }) => {
+const mapStateToProps = ({ Agents }) => {
     return {
-        session_id: User.session_id,
         fetchingList: Agents.getUsersFetching,
         list: Agents.users,
     };

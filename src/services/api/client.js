@@ -2,11 +2,11 @@ import axios from 'axios';
 
 import { SERVER } from '../constants';
 
-export const getData = async (session_id, id) => {
+export const getData = async (id) => {
     try {
         const { data: { error_code: status, ...rest } } = await axios({
             method: 'GET',
-            url: `${SERVER.HOST}${SERVER.SPA_ENDPOINT}/company/get?principalCompany_id=${id}&session_id=${session_id}`,
+            url: `${SERVER.HOST}${SERVER.SPA_ENDPOINT}/company/get?principalCompany_id=${id}`,
         });
         if (status === 0) {
             return {

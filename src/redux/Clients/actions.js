@@ -4,11 +4,11 @@ import { Clients } from '../../services/api';
 import { logoutProcess } from "../User/actions";
 import { setErrorContent } from "../Error/actions";
 
-export function getClientsList(session_id, filters) {
+export function getClientsList(filters) {
     return async dispatch => {
         try {
             dispatch({ type: types.CLIENTS_FETCH });
-            const { isSuccess, ...res } = await Clients.getData(session_id, filters);
+            const { isSuccess, ...res } = await Clients.getData(filters);
             if (!isSuccess) {
                 if (res.needLogout) {
                     dispatch(logoutProcess(res.message));
@@ -25,11 +25,11 @@ export function getClientsList(session_id, filters) {
     };
 }
 
-export function getNextClientsList(session_id, page, filters) {
+export function getNextClientsList(page, filters) {
     return async dispatch => {
         try {
             dispatch({ type: types.NEXT_CLIENTS_FETCH });
-            const { isSuccess, ...res } = await Clients.getNextPage(session_id, page, filters);
+            const { isSuccess, ...res } = await Clients.getNextPage(page, filters);
             if (!isSuccess) {
                 if (res.needLogout) {
                     dispatch(logoutProcess(res.message));

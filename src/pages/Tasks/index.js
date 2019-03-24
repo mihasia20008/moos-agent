@@ -23,23 +23,20 @@ class Tasks extends PureComponent {
         nextPage: PropTypes.number.isRequired,
         hasMorePage: PropTypes.bool.isRequired,
         processDefinitionKeys: PropTypes.array.isRequired,
-        session_id: PropTypes.string.isRequired,
         dispatch: PropTypes.func.isRequired
     };
 
     componentDidMount() {
-        const { session_id, filters, dispatch } = this.props;
+        const { filters, dispatch } = this.props;
 
-        if (typeof session_id !== 'undefined') {
-            dispatch(getTasksList(session_id, filters));
-        }
+        dispatch(getTasksList(filters));
         window.addEventListener('scroll', this.handleScroll);
     }
 
     componentWillReceiveProps(nextProps) {
-        const { session_id, filters, dispatch } = this.props;
+        const { filters, dispatch } = this.props;
         if (JSON.stringify(filters) !== JSON.stringify(nextProps.filters)) {
-            dispatch(getTasksList(session_id, nextProps.filters));
+            dispatch(getTasksList(nextProps.filters));
         }
     }
 
@@ -51,7 +48,6 @@ class Tasks extends PureComponent {
     
     handleScroll = () => {
         const {
-            session_id,
             list,
             filters,
             isFetchingNext,
@@ -62,7 +58,7 @@ class Tasks extends PureComponent {
         const { height } = document.querySelector('.block-list.block-list--tasks').getBoundingClientRect();
 
         if (!isFetchingNext && list.length > 0 && hasMorePage && height - window.scrollY < 1000) {
-            dispatch(getNextTasksPage(session_id, nextPage, filters));
+            dispatch(getNextTasksPage(nextPage, filters));
         }
     };
 
@@ -72,8 +68,8 @@ class Tasks extends PureComponent {
     };
 
     handleOpenDetail = (taskId, taskName) => {
-        const { session_id, history, dispatch } = this.props;
-        dispatch(authenticationUser(session_id, true))
+        const { history, dispatch } = this.props;
+        dispatch(authenticationUser(true))
             .then(() => history.push(`/tasks/${taskId}`, {
                 title: taskName
             }))
@@ -127,7 +123,6 @@ const mapStateToProps = ({ Tasks, User }) => {
             from: Tasks.amount_min,
             to: Tasks.amount_max,
         },
-        session_id: User.session_id,
     };
 };
 

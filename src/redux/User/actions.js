@@ -2,6 +2,7 @@ import * as types from './actionTypes';
 
 import { User } from '../../services/api';
 import Cookies from 'js-cookie';
+import { keycloak } from '../../services/utility';
 
 import { setErrorContent } from "../Error/actions";
 
@@ -52,11 +53,11 @@ export function loginUser(username, password) {
     };
 }
 
-export function authenticationUser(session_id, needNotification) {
+export function authenticationUser(needNotification) {
     return async dispatch => {
         try {
             dispatch({ type: types.AUTH_FETCH });
-            const { isSuccess, ...res} = await User.auth(session_id);
+            const { isSuccess, ...res} = await User.auth();
             if (!isSuccess) {
                 dispatch(logoutProcess(needNotification ? res.message : undefined));
                 dispatch({ type: types.AUTH_ERROR });
@@ -83,11 +84,11 @@ export function authenticationUser(session_id, needNotification) {
     }
 }
 
-export function logoutUser(session_id) {
+export function logoutUser() {
     return async dispatch => {
         try {
             dispatch({ type: types.LOGOUT_FETCH });
-            const { isSuccess, ...res } = await User.logout(session_id);
+            const { isSuccess, ...res } = await User.logout();
             if (!isSuccess) {
                 if (res.needLogout) {
                     dispatch(logoutProcess(res.message));
@@ -102,4 +103,21 @@ export function logoutUser(session_id) {
             dispatch({ type: types.LOGOUT_ERROR });
         }
     };
+}
+
+export function keycloakInit() {
+    return async dispatch => {
+        try {
+            dispatch({ type: types.KEYCLOAK_INIT_FETCH });
+            const isAuth = await keycloak.init({ onLoad: "login-required", promiseType: 'native' });
+            if (isAuth) {
+                dispatch({ type: types.KEYCLOAK_INIT_SUCCESS, keycloak: keycloak });
+                return;
+            }
+            dispatch({ type: types.KEYCLOAK_INIT_ERROR });
+        } catch (err) {
+            console.log(err);
+            dispatch({ type: types.KEYCLOAK_INIT_ERROR });
+        }
+    }
 }

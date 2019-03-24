@@ -3,13 +3,13 @@ import axios from 'axios';
 import { SERVER } from '../constants';
 import { prepareFiltersToQuery } from "../utility";
 
-export const getData = async (session_id, filters = {}) => {
+export const getData = async (filters = {}) => {
   try {
       const query = prepareFiltersToQuery(filters);
       console.log('clients filter', query);
       const { data: { error_code: status, ...rest } } = await axios({
           method: 'GET',
-          url: `${SERVER.HOST}${SERVER.SPA_ENDPOINT}/company/list?session_id=${session_id}${query}`,
+          url: `${SERVER.HOST}${SERVER.SPA_ENDPOINT}/company/list?${query}`,
       });
       if (status === 0) {
           return {
@@ -31,12 +31,12 @@ export const getData = async (session_id, filters = {}) => {
   }
 };
 
-export const getNextPage = async (session_id, page, filters = {}, limit = 20) => {
+export const getNextPage = async (page, filters = {}, limit = 20) => {
     try {
         const query = prepareFiltersToQuery(filters);
         const { data: { error_code: status, ...rest } } = await axios({
             method: 'GET',
-            url: `${SERVER.HOST}${SERVER.SPA_ENDPOINT}/company/list?session_id=${session_id}&page=${page}&limit=${limit}${query}`,
+            url: `${SERVER.HOST}${SERVER.SPA_ENDPOINT}/company/list?page=${page}&limit=${limit}${query}`,
         });
         if (status === 0) {
             return {

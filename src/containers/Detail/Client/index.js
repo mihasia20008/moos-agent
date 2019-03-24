@@ -16,7 +16,6 @@ import {formatNumber} from '../../../services/utility';
 class DetailClient extends PureComponent {
     static propTypes = {
         id: PropTypes.string.isRequired,
-        session_id: PropTypes.string.isRequired,
         isFetching: PropTypes.bool.isRequired,
         name: PropTypes.string,
         fullname: PropTypes.string,
@@ -31,8 +30,8 @@ class DetailClient extends PureComponent {
     state = {wasCopy: false};
 
     componentDidMount() {
-        const {session_id, id, dispatch} = this.props;
-        dispatch(getClientItem(session_id, id));
+        const {id, dispatch} = this.props;
+        dispatch(getClientItem(id));
     }
 
     componentWillUnmount() {
@@ -47,8 +46,8 @@ class DetailClient extends PureComponent {
     };
 
     handleOpenTaskDetail = (taskId, taskName) => {
-        const {session_id, onProgrammingRedirect, dispatch} = this.props;
-        dispatch(authenticationUser(session_id, true))
+        const {onProgrammingRedirect, dispatch} = this.props;
+        dispatch(authenticationUser(true))
             .then(() => onProgrammingRedirect(`/tasks/${taskId}`, {
                 title: taskName
             }))
@@ -211,10 +210,9 @@ class DetailClient extends PureComponent {
     }
 }
 
-const mapStateToProps = ({User, Client}) => {
+const mapStateToProps = ({Client}) => {
     const {isFetching, company} = Client;
     return {
-        session_id: User.session_id,
         isFetching: isFetching,
         name: !isFetching && typeof company.displayName !== 'undefined' && company.displayName
             ? company.displayName

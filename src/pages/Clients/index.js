@@ -21,24 +21,20 @@ class Clients extends PureComponent {
         clientsCount: PropTypes.number,
         nextPage: PropTypes.number,
         hasMorePage: PropTypes.bool,
-        session_id: PropTypes.string.isRequired,
         dispatch: PropTypes.func.isRequired,
     };
 
     componentDidMount() {
-        const { session_id, filters, dispatch } = this.props;
-        
-        if (typeof session_id !== 'undefined') {
-            dispatch(getClientsList(session_id, filters));
-            dispatch(getAgentsList(session_id));
-        }
+        const { filters, dispatch } = this.props;
+        dispatch(getClientsList(filters));
+        dispatch(getAgentsList());
         window.addEventListener('scroll', this.handleScroll);
     }
 
     componentWillReceiveProps(nextProps) {
-        const { session_id, filters, dispatch } = this.props;
+        const { filters, dispatch } = this.props;
         if (JSON.stringify(filters) !== JSON.stringify(nextProps.filters)) {
-            dispatch(getClientsList(session_id, nextProps.filters));
+            dispatch(getClientsList(nextProps.filters));
         }
     }
 
@@ -50,7 +46,6 @@ class Clients extends PureComponent {
     
     handleScroll = () => {
         const {
-            session_id,
             company,
             isFetchingNext,
             filters,
@@ -61,7 +56,7 @@ class Clients extends PureComponent {
         const { height } = document.querySelector('.block-list.block-list--clients').getBoundingClientRect();
 
         if (!isFetchingNext && company.length > 0 && hasMorePage && height - window.scrollY < 1000) {
-            dispatch(getNextClientsList(session_id, nextPage, filters));
+            dispatch(getNextClientsList(nextPage, filters));
         }
     };
 
@@ -100,7 +95,7 @@ class Clients extends PureComponent {
     }
 }
 
-const mapStateToProps = ({ Agents, Clients, User }) => {
+const mapStateToProps = ({ Agents, Clients }) => {
     return {
         isFetching: Clients.isFetching,
         isFetchingNext: Clients.isFetchingNext,
@@ -110,7 +105,6 @@ const mapStateToProps = ({ Agents, Clients, User }) => {
         nextPage: Clients.page + 1,
         hasMorePage: Clients.more,
         agents: Agents.agents,
-        session_id: User.session_id,
     };
 };
 

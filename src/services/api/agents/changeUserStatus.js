@@ -1,11 +1,11 @@
 import axios from "axios";
 import * as SERVER from "../../constants/server";
 
-export const setEnable = async (session_id, username) => {
+export const setEnable = async (username) => {
     try {
         const { data: { error_code: status, ...rest } } = await axios({
             method: 'GET',
-            url: `${SERVER.HOST}${SERVER.API_ENDPOINT}/manager/agent/user/enable?session_id=${session_id}&username=${username}`,
+            url: `${SERVER.HOST}${SERVER.API_ENDPOINT}/manager/agent/user/enable?username=${username}`,
         });
         if (status === 0) {
             return {
@@ -27,11 +27,11 @@ export const setEnable = async (session_id, username) => {
     }
 };
 
-export const setDisable = async (session_id, username) => {
+export const setDisable = async (username) => {
     try {
         const { data: { error_code: status, ...rest } } = await axios({
             method: 'GET',
-            url: `${SERVER.HOST}${SERVER.API_ENDPOINT}/manager/agent/user/disable?session_id=${session_id}&username=${username}`,
+            url: `${SERVER.HOST}${SERVER.API_ENDPOINT}/manager/agent/user/disable?username=${username}`,
         });
         if (status === 0) {
             return {

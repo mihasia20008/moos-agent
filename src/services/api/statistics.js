@@ -2,11 +2,11 @@ import axios from 'axios';
 
 import { SERVER } from '../constants';
 
-export const getWidget = async (session_id) => {
+export const getWidget = async () => {
     try {
         const { data: { error_code: status, ...rest } } = await axios({
             method: 'GET',
-            url: `${SERVER.HOST}${SERVER.SPA_ENDPOINT}/stat/summary?session_id=${session_id}`,
+            url: `${SERVER.HOST}${SERVER.SPA_ENDPOINT}/stat/summary`,
         });
         if (status === 0) {
             return {
@@ -28,11 +28,11 @@ export const getWidget = async (session_id) => {
     }
 };
 
-export const getPeriods = async (session_id) => {
+export const getPeriods = async () => {
     try {
         const { data: { error_code: status, ...rest } } = await axios({
             method: 'GET',
-            url: `${SERVER.HOST}${SERVER.SPA_ENDPOINT}/stat/periods?session_id=${session_id}`,
+            url: `${SERVER.HOST}${SERVER.SPA_ENDPOINT}/stat/periods`,
         });
         if (status === 0) {
             return {
@@ -54,12 +54,12 @@ export const getPeriods = async (session_id) => {
     }
 };
 
-export const getEmployeeStats = async (session_id, period, username = '') => {
+export const getEmployeeStats = async (period, username = '') => {
     try {
         const user = username ? `&username=${username}`: '';
         const { data: { error_code: status, ...rest } } = await axios({
             method: 'GET',
-            url: `${SERVER.HOST}${SERVER.SPA_ENDPOINT}/stat/summary?session_id=${session_id}&period=${period}${user}`,
+            url: `${SERVER.HOST}${SERVER.SPA_ENDPOINT}/stat/summary?period=${period}${user}`,
         });
         if (status === 0) {
             return {
@@ -81,11 +81,11 @@ export const getEmployeeStats = async (session_id, period, username = '') => {
     }
 };
 
-export const getCompanyStats = async (session_id, period) => {
+export const getCompanyStats = async (period) => {
     try {
         const { data: { error_code: status, ...rest } } = await axios({
             method: 'GET',
-            url: `${SERVER.HOST}${SERVER.SPA_ENDPOINT}/stat/company?session_id=${session_id}&period=${period}`,
+            url: `${SERVER.HOST}${SERVER.SPA_ENDPOINT}/stat/company?period=${period}`,
         });
         if (status === 0) {
             return {

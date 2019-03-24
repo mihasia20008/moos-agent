@@ -4,11 +4,11 @@ import { Client } from '../../services/api';
 import { logoutProcess } from "../User/actions";
 import { setErrorContent } from "../Error/actions";
 
-export function getClientItem(session_id, id) {
+export function getClientItem(id) {
     return async dispatch => {
         try {
             dispatch({ type: types.CLIENT_FETCH });
-            const { isSuccess, ...res } = await Client.getData(session_id, id);
+            const { isSuccess, ...res } = await Client.getData(id);
             if (!isSuccess) {
                 if (res.needLogout) {
                     dispatch(logoutProcess(res.message));

@@ -59,26 +59,23 @@ class NewSubagentForm extends PureComponent {
     }
 
     componentDidMount() {
-        const { session_id, dispatch } = this.props;
-
-        if (typeof session_id !== 'undefined') {
-            dispatch(getAgentsList(session_id));
-        }
+        const { dispatch } = this.props;
+        dispatch(getAgentsList());
     }
 
     handleCloseForm = () => {
-        const { session_id, onCloseModal, dispatch } = this.props;
+        const { onCloseModal, dispatch } = this.props;
         onCloseModal();
 
-        dispatch(getAgentsList(session_id));
+        dispatch(getAgentsList());
         dispatch(resetAddingSubagentStatus());
     };
 
     handleReturnForm = () => this.setState({ status: -1 });
 
     onFormSubmit = (values) => {
-        const { session_id, dispatch } = this.props;
-        dispatch(addSubagent(session_id, values));
+        const { dispatch } = this.props;
+        dispatch(addSubagent(values));
     };
 
     handleSubmitForm = (event) => {
@@ -235,9 +232,8 @@ class NewSubagentForm extends PureComponent {
 }
 
 const mapStateToProps = (state) => {
-    const { User, Agents } = state;
+    const { Agents } = state;
     return {
-        session_id: User.session_id,
         addAgentInfo: Agents.addAgent,
         agents: Agents.agents,
         wasFetchingAgents: Agents.wasFetching,

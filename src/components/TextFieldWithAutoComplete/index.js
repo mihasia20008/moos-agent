@@ -71,11 +71,11 @@ class TextFieldWithAutoComplete extends PureComponent {
         const { value } = target;
 
         const showResult = !!value.length;
-        const { session_id, dispatch } = this.props;
+        const { dispatch } = this.props;
         this.setState({ value, showResult: showResult });
 
         if (showResult) {
-            dispatch(searchByString(session_id, value));
+            dispatch(searchByString(value));
         } else {
             dispatch(clearSearchResults());
         }
@@ -142,9 +142,8 @@ class TextFieldWithAutoComplete extends PureComponent {
     }
 }
 
-const mapStateToProp = ({ User, Search }) => {
+const mapStateToProp = ({ Search }) => {
     return {
-        session_id: User.session_id,
         list: Search.list,
     };
 };

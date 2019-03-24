@@ -11,7 +11,6 @@ class FormSearch extends PureComponent {
     static propTypes = {
         defaultSearch: PropTypes.string,
         list: PropTypes.array.isRequired,
-        session_id: PropTypes.string.isRequired,
         dispatch: PropTypes.func.isRequired
     };
     static defaultProps = { defaultSearch: '' };
@@ -22,9 +21,9 @@ class FormSearch extends PureComponent {
     };
 
     componentDidMount() {
-        const { defaultSearch, session_id, dispatch } = this.props;
+        const { defaultSearch, dispatch } = this.props;
         if (defaultSearch.length > 2) {
-            dispatch(searchByString(session_id, defaultSearch));
+            dispatch(searchByString(defaultSearch));
         }
     }
 
@@ -34,13 +33,13 @@ class FormSearch extends PureComponent {
     }
 
     handleSearchType = ({ target: { value } }) => {
-        const { session_id, dispatch } = this.props;
+        const { dispatch } = this.props;
         this.setState({
             search: value,
             isFilled: value.length > 2,
         });
         if (value.length > 2) {
-            dispatch(searchByString(session_id, value));
+            dispatch(searchByString(value));
         }
     };
 
@@ -96,9 +95,8 @@ class FormSearch extends PureComponent {
     }
 }
 
-const mapStateToProp = ({ User, Search }) => {
+const mapStateToProp = ({ Search }) => {
     return {
-        session_id: User.session_id,
         list: Search.list,
     };
 };

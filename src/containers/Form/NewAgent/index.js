@@ -37,8 +37,8 @@ class NewAgentForm extends PureComponent {
     }
 
     onFormSubmit = (values) => {
-        const { session_id, companyId, dispatch } = this.props;
-        dispatch(addUser(session_id, { companyId, ...values }));
+        const { companyId, dispatch } = this.props;
+        dispatch(addUser({ companyId, ...values }));
     };
 
     handleSubmitForm = (event) => {
@@ -123,9 +123,8 @@ class NewAgentForm extends PureComponent {
 }
 
 const mapStateToProps = (state) => {
-    const { User, Agents } = state;
+    const { Agents } = state;
     return {
-        session_id: User.session_id,
         addUserInfo: Agents.addUser,
         formValues: getFormValues(formSettings.form)(state),
         formErrors: getFormSyncErrors(formSettings.form)(state),

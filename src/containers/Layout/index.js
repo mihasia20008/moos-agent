@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Route, Link, Redirect } from 'react-router-dom';
 import cx from 'classnames';
 import { CSSTransition } from 'react-transition-group';
+import { withKeycloak } from 'react-keycloak';
 
 import Sidebar from '../Sidebar';
 import Modal from '../Modal';
@@ -34,8 +35,6 @@ class Layout extends PureComponent {
         isManager: PropTypes.bool,
         isNotFound: PropTypes.bool,
         showSnackBar: PropTypes.bool.isRequired,
-        session_id: PropTypes.string.isRequired,
-        authenticationUser: PropTypes.func.isRequired,
     };
     static defaultProps = {
         isNotFound: false,
@@ -53,9 +52,9 @@ class Layout extends PureComponent {
     }
 
     componentDidMount() {
-        const { session_id, isAuth, authenticationUser } = this.props;
-        if (typeof session_id !== 'undefined' && !isAuth) {
-            authenticationUser(session_id);
+        const { isAuth, dispatch } = this.props;
+        if (!isAuth) {
+            dispatch(authenticationUser());
         }
     }
 
@@ -347,13 +346,4 @@ const mapStateToProps = (state, ownProps) => {
     };
 };
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        authenticationUser: (session_id) => dispatch(authenticationUser(session_id)),
-    };
-};
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(Layout);
+export default withKeycloak(connect(mapStateToProps)(Layout));

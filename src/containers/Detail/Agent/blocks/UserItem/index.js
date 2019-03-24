@@ -10,7 +10,6 @@ import { setUserEnable, setUserDisable } from "../../../../../redux/Agents/actio
 
 class UserItem extends PureComponent {
     static propTypes = {
-        session_id: PropTypes.string.isRequired,
         username: PropTypes.string.isRequired,
         fullName: PropTypes.string.isRequired,
         agentId: PropTypes.string.isRequired,
@@ -25,13 +24,13 @@ class UserItem extends PureComponent {
     };
 
     handleSetDisable = () => {
-        const { session_id, username, dispatch } = this.props;
-        dispatch(setUserDisable(session_id, username));
+        const { username, dispatch } = this.props;
+        dispatch(setUserDisable(username));
     };
 
     handleSetEnable = () => {
-        const { session_id, username, dispatch } = this.props;
-        dispatch(setUserEnable(session_id, username));
+        const { username, dispatch } = this.props;
+        dispatch(setUserEnable(username));
     };
 
     handleToggleStatus = () => {
@@ -79,9 +78,8 @@ class UserItem extends PureComponent {
     }
 }
 
-const mapStateToProps = ({ Agents, User }, ownProps) => {
+const mapStateToProps = ({ Agents }, ownProps) => {
     return {
-        session_id: User.session_id,
         changingStatus: Agents.changingUser !== '',
         currentUserChanging: ownProps.username === Agents.changingUser,
     };
