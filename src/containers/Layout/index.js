@@ -5,6 +5,7 @@ import { Route, Link, Redirect } from 'react-router-dom';
 import cx from 'classnames';
 import { CSSTransition } from 'react-transition-group';
 import { withKeycloak } from 'react-keycloak';
+import Cookies from 'js-cookie';
 
 import Sidebar from '../Sidebar';
 import Modal from '../Modal';
@@ -28,7 +29,9 @@ import { authenticationUser } from '../../redux/User/actions';
 class Layout extends PureComponent {
     static propTypes = {
         component: PropTypes.func.isRequired,
+        authType: PropTypes.string.isRequired,
         isAuth: PropTypes.bool.isRequired,
+        logout: PropTypes.bool.isRequired,
         showAddAgent: PropTypes.bool,
         showAddTask: PropTypes.bool,
         showAddHelp: PropTypes.bool.isRequired,
@@ -42,9 +45,37 @@ class Layout extends PureComponent {
         showAddTask: false,
     };
 
-    componentDidUpdate(prevProps) {
-        const { path: pathNow, location: locationNow } = this.props;
+    state = {
+        prevFetchStatus: false,
+        keycloakAuth: false,
+        keycloakFetch: true,
+    };
+
+    static getDerivedStateFromProps(props, state) {
+        const { isFetching } = props;
+        const { prevFetchStatus } = state;
+
+        if (isFetching !== prevFetchStatus) {
+            return {
+                prevFetchStatus: isFetching,
+            };
+        }
+
+        return {};
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        const { authType, path: pathNow, location: locationNow, dispatch } = this.props;
         const { location: locationPrev } = prevProps;
+
+        if (authType === 'keycloak') {
+            const { keycloakAuth: nowKeycloakAuth } = this.state;
+            const { keycloakAuth: prevKeycloakAuth } = prevState;
+
+            if (!prevKeycloakAuth && nowKeycloakAuth) {
+                dispatch(authenticationUser());
+            }
+        }
 
         if (pathNow === locationNow.pathname && locationNow.pathname !== locationPrev.pathname) {
             window.scrollTo(0, 0)
@@ -52,9 +83,18 @@ class Layout extends PureComponent {
     }
 
     componentDidMount() {
-        const { isAuth, dispatch } = this.props;
-        if (!isAuth) {
-            dispatch(authenticationUser());
+        const { authType, isAuth, dispatch } = this.props;
+        if (authType === 'keycloak') {
+            const { keycloak } = this.props;
+            if (keycloak.authenticated) {
+                Cookies.set('JWT', keycloak.token);
+                this.setState({ keycloakAuth: true, keycloakFetch: false });
+            }
+        }
+        if (authType === 'standard') {
+            if (!isAuth) {
+                dispatch(authenticationUser());
+            }
         }
     }
 
@@ -261,31 +301,53 @@ class Layout extends PureComponent {
     }
     
     render() {
+        const { keycloakAuth, keycloakFetch, prevFetchStatus } = this.state;
         const {
             component: Component,
             isNotFound,
             isManager,
+            authType,
             isAuth,
-            session_id,
+            logout,
+            isFetching,
             showSnackBar,
             ...rest
         } = this.props;
 
         return (
             <Route {...rest} render={matchProps => {
-                if (!isAuth && !session_id) {
-                    return (
-                        <Redirect
-                            to={{
-                                pathname: "/",
-                                search: "",
-                            }}
-                        />
-                    );
+                if (authType === 'keycloak') {
+                    if (keycloakFetch) {
+                        return <Overlay size="big" />;
+                    }
+
+                    if (!keycloakAuth) {
+                        return (
+                            <Redirect
+                                to={{
+                                    pathname: "/",
+                                    search: "",
+                                }}
+                            />
+                        );
+                    }
                 }
 
-                if (!isAuth) {
-                    return <Overlay size="big" />;
+                if (authType === 'standard') {
+                    if ((prevFetchStatus || logout) && !isFetching && !isAuth) {
+                        return (
+                            <Redirect
+                                to={{
+                                    pathname: "/",
+                                    search: "",
+                                }}
+                            />
+                        );
+                    }
+
+                    if (!isAuth) {
+                        return <Overlay size="big" />;
+                    }
                 }
         
                 const { match } = matchProps;
@@ -339,8 +401,10 @@ const mapStateToProps = (state, ownProps) => {
         showAddTask: ownProps.path && ownProps.path.search('/tasks') !== -1,
         showAddHelp: isTaskEmpty,
         showAddAgent: ownProps.path && ownProps.path.search('/agents') !== -1,
+        authType: User.authType,
         isAuth: User.isAuth,
-        session_id: User.session_id,
+        logout: User.logout,
+        isFetching: User.isFetching,
         isManager: User.ismanager,
         showSnackBar: Error.show,
     };

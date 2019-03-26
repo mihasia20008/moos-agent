@@ -1,13 +1,14 @@
 import * as types from './actionTypes';
 import Cookies from 'js-cookie';
 
+import CONTENT from '../../contentConstants';
+
 const initialState = {
+    authType: CONTENT.authType,
     isFetching: false,
     isAuth: false,
     session_id: Cookies.get('session_id'),
-    keycloakFetch: false,
-    keycloakAuth: false,
-    keycloakObject: null,
+    logout: false,
     username: '',
     fullname: '',
     isclient: null,
@@ -24,6 +25,7 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 isFetching: true,
+                logout: false,
             };
         }
         case types.LOGIN_SUCCESS:
@@ -38,6 +40,7 @@ export default (state = initialState, action) => {
         case types.LOGOUT_SUCCESS: {
             return {
                 ...initialState,
+                logout: true,
                 session_id: '',
             };
         }
@@ -48,26 +51,6 @@ export default (state = initialState, action) => {
                 ...state,
                 isFetching: false,
                 session_id: '',
-            };
-        }
-        case types.KEYCLOAK_INIT_FETCH: {
-            return {
-                ...state,
-                keycloakFetch: true,
-            };
-        }
-        case types.KEYCLOAK_INIT_SUCCESS: {
-            return {
-                ...state,
-                keycloakFetch: false,
-                keycloakAuth: true,
-                keycloakObject: action.keycloak,
-            };
-        }
-        case types.KEYCLOAK_INIT_ERROR: {
-            return {
-                ...state,
-                keycloakFetch: false,
             };
         }
         default: {

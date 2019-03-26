@@ -2,7 +2,6 @@ import * as types from './actionTypes';
 
 import { User } from '../../services/api';
 import Cookies from 'js-cookie';
-import { keycloak } from '../../services/utility';
 
 import { setErrorContent } from "../Error/actions";
 
@@ -103,21 +102,4 @@ export function logoutUser() {
             dispatch({ type: types.LOGOUT_ERROR });
         }
     };
-}
-
-export function keycloakInit() {
-    return async dispatch => {
-        try {
-            dispatch({ type: types.KEYCLOAK_INIT_FETCH });
-            const isAuth = await keycloak.init({ onLoad: "login-required", promiseType: 'native' });
-            if (isAuth) {
-                dispatch({ type: types.KEYCLOAK_INIT_SUCCESS, keycloak: keycloak });
-                return;
-            }
-            dispatch({ type: types.KEYCLOAK_INIT_ERROR });
-        } catch (err) {
-            console.log(err);
-            dispatch({ type: types.KEYCLOAK_INIT_ERROR });
-        }
-    }
 }

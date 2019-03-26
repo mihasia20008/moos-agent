@@ -26,6 +26,9 @@ Copy `src/contentConstants.sample.json` to `contentConstants.json` then edit it 
 
 - Copyright, Phone, E-Mail texts on site
 - tasks statuses *(if need)*
+- `authType` need write one of `keycloak` or `standard`
+    - `keycloak` - if need authorize user by Keycloak server
+    - `standard` - if need authorize user by session_id in `/api/`
 
 ## Start & watch
 

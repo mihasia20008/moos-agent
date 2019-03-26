@@ -5,6 +5,7 @@ import { Link, Redirect } from 'react-router-dom';
 import cx from 'classnames';
 import { withKeycloak } from 'react-keycloak';
 
+import Overlay from "../../components/Overlay";
 import Modal from '../../containers/Modal';
 import FormLogin from '../../containers/Form/Login';
 import FormForgotPassword from '../../containers/Form/ForgotPassword';
@@ -16,11 +17,14 @@ import CONTENT from '../../contentConstants';
 
 class Login extends PureComponent {
     static propTypes = {
+        authType: PropTypes.string.isRequired,
         isFetching: PropTypes.bool.isRequired,
         isAuth: PropTypes.bool.isRequired,
     };
 
     state = {
+        keycloakAuth: false,
+        keycloakFetch: true,
         login: {
             name: 'login',
             placeholder: 'Логин',
@@ -38,8 +42,18 @@ class Login extends PureComponent {
     };
 
     componentDidMount() {
-        const { dispatch } = this.props;
-        dispatch(authenticationUser());
+        const { authType } = this.props;
+        if (authType === 'keycloak') {
+            const { keycloak } = this.props;
+            if (keycloak.authenticated) {
+                this.setState({ keycloakAuth: true, keycloakFetch: false });
+            }
+        }
+        if (authType === 'standard') {
+            const { dispatch } = this.props;
+            dispatch(authenticationUser())
+                .then(() => this.setState({ keycloakFetch: false }));
+        }
     }
 
     componentWillUnmount() {
@@ -67,14 +81,7 @@ class Login extends PureComponent {
             canSubmit = false;
         }
         if (canSubmit) {
-            const { dispatch, keycloak } = this.props;
-            // const data = {
-            //     url: keycloak.endpoints.token(),
-            //     client_id: keycloak.clientId,
-            //     username: login.value,
-            //     password: password.value,
-            // };
-            // dispatch(loginUser(data));
+            const { dispatch } = this.props;
             dispatch(loginUser(login.value, password.value));
         } else {
             this.errorTimeout = setTimeout(() => {
@@ -140,8 +147,13 @@ class Login extends PureComponent {
 
     render() {
         const { location: { search }, isAuth, showSnackBar } = this.props;
+        const { keycloakAuth, keycloakFetch } = this.state;
 
-        if (isAuth) {
+        if (keycloakFetch) {
+            return <Overlay size="big" />;
+        }
+
+        if (isAuth || keycloakAuth) {
             return <Redirect to="/tasks" />
         }
 
@@ -156,6 +168,7 @@ class Login extends PureComponent {
 
 const mapStateToProps = ({ User, Error }) => {
     return {
+        authType: User.authType,
         isFetching: User.isFetching,
         isAuth: User.isAuth,
         showSnackBar: Error.show,
