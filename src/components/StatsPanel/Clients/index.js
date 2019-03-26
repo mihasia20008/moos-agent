@@ -14,16 +14,16 @@ const ClientsStatsPanel = ({ clientsCount }) => {
             <div className={cx('main-stats__item')}>
                 <span className={cx('main-stats__title')}>Заявки</span>
                 <ul className={cx('deals-list')}>
-                    <li className={cx('deals-list__item')}>192 821</li>
-                    <li className={cx('deals-list__item deals-list__item--purple')}>1241</li>
-                    <li className={cx('deals-list__item deals-list__item--yellow')}>9124</li>
-                    <li className={cx('deals-list__item deals-list__item--red')}>37 888</li>
-                    <li className={cx('deals-list__item deals-list__item--green')}>87 125</li>
+                    <li className={cx('deals-list__item')}>&mdash;</li>
+                    <li className={cx('deals-list__item deals-list__item--purple')}>&mdash;</li>
+                    <li className={cx('deals-list__item deals-list__item--yellow')}>&mdash;</li>
+                    <li className={cx('deals-list__item deals-list__item--red')}>&mdash;</li>
+                    <li className={cx('deals-list__item deals-list__item--green')}>&mdash;</li>
                 </ul>
             </div>
             <div className={cx('main-stats__item')}>
                 <span className={cx('main-stats__title')}>Сумма</span>
-                <span className={cx('main-stats__value')}>421 348 159.12 ₽</span>
+                <span className={cx('main-stats__value')}>&mdash; ₽</span>
             </div>
         </div>
     );
