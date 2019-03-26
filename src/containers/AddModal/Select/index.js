@@ -33,7 +33,7 @@ class AddModalSelect extends PureComponent {
         const { processKey } = currentTarget.dataset;
         const { onProgrammingRedirect, dispatch } = this.props;
         dispatch(authenticationUser(true))
-            .then(() => onProgrammingRedirect(`?add-modal=${processKey}`))
+            .then(() => onProgrammingRedirect(`?add-task=${processKey}`))
             .catch(err => console.log(err));
     };
 
