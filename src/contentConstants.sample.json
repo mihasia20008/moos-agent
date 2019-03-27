@@ -1,4 +1,5 @@
 {
+    "authType": "keycloak | standard",
     "COPYRIGHT": "FarZoom #ACTUAL_DATE# © v. 1.2.9.1 ßeta 2",
     "PHONE": "+7 (495) 799–09–83",
     "EMAIL": "support@farzoom.com",

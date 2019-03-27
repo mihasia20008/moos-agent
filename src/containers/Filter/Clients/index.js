@@ -3,20 +3,54 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import cx from 'classnames';
 
-import ReactBootstrapSlider from 'react-bootstrap-slider';
+import TextField from '../../../components/TextField';
+import Dropdown from "../../../components/Dropdown";
 
 class ClientsFilter extends PureComponent {
-    static propTypes = { isDisable: PropTypes.bool };
-    static defaultProps = { isDisable: false };
+    static propTypes = {
+        isDisable: PropTypes.bool,
+        agents: PropTypes.array,
+        filters: PropTypes.object,
+        onChangeFilter: PropTypes.func.isRequired,
+    };
+    static defaultProps = {
+        isDisable: false,
+        agents: []
+    };
     
     state = { isFixed: false };
 
-    componentDidMount = () => {
+    componentDidMount() {
         window.addEventListener('scroll', this.handleScroll);
     }
 
-    componentWillUnmount = () => {
+    componentWillUnmount() {
         window.removeEventListener('scroll', this.handleScroll);
+    }
+
+    getAgentsFilter(agents, agentCompanyId = '') {
+        const { filters, onChangeFilter } = this.props;
+        let active = 0;
+        const list = agents.reduce((acc, agent) => {
+            if (agentCompanyId === agent.id) {
+                active = acc.length;
+            }
+            const name = typeof agent.displayName !== 'undefined' && agent.displayName
+                ? agent.displayName
+                : typeof agent.shortName !== 'undefined' && agent.shortName
+                    ? agent.shortName
+                    : typeof agent.fullName !== 'undefined' && agent.fullName
+                        ? agent.fullName
+                        : undefined;
+            return acc.concat([{ key: agent.id, value: name }]);
+        }, [{ key: 'all', value: 'Все агенты' }]);
+        if (list.length === 2) {
+            active = 1;
+            if (filters.agentCompanyId !== list[1].key) {
+                onChangeFilter({ agentCompanyId: list[1].key });
+            }
+        }
+        return { active, list };
     }
 
     handleScroll = () => {
@@ -27,16 +61,29 @@ class ClientsFilter extends PureComponent {
         if (this.state.isFixed && window.scrollY === 0) {
             this.setState({ isFixed: false });
         }
-    }
+    };
 
-    changeValue = (event) => console.log(event);
+    handleSelectDropdown = (name, key) => {
+        const { onChangeFilter } = this.props;
+        if (key === 'all') {
+            onChangeFilter({ [`${name}`]: '' });
+        } else {
+            onChangeFilter({ [`${name}`]: key });
+        }
+    };
+
+    handleTypeText = ({ target }) => this.props.onChangeFilter({ [`${target.name}`]: target.value });
+
+    handleClearField = (name, value) => this.props.onChangeFilter({ [`${name}`]: value });
 
     render() {
         const { isFixed } = this.state;
-        const { isDisable } = this.props;
+        const { isDisable, agents, filters } = this.props;
+
+        const agentsFilter = this.getAgentsFilter(agents, filters.agentCompanyId);
 
         return (
-            <div className={cx('main-filter main-filter--fixed-width', {
+            <div className={cx('main-filter', {
                 'main-filter--fixed': isFixed,
             })}>
                 <div className={cx('main-filter__container')}>
@@ -45,63 +92,27 @@ class ClientsFilter extends PureComponent {
                             'main-filter__row--disabled': isDisable,
                         })}>
                             <div className={cx('main-filter__control main-filter__control--icon-right')}>
-                                <div className={cx('dropdown')}>
-                                    <button type="button" className={cx('btn btn-dropdown dropdown-toggle')} data-toggle="dropdown">
-                                        Индивидуальные предприятия
-                                    </button>
-                                    <div className={cx('dropdown-menu')}>
-                                        <span className={cx('dropdown-item')}>Предприятие 1</span>
-                                        <span className={cx('dropdown-item')}>Предприятие 2</span>
-                                        <span className={cx('dropdown-item')}>Предприятие 3</span>
-                                    </div>
-                                </div>
+                                <Dropdown
+                                    name="agentCompanyId"
+                                    toggleClassName="btn btn-dropdown--hidden-border"
+                                    defaultActive={agentsFilter.active}
+                                    list={agentsFilter.list}
+                                    disabled={agentsFilter.list.length < 3}
+                                    onSelectItem={this.handleSelectDropdown}
+                                />
                                 <i className={cx('icon icon-chevron-down')} />
                             </div>
-                            <div className={cx('main-filter__control main-filter__control--icon-right')}>
-                                <div className={cx('dropdown')}>
-                                    <button type="button" className={cx('btn btn-dropdown dropdown-toggle')} data-toggle="dropdown">
-                                        Я→А
-                                    </button>
-                                    <div className={cx('dropdown-menu')}>
-                                        <span className={cx('dropdown-item')}>А→Я</span>
-                                        <span className={cx('dropdown-item')}>Я→А</span>
-                                    </div>
-                                </div>
-                                <i className={cx('icon icon-chevron-down')} />
-                            </div>
-                            <div className={cx('main-filter__control main-filter__control--icon-right')}>
-                                <div className={cx('dropdown')}>
-                                    <button type="button" className={cx('btn btn-dropdown dropdown-toggle')} data-toggle="dropdown">
-                                        По дате последнего платежа
-                                    </button>
-                                    <div className={cx('dropdown-menu')}>
-                                        <span className={cx('dropdown-item')}>По дате последнего платежа 1</span>
-                                        <span className={cx('dropdown-item')}>По дате последнего платежа 2</span>
-                                        <span className={cx('dropdown-item')}>По дате последнего платежа 3</span>
-                                    </div>
-                                </div>
-                                <i className={cx('icon icon-chevron-down')} />
-                            </div>
+                            <TextField
+                                name="q"
+                                placeholder="Клиент"
+                                value={filters.q}
+                                onChange={this.handleTypeText}
+                                onClear={this.handleClearField}
+                            />
                             <div className={cx('main-filter__control main-filter__control--button')}>
                                 <Link className={cx('btn btn-search')} to="?search">
                                     <i className={cx('icon icon-seacrh-m')} />
                                 </Link>
-                            </div>
-                        </div>
-                        <div className={cx('main-filter__row', {
-                            'main-filter__row--disabled': isDisable,
-                        })}>
-                            <div className={cx('filter-slider filter-slider--full-size')}>
-                                <span>От 30К ₽</span>
-                                <ReactBootstrapSlider
-                                    className={cx('filter-slider__control')}
-                                    value={[45000, 5900000]}
-                                    change={this.changeValue}
-                                    slideStop={this.changeValue}
-                                    step={10}
-                                    max={6900000}
-                                    min={30000} />
-                                <span>До 6.9М ₽</span>
                             </div>
                         </div>
                     </div>

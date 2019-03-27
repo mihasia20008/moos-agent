@@ -35,9 +35,9 @@ class TasksFilter extends PureComponent {
     getProcessesFilter(processes, orderTypeRefId = '') {
         const { filters, onChangeFilter } = this.props;
         let active = 0;
-        const list = processes.reduce((acc, process, index) => {
+        const list = processes.reduce((acc, process) => {
             if (orderTypeRefId === process.process_type) {
-                active = index;
+                active = acc.length;
             }
             return acc.concat([{ key: process.process_type, value: process.process_name }]);
         }, [{ key: 'all', value: 'Все процессы' }]);
@@ -53,9 +53,9 @@ class TasksFilter extends PureComponent {
     static getPhaseFilter(processes, activeProcess, phaseId = '') {
         let active = 0;
         const { phases = [] } = processes[activeProcess];
-        const list = phases.reduce((acc, phase, index) => {
+        const list = phases.reduce((acc, phase) => {
             if (phaseId === phase.phaseId) {
-                active = index;
+                active = acc.length;
             }
             return acc.concat([{ key: phase.phaseId, value: phase.phaseName }]);
         }, [{ key: 'all', value: 'Все фазы' }]);
@@ -166,6 +166,7 @@ class TasksFilter extends PureComponent {
                             />
                             <TextField
                                 name="orderNumber"
+                                placeholder="Номер заявки"
                                 value={filters.orderNumber}
                                 onChange={this.handleTypeText}
                                 onClear={this.handleClearField}
@@ -175,6 +176,11 @@ class TasksFilter extends PureComponent {
                                 value={filters.principalCompanyId}
                                 onSelect={this.handleSearchSelect}
                                 onClear={this.handleClearField}
+                                placeholder="Клиент"
+                                classNames={{
+                                    container: cx('main-filter__control'),
+                                    input: cx('main-filter__control-field')
+                                }}
                             />
                             <div className={cx('main-filter__control main-filter__control--button')}>
                                 <Link className={cx('btn btn-search')} to="?search">

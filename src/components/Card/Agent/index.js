@@ -5,12 +5,19 @@ import cx from 'classnames';
 
 import AgentStats from './blocks/AgentStats';
 
+import { declOfNum } from '../../../services/utility';
+
+const users = ['пользователь', 'пользователя', 'пользователей'];
+const clients = ['клиент', 'клиента', 'клиентов'];
+
 const AgentCard = ({
     id,
     name,
     inn,
     agentsCount,
+    companyCount,
     statList,
+    onShowClients,
 }) => {
     return (
         <div className={cx('fr-agent-card')}>
@@ -25,8 +32,20 @@ const AgentCard = ({
                 <div className={cx('fr-agent-card__stats')}>
                     <Link to={`/agents/${id}/users`} className={cx('fr-agent-card__stats-item')} data-toggle="modal" data-target="#usersListModal">
                         <span className={cx('fr-agent-card__stats-value')}>{agentsCount}</span>
-                        <span className={cx('fr-agent-card__stats-text')}>пользователи</span>
+                        <span className={cx('fr-agent-card__stats-text')}>
+                            {declOfNum(agentsCount, users)}
+                        </span>
                     </Link>
+                    <button
+                        type="button"
+                        className={cx('fr-agent-card__stats-item fr-agent-card__stats-item-button')}
+                        onClick={onShowClients.bind(this, id)}
+                    >
+                        <span className={cx('fr-agent-card__stats-value')}>{companyCount}</span>
+                        <span className={cx('fr-agent-card__stats-text')}>
+                            {declOfNum(companyCount, clients)}
+                        </span>
+                    </button>
                     {/*<span className={cx('fr-agent-card__stats-item')}>*/}
                         {/*<span className={cx('fr-agent-card__stats-value')}>3</span>*/}
                         {/*<span className={cx('fr-agent-card__stats-text')}>субагенты</span>*/}
@@ -60,6 +79,8 @@ AgentCard.propTypes = {
         }),
     }),
     agentsCount: PropTypes.number.isRequired,
+    companyCount: PropTypes.number.isRequired,
+    onShowClients: PropTypes.func.isRequired,
 };
 
 AgentCard.defaultProps = {

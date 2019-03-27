@@ -7,6 +7,22 @@ import { formatNumber } from '../../../../../services/utility';
 const StatItem = ({ text, amount, count, sum, progressColor }) => {
     const barWidth = `${((count / sum) * 100).toFixed(1)}%`;
 
+    const difference = (val, by) => {
+        return (val - val % by) / by;
+    };
+
+    const getTextPrice = (price) => {
+        const thousandRemainder = difference(price, 1000);
+        if (!thousandRemainder) {
+            return price;
+        }
+        const millionRemainder = difference(thousandRemainder, 1000);
+        if (!millionRemainder) {
+            return `${thousandRemainder}К`;
+        }
+        return `${formatNumber(millionRemainder, false)}М`;
+    };
+
     return (
         <div
             className={cx('fr-agent-card__footer-item', {
@@ -22,7 +38,7 @@ const StatItem = ({ text, amount, count, sum, progressColor }) => {
                 </span>
             </div>
             <div className={cx('fr-agent-card__footer-item-cost')}>
-                <span>{`${formatNumber(amount, true)} ₽`}</span>
+                <span>{`${getTextPrice(amount)} ₽`}</span>
             </div>
         </div>
     );

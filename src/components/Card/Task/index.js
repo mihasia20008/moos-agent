@@ -28,18 +28,73 @@ class TaskCard extends PureComponent {
 
     static days = ['день', 'дня', 'дней'];
 
-    static phasesText = [
-        'Подача заявки',
-        'Рассмотрение заявки',
-        'Согласование документов',
-        'Выдача гарантии'
-    ];
-
     handleShowTaskDetail = ({ target }) => {
         const { taskId, taskName } = target.dataset;
         const { onOpenDetail } = this.props;
         onOpenDetail(taskId, taskName);
     };
+
+    renderPhases() {
+        const { phases } = this.props;
+        const phasesText = [
+            'Подача заявки',
+            'Рассмотрение заявки',
+            'Согласование документов',
+            'Выдача гарантии'
+        ];
+
+        const phasesCount = phases.length;
+        const disabledPhases = 4 - phasesCount;
+
+        if (!phasesCount) {
+            return null;
+        }
+
+        return (
+            <div className={cx('stages-progress')}>
+                {phases.map((phase, index) => (
+                    <div
+                        key={phase.phaseId}
+                        className={cx('stages-progress__item', {
+                            'stages-progress__item--confirmed': index < phasesCount - 1,
+                            'stages-progress__item--active': index === phasesCount - 1,
+                            [`stages-progress__item--${phase.status}`]: true
+                        })}
+                    >
+                        <i className={cx('stages-progress__icon icon icon-ok')} />
+                        <span className={cx('stages-progress__text')}>
+                                {phase.phaseName}
+                            </span>
+                    </div>
+                ))}
+                {Array.from({length: disabledPhases}, (v, i) => i).map(item => (
+                    <div
+                        key={item}
+                        className={cx('stages-progress__item stages-progress__item--disabled')}
+                    >
+                        <i className={cx('stages-progress__icon icon icon-ok')} />
+                        <span className={cx('stages-progress__text')}>
+                                {phasesText[phasesCount + item]}
+                            </span>
+                    </div>
+                ))}
+            </div>
+        );
+    }
+
+    renderDaysToStart() {
+        const { daysToStart } = this.props;
+
+        if (daysToStart) {
+            return (
+                <div className={cx('block-list__posted-time')}>
+                    <span>{daysToStart} {declOfNum(daysToStart, TaskCard.days)}</span>
+                </div>
+            );
+        }
+
+        return null;
+    }
 
     render() {
         const {
@@ -50,50 +105,20 @@ class TaskCard extends PureComponent {
             principalCompany_INN,
             purchaseAmount,
             contract_max_price,
-            daysToStart,
-            phases,
             tasks,
         } = this.props;
 
-        const phasesCount = phases.length - 1;
-        const disabledPhases = 3 - phasesCount;
+        const phasesBlock = this.renderPhases();
+        const daysToStartBlock = this.renderDaysToStart();
+
         return (
             <div className={cx('block-list__item')}>
-                <div className={cx('block-list__row')}>
-                    <div className={cx('stages-progress')}>
-                        {phases.map((phase, index) => (
-                            <div
-                                key={phase.phaseId}
-                                className={cx('stages-progress__item', {
-                                    'stages-progress__item--confirmed': index < phasesCount,
-                                    'stages-progress__item--active': index === phasesCount,
-                                    [`stages-progress__item--${phase.status}`]: true
-                                })}
-                            >
-                                <i className={cx('stages-progress__icon icon icon-ok')} />
-                                <span className={cx('stages-progress__text')}>
-                                {phase.phaseName}
-                            </span>
-                            </div>
-                        ))}
-                        {Array.from({length: disabledPhases}, (v, i) => i).map(item => (
-                            <div
-                                key={item}
-                                className={cx('stages-progress__item stages-progress__item--disabled')}
-                            >
-                                <i className={cx('stages-progress__icon icon icon-ok')} />
-                                <span className={cx('stages-progress__text')}>
-                                {TaskCard.phasesText[phasesCount + item + 1]}
-                            </span>
-                            </div>
-                        ))}
+                {phasesBlock || daysToStartBlock ? (
+                    <div className={cx('block-list__row')}>
+                        {phasesBlock}
+                        {daysToStartBlock}
                     </div>
-                    {daysToStart ? (
-                        <div className={cx('block-list__posted-time')}>
-                            <span>{daysToStart} {declOfNum(daysToStart, TaskCard.days)}</span>
-                        </div>
-                    ) : null}
-                </div>
+                ) : null}
                 <div className={cx('block-list__row')}>
                     <div>
                         <div className={cx('block-list__info block-list__info--with-icon')}>

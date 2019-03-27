@@ -29,8 +29,8 @@ class EditAgentForm extends PureComponent {
     };
 
     componentDidMount() {
-        const { session_id, userId, dispatch } = this.props;
-        Agents.getUserData(session_id, userId)
+        const { userId, dispatch } = this.props;
+        Agents.getUserData(userId)
             .then(({ user }) => {
                 dispatch(initialize(formSettings.form, {
                     name: `${user.lastName} ${user.firstName}`,
@@ -52,8 +52,8 @@ class EditAgentForm extends PureComponent {
     }
 
     onFormSubmit = (values) => {
-        const { session_id, companyId, userId, dispatch } = this.props;
-        dispatch(editUser(session_id, { companyId, username: userId, ...values }));
+        const { companyId, userId, dispatch } = this.props;
+        dispatch(editUser({ companyId, username: userId, ...values }));
     };
 
     handleSubmitForm = (event) => {
@@ -138,9 +138,8 @@ class EditAgentForm extends PureComponent {
 }
 
 const mapStateToProps = (state) => {
-    const { User, Agents } = state;
+    const { Agents } = state;
     return {
-        session_id: User.session_id,
         editUserInfo: Agents.editUser,
         formValues: getFormValues(formSettings.form)(state),
         formErrors: getFormSyncErrors(formSettings.form)(state),

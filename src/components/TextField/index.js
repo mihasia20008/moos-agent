@@ -9,6 +9,7 @@ class TextField extends PureComponent {
         name: PropTypes.string.isRequired,
         onChange: PropTypes.func.isRequired,
         onClear: PropTypes.func.isRequired,
+        placeholder: PropTypes.string.isRequired,
         value: PropTypes.string,
     };
 
@@ -20,14 +21,14 @@ class TextField extends PureComponent {
     };
 
     render() {
-        const { name, onChange, value } = this.props;
+        const { name, onChange, value, placeholder } = this.props;
 
         return (
             <div className={cx('main-filter__control')}>
                 <input
                     type="text"
                     className={cx('main-filter__control-field')}
-                    placeholder="Номер заявки"
+                    placeholder={placeholder}
                     name={name}
                     value={value}
                     onChange={onChange}

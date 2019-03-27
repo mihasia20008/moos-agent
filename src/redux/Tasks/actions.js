@@ -11,11 +11,11 @@ const prepareTasksList = orderList => orderList.reduce((acc, { tasks }) => {
     return Object.assign(acc, { [`${tasks[0].task_id}`]: tasks[0].name });
 }, {});
 
-export function getTasksList(session_id, filters) {
+export function getTasksList(filters) {
     return async dispatch => {
         try {
             dispatch({ type: types.TASKS_FETCH });
-            const { isSuccess, ...res } = await Tasks.getData(session_id, filters);
+            const { isSuccess, ...res } = await Tasks.getData(filters);
             if (!isSuccess) {
                 if (res.needLogout) {
                     dispatch(logoutProcess(res.message));
@@ -38,11 +38,11 @@ export function getTasksList(session_id, filters) {
     };
 }
 
-export function getNextTasksPage(session_id, page, filters) {
+export function getNextTasksPage(page, filters) {
     return async dispatch => {
         try {
             dispatch({ type: types.NEXT_TASKS_FETCH });
-            const { isSuccess, ...res } = await Tasks.getNextPage(session_id, page, filters);
+            const { isSuccess, ...res } = await Tasks.getNextPage(page, filters);
             if (!isSuccess) {
                 if (res.needLogout) {
                     dispatch(logoutProcess(res.message));
@@ -62,4 +62,8 @@ export function getNextTasksPage(session_id, page, filters) {
 
 export function setTasksFilter(filters) {
     return dispatch => dispatch({ type: types.TASKS_SET_FILTER, data: { filters }});
+}
+
+export function clearAllFilters() {
+    return dispatch => dispatch({ type: types.TASKS_CLEAR_FILTERS });
 }

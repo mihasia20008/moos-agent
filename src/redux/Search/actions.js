@@ -4,10 +4,10 @@ import { Search } from '../../services/api';
 import { logoutProcess } from "../User/actions";
 import { setErrorContent } from "../Error/actions";
 
-export function searchByString(session_id, query) {
+export function searchByString(query) {
     return async dispatch => {
         try {
-            const { isSuccess, ...res } = await Search.findByString(session_id, query);
+            const { isSuccess, ...res } = await Search.findByString(query);
             if (!isSuccess) {
                 if (res.needLogout) {
                     dispatch(logoutProcess(res.message));

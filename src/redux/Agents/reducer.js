@@ -1,7 +1,8 @@
 import * as types from './actionTypes';
 
 const initialState = {
-    isFetching: true,
+    isFetching: false,
+    wasFetching: false,
     getUsersFetching: false,
     addUserFetching: false,
     addUserStatus: false,
@@ -9,6 +10,10 @@ const initialState = {
     stat: {},
     users: [],
     changingUser: '',
+    addAgent: {
+        fetching: false,
+        status: false,
+    },
     addUser: {
         fetching: false,
         status: false,
@@ -22,17 +27,18 @@ const initialState = {
 export default (state = initialState, action) => {
     switch (action.type) {
         case types.AGENTS_FETCH: {
-            return { ...state, isFetching: true };
+            return { ...state, isFetching: true, wasFetching: false };
         }
         case types.AGENTS_SUCCESS: {
             return {
                 ...state,
                 isFetching: false,
+                wasFetching: true,
                 ...action.data,
             };
         }
         case types.AGENTS_ERROR: {
-            return { ...state, isFetching: false };
+            return { ...state, isFetching: false, wasFetching: true };
         }
         case types.AGENT_USERS_FETCH: {
             return {
@@ -118,6 +124,30 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 editUser: { ...initialState.editUser },
+            };
+        }
+        case types.AGENT_SUB_NEW_FETCH: {
+            return {
+                ...state,
+                addAgent: { ...state.addAgent, fetching: true },
+            };
+        }
+        case types.AGENT_SUB_NEW_SUCCESS: {
+            return {
+                ...state,
+                addAgent: { ...state.addAgent, fetching: false, status: true },
+            };
+        }
+        case types.AGENT_SUB_NEW_ERROR: {
+            return {
+                ...state,
+                addAgent: { ...state.addAgent, fetching: false },
+            };
+        }
+        case types.AGENT_SUB_NEW_RESET: {
+            return {
+                ...state,
+                addAgent: { ...initialState.addAgent },
             };
         }
         default: {

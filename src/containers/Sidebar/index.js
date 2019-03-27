@@ -18,14 +18,12 @@ class Sidebar extends PureComponent {
     static propTypes = {
         name: PropTypes.string,
         isManager: PropTypes.bool,
-        session_id: PropTypes.string.isRequired,
         widget: PropTypes.shape({
             items: PropTypes.object.isRequired,
             sum: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.number]),
             noItems: PropTypes.bool.isRequired,
         }).isRequired,
-        logoutUser: PropTypes.func.isRequired,
-        fetchWidgetData: PropTypes.func.isRequired,
+        dispatch: PropTypes.func.isRequired,
     };
     static defaultProps = {
         name: '',
@@ -33,15 +31,13 @@ class Sidebar extends PureComponent {
     };
 
     componentDidMount() {
-        const { session_id, fetchWidgetData } = this.props;
-        if (typeof session_id !== 'undefined') {
-            fetchWidgetData(session_id);
-        }
+        const { dispatch } = this.props;
+        dispatch(fetchWidgetData());
     }
 
     handleLogout = () => {
-        const { session_id, logoutUser } = this.props;
-        logoutUser(session_id);
+        const { dispatch } = this.props;
+        dispatch(logoutUser());
     };
 
     renderStatsWidget() {
@@ -117,21 +113,8 @@ const mapStateToProps = ({ User, Statistics }) => {
     return {
         name: User.fullname,
         isManager: User.ismanager,
-        session_id: User.session_id,
         widget: Statistics.widget,
     };
 };
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        logoutUser: (session_id) => dispatch(logoutUser(session_id)),
-        fetchWidgetData: (session_id) => dispatch(fetchWidgetData(session_id)),
-    };
-};
-
-export default withRouter(
-    connect(
-        mapStateToProps,
-        mapDispatchToProps,
-    )(Sidebar)
-);
+export default withRouter(connect(mapStateToProps)(Sidebar));

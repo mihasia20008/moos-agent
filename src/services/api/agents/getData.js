@@ -1,11 +1,11 @@
 import axios from "axios";
 import * as SERVER from "../../constants/server";
 
-export default async (session_id) => {
+export default async () => {
     try {
         const { data: { error_code: status, ...rest } } = await axios({
             method: 'GET',
-            url: `${SERVER.HOST}${SERVER.API_ENDPOINT}/manager/agent/list?session_id=${session_id}`,
+            url: `${SERVER.HOST}${SERVER.API_ENDPOINT}/manager/agent/list`,
         });
         if (status === 0) {
             return {

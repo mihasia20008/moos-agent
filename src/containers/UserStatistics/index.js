@@ -13,7 +13,6 @@ import { fetchPeriodsList, fetchEmployeeStat, fetchCompanyStat } from "../../red
 
 class UserStatistics extends Component {
     static propTypes = {
-        session_id: PropTypes.string.isRequired,
         username: PropTypes.string.isRequired,
         fetchStatus: PropTypes.shape({
             periods: PropTypes.bool.isRequired,
@@ -86,14 +85,12 @@ class UserStatistics extends Component {
     }
 
     componentDidMount() {
-        const { session_id, dispatch } = this.props;
-        if (session_id) {
-            dispatch(fetchPeriodsList(session_id));
-        }
+        const { dispatch } = this.props;
+        dispatch(fetchPeriodsList());
     }
 
     componentDidUpdate(prevProps, prevState) {
-        const { session_id, dispatch } = this.props;
+        const { dispatch } = this.props;
         const {
             periods: {
                 activeCompany: prevActiveCompanyPeriod,
@@ -112,7 +109,7 @@ class UserStatistics extends Component {
         if (nexActiveCompanyPeriod !== prevActiveCompanyPeriod) {
             const periodKey = periods.list[nexActiveCompanyPeriod].key;
             if (periodKey !== 'default') {
-                dispatch(fetchCompanyStat(session_id, periodKey));
+                dispatch(fetchCompanyStat(periodKey));
             }
         }
 
@@ -121,7 +118,7 @@ class UserStatistics extends Component {
             const periodKey = periods.list[nextActiveEmployeePeriod].key;
             const username = employees.list[nextActiveEmployee].key;
             if (username !== 'default' && periodKey !== 'default') {
-                dispatch(fetchEmployeeStat(session_id, periodKey, username));
+                dispatch(fetchEmployeeStat(periodKey, username));
             }
         }
     }
@@ -261,7 +258,6 @@ const mapStateToProps = ({ User, Statistics }) => {
         periods: Statistics.periods,
         companyStats: Statistics.company,
         employeeStats: Statistics.employee,
-        session_id: User.session_id,
         username: User.username,
         employees: User.companyEmployees,
     };

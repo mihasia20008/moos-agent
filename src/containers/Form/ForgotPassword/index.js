@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import { reduxForm, Field, getFormValues, getFormSyncErrors } from 'redux-form';
 import { connect } from 'react-redux';
 import cx from 'classnames';
@@ -24,6 +25,17 @@ const formSettings = {
 };
 
 class FormForgotPassword extends PureComponent {
+    static propTypes = {
+        onCloseModal: PropTypes.func.isRequired,
+        title: PropTypes.string,
+        buttonText: PropTypes.string,
+    };
+
+    static defaultProps = {
+        title: 'Восстановление пароля',
+        buttonText: 'Восстановить',
+    };
+
     state = {
         restoring: false,
         status: -1,
@@ -74,12 +86,13 @@ class FormForgotPassword extends PureComponent {
 
     render() {
         const { restoring, status } = this.state;
+        const { title, buttonText } = this.props;
 
         switch (status) {
             case 0: {
                 return (
                     <div>
-                        <div className={cx('restore-pass__title')}>Восстановление пароля</div>
+                        <div className={cx('restore-pass__title')}>{title}</div>
                         <div className={cx('restore-pass__description')}>
                             В процессе восстановления пароля произошла ошибка
                         </div>
@@ -98,9 +111,15 @@ class FormForgotPassword extends PureComponent {
             case 1: {
                 return (
                     <div>
-                        <div className={cx('restore-pass__title')}>Восстановление пароля</div>
+                        <div className="modal-content__icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="78" height="70" viewBox="0 0 78 70">
+                                <path fill="#FFF" fillRule="evenodd"
+                                      d="M74.75.25c-.063.016-.125.04-.188.063a2.022 2.022 0 0 0-1.25.937L32.438 64.625 4.311 39.25a2.007 2.007 0 0 0-2.085-.695 1.993 1.993 0 0 0-1.461 1.64c-.118.79.242 1.57.921 1.992l29.813 27a1.998 1.998 0 0 0 3-.438L76.688 3.376A2 2 0 0 0 74.75.25z" />
+                            </svg>
+                        </div>
+                        <div className={cx('restore-pass__title')}>{title}</div>
                         <div className={cx('restore-pass__description')}>
-                            Письмо с инструкциями для восстановления пароля было отправлено на почту
+                            Письмо с инструкциями было отправлено на почту
                         </div>
                         <div className={cx('form-group')}>
                             <button
@@ -117,7 +136,7 @@ class FormForgotPassword extends PureComponent {
             default: {
                 return (
                     <form onSubmit={this.handleSubmitForm}>
-                        <div className={cx('restore-pass__title')}>Восстановление пароля</div>
+                        <div className={cx('restore-pass__title')}>{title}</div>
                         <Field
                             component={this.renderFieldItem}
                             name="email"
@@ -127,7 +146,7 @@ class FormForgotPassword extends PureComponent {
                         />
                         <div className={cx('form-group')}>
                             <button type="submit" className={cx('btn', 'btn-block', 'btn-white')}>
-                                Восстановить
+                                {buttonText}
                                 {restoring && <Overlay size="small" />}
                             </button>
                         </div>

@@ -29,11 +29,11 @@ export const login = async (authData) => {
     }
 };
 
-export const auth = async (session_id) => {
+export const auth = async () => {
     try {
         const { data: { error_code: status, ...rest } } = await axios({
             method: 'GET',
-            url: `${SERVER.HOST}${SERVER.SPA_ENDPOINT}/session?session_id=${session_id}`,
+            url: `${SERVER.HOST}${SERVER.SPA_ENDPOINT}/session`,
         });
         if (status === 0) {
             return {
@@ -60,11 +60,11 @@ export const auth = async (session_id) => {
     }
 };
 
-export const logout = async (session_id) => {
+export const logout = async () => {
     try {
         const { data: { error_code: status, ...rest } } = await axios({
             method: 'GET',
-            url: `${SERVER.HOST}${SERVER.API_ENDPOINT}/logout?session_id=${session_id}`,
+            url: `${SERVER.HOST}${SERVER.API_ENDPOINT}/logout`,
         });
         if (status === 0) {
             return { isSuccess: true };

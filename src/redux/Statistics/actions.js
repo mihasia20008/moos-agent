@@ -4,11 +4,11 @@ import { Statistics } from '../../services/api';
 import { logoutProcess } from "../User/actions";
 import { setErrorContent } from "../Error/actions";
 
-export function fetchWidgetData(session_id) {
+export function fetchWidgetData() {
     return async dispatch => {
         try {
             dispatch({ type: types.WIDGET_STATS_FETCH });
-            const { isSuccess, ...res } = await Statistics.getWidget(session_id);
+            const { isSuccess, ...res } = await Statistics.getWidget();
             if (!isSuccess) {
                 if (res.needLogout) {
                     dispatch(logoutProcess(res.message));
@@ -30,11 +30,11 @@ export function fetchWidgetData(session_id) {
     };
 }
 
-export function fetchPeriodsList(session_id) {
+export function fetchPeriodsList() {
     return async dispatch => {
         try {
             dispatch({ type: types.PERIODS_LIST_FETCH });
-            const { isSuccess, ...res } = await Statistics.getPeriods(session_id);
+            const { isSuccess, ...res } = await Statistics.getPeriods();
             if (!isSuccess) {
                 if (res.needLogout) {
                     dispatch(logoutProcess(res.message));
@@ -51,11 +51,11 @@ export function fetchPeriodsList(session_id) {
     }
 }
 
-export function fetchEmployeeStat(session_id, period, username) {
+export function fetchEmployeeStat(period, username) {
     return async dispatch => {
         try {
             dispatch({ type: types.EMPLOYEE_STATS_FETCH });
-            const { isSuccess, ...res } = await Statistics.getEmployeeStats(session_id, period, username);
+            const { isSuccess, ...res } = await Statistics.getEmployeeStats(period, username);
             if (!isSuccess) {
                 if (res.needLogout) {
                     dispatch(logoutProcess(res.message));
@@ -81,11 +81,11 @@ export function fetchEmployeeStat(session_id, period, username) {
     }
 }
 
-export function fetchCompanyStat(session_id, period) {
+export function fetchCompanyStat(period) {
     return async dispatch => {
         try {
             dispatch({ type: types.COMPANY_STATS_FETCH });
-            const { isSuccess, ...res } = await Statistics.getCompanyStats(session_id, period);
+            const { isSuccess, ...res } = await Statistics.getCompanyStats(period);
             if (!isSuccess) {
                 if (res.needLogout) {
                     dispatch(logoutProcess(res.message));

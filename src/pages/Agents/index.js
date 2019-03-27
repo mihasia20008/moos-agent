@@ -8,23 +8,29 @@ import EmptyAgentsList from "../../components/Empty/AgentsList";
 import AgentsList from "../../containers/List/Agents";
 
 import { getAgentsList } from "../../redux/Agents/actions";
+import { setClientsFilter } from "../../redux/Clients/actions";
 
 class Agents extends PureComponent {
     static propTypes = {
         isFetching: PropTypes.bool,
         agents: PropTypes.array,
         statSummury: PropTypes.object,
-        session_id: PropTypes.string.isRequired,
         dispatch: PropTypes.func.isRequired,
+        history: PropTypes.shape({
+            push: PropTypes.func.isRequired,
+        }).isRequired,
     };
 
     componentDidMount() {
-        const { session_id, dispatch } = this.props;
-
-        if (typeof session_id !== 'undefined') {
-            dispatch(getAgentsList(session_id));
-        }
+        const { dispatch } = this.props;
+        dispatch(getAgentsList());
     }
+
+    handleShowClients = (agentId) => {
+        const { history, dispatch } = this.props;
+        dispatch(setClientsFilter({ agentCompanyId: agentId }));
+        history.push('/clients');
+    };
 
     render() {
         const { isFetching, agents, statSummury } = this.props;
@@ -38,6 +44,7 @@ class Agents extends PureComponent {
                         <AgentsList
                             list={agents}
                             isLoading={isFetching}
+                            onShowClients={this.handleShowClients}
                         />
                     )}
             </section>
@@ -45,12 +52,11 @@ class Agents extends PureComponent {
     }
 }
 
-const mapStateToProps = ({ Agents, User }) => {
+const mapStateToProps = ({ Agents }) => {
     return {
         isFetching: Agents.isFetching,
         agents: Agents.agents,
         statSummury: Agents.stat,
-        session_id: User.session_id,
     }
 };
 

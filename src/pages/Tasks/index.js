@@ -7,7 +7,7 @@ import TasksFilter from '../../containers/Filter/Tasks';
 import TasksList from '../../containers/List/Tasks';
 import EmptyTasksList from '../../components/Empty/TasksList';
 
-import { getTasksList, getNextTasksPage, setTasksFilter } from '../../redux/Tasks/actions';
+import { getTasksList, getNextTasksPage, setTasksFilter, clearAllFilters } from '../../redux/Tasks/actions';
 import { authenticationUser } from "../../redux/User/actions";
 
 class Tasks extends PureComponent {
@@ -23,33 +23,31 @@ class Tasks extends PureComponent {
         nextPage: PropTypes.number.isRequired,
         hasMorePage: PropTypes.bool.isRequired,
         processDefinitionKeys: PropTypes.array.isRequired,
-        session_id: PropTypes.string.isRequired,
         dispatch: PropTypes.func.isRequired
     };
 
     componentDidMount() {
-        const { session_id, filters, dispatch } = this.props;
+        const { filters, dispatch } = this.props;
 
-        if (typeof session_id !== 'undefined') {
-            dispatch(getTasksList(session_id, filters));
-        }
+        dispatch(getTasksList(filters));
         window.addEventListener('scroll', this.handleScroll);
     }
 
     componentWillReceiveProps(nextProps) {
-        const { session_id, filters, dispatch } = this.props;
+        const { filters, dispatch } = this.props;
         if (JSON.stringify(filters) !== JSON.stringify(nextProps.filters)) {
-            dispatch(getTasksList(session_id, nextProps.filters));
+            dispatch(getTasksList(nextProps.filters));
         }
     }
 
     componentWillUnmount() {
+        const { dispatch } = this.props;
+        dispatch(clearAllFilters());
         window.removeEventListener('scroll', this.handleScroll);
     }
     
     handleScroll = () => {
         const {
-            session_id,
             list,
             filters,
             isFetchingNext,
@@ -60,18 +58,18 @@ class Tasks extends PureComponent {
         const { height } = document.querySelector('.block-list.block-list--tasks').getBoundingClientRect();
 
         if (!isFetchingNext && list.length > 0 && hasMorePage && height - window.scrollY < 1000) {
-            dispatch(getNextTasksPage(session_id, nextPage, filters));
+            dispatch(getNextTasksPage(nextPage, filters));
         }
     };
 
-    handleChangeFilter = (name, value) => {
+    handleChangeFilter = (filters) => {
         const { dispatch } = this.props;
-        dispatch(setTasksFilter(name, value));
+        dispatch(setTasksFilter(filters));
     };
 
     handleOpenDetail = (taskId, taskName) => {
-        const { session_id, history, dispatch } = this.props;
-        dispatch(authenticationUser(session_id, true))
+        const { history, dispatch } = this.props;
+        dispatch(authenticationUser(true))
             .then(() => history.push(`/tasks/${taskId}`, {
                 title: taskName
             }))
@@ -89,7 +87,7 @@ class Tasks extends PureComponent {
         } = this.props;
 
         return (
-            <section className={cx('fr-content')}>
+            <section className={cx('fr-content fr-content--with-filter')}>
                 <TasksFilter
                     isDisable={!list.length && !Object.keys(filters).length}
                     filters={filters}
@@ -125,7 +123,6 @@ const mapStateToProps = ({ Tasks, User }) => {
             from: Tasks.amount_min,
             to: Tasks.amount_max,
         },
-        session_id: User.session_id,
     };
 };
 

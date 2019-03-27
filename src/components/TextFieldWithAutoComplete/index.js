@@ -13,10 +13,31 @@ class TextFieldWithAutoComplete extends PureComponent {
         name: PropTypes.string.isRequired,
         onSelect: PropTypes.func.isRequired,
         onClear: PropTypes.func.isRequired,
+        placeholder: PropTypes.string,
         value: PropTypes.string,
+        classNames: PropTypes.shape({
+            container: PropTypes.string,
+            input: PropTypes.string
+        }),
+        meta: PropTypes.shape({
+            touched: PropTypes.bool,
+            error: PropTypes.string
+        }),
     };
 
-    static defaultProps = { value: '' };
+    static defaultProps = {
+        placeholder: '',
+        value: '',
+        classNames: {
+            container: '',
+            input: '',
+            error: ''
+        },
+        meta: {
+            touched: false,
+            error: ''
+        }
+    };
 
     state = {
         value: this.props.value,
@@ -50,11 +71,11 @@ class TextFieldWithAutoComplete extends PureComponent {
         const { value } = target;
 
         const showResult = !!value.length;
-        const { session_id, dispatch } = this.props;
+        const { dispatch } = this.props;
         this.setState({ value, showResult: showResult });
 
         if (showResult) {
-            dispatch(searchByString(session_id, value));
+            dispatch(searchByString(value));
         } else {
             dispatch(clearSearchResults());
         }
@@ -90,62 +111,41 @@ class TextFieldWithAutoComplete extends PureComponent {
     }
 
     render() {
-        const { name } = this.props;
+        const { name, classNames, placeholder, meta: { touched, error } } = this.props;
         const { value } = this.state;
 
         return (
             <div
-                className={cx('main-filter__control')}
+                className={classNames.container}
                 ref={node => { this.textField = node; }}
             >
-                <input
-                    type="text"
-                    className={cx('main-filter__control-field')}
-                    placeholder="Клиент"
-                    name={name}
-                    value={value}
-                    onFocus={this.handleFocusInput}
-                    onChange={this.handleTypeValue}
-                />
-                <ClearButton
-                    onClear={this.handleClearField}
-                    isHidden={!value.length}
-                />
-                {this.renderSearchResults()}
+                <div style={{ position: 'relative' }}>
+                    <input
+                        type="text"
+                        autoComplete="off"
+                        className={classNames.input}
+                        placeholder={placeholder}
+                        name={name}
+                        value={value}
+                        onFocus={this.handleFocusInput}
+                        onChange={this.handleTypeValue}
+                    />
+                    <ClearButton
+                        onClear={this.handleClearField}
+                        isHidden={!value.length}
+                    />
+                    {this.renderSearchResults()}
+                </div>
+                {touched && error && <span className={classNames.error}>{error}</span>}
             </div>
         );
     }
 }
 
-const mapStateToProp = ({ User, Search }) => {
+const mapStateToProp = ({ Search }) => {
     return {
-        session_id: User.session_id,
         list: Search.list,
     };
 };
 
 export default connect(mapStateToProp)(TextFieldWithAutoComplete);
-
-/*
-<div className="easy-autocomplete-container" id="eac-container-clientsControl">
-    <ul style="display: none;">
-        <li className="selected">
-            <div className="eac-item">Central African <b>Re</b>public</div>
-        </li>
-        <li>
-            <div className="eac-item">Congo, The Democratic <b>Re</b>public of the</div>
-        </li>
-        <li>
-            <div className="eac-item">Cote D"Ivoi<b>re</b></div>
-        </li>
-        <li>
-            <div className="eac-item">Czech <b>Re</b>public</div>
-        </li>
-        <li>
-            <div className="eac-item">Dominican <b>Re</b>public</div>
-        </li>
-        <li>
-            <div className="eac-item">Erit<b>re</b>a</div>
-        </li>
-    </ul>
-</div>*/

@@ -5,7 +5,7 @@ import cx from 'classnames';
 import AgentCard from '../../../components/Card/Agent';
 import Skelet from '../../../components/Card/Skelet';
 
-const AgentsList = ({ list, isLoading }) => {
+const AgentsList = ({ list, isLoading, onShowClients }) => {
     return (
         <div className={cx('fr-agents-list')}>
             {isLoading
@@ -18,6 +18,8 @@ const AgentsList = ({ list, isLoading }) => {
                         inn={item.INN}
                         statList={item.stat}
                         agentsCount={item.agentLogins ? item.agentLogins.length : 0}
+                        companyCount={item.company_count}
+                        onShowClients={onShowClients}
                     />
                 ))}
         </div>
@@ -27,6 +29,7 @@ const AgentsList = ({ list, isLoading }) => {
 AgentsList.propTypes = {
     list: PropTypes.array,
     isLoading: PropTypes.bool.isRequired,
+    onShowClients: PropTypes.func.isRequired,
 };
 
 export default AgentsList;

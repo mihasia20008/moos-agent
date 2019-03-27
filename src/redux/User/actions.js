@@ -52,11 +52,11 @@ export function loginUser(username, password) {
     };
 }
 
-export function authenticationUser(session_id, needNotification) {
+export function authenticationUser(needNotification) {
     return async dispatch => {
         try {
             dispatch({ type: types.AUTH_FETCH });
-            const { isSuccess, ...res} = await User.auth(session_id);
+            const { isSuccess, ...res} = await User.auth();
             if (!isSuccess) {
                 dispatch(logoutProcess(needNotification ? res.message : undefined));
                 dispatch({ type: types.AUTH_ERROR });
@@ -83,11 +83,11 @@ export function authenticationUser(session_id, needNotification) {
     }
 }
 
-export function logoutUser(session_id) {
+export function logoutUser() {
     return async dispatch => {
         try {
             dispatch({ type: types.LOGOUT_FETCH });
-            const { isSuccess, ...res } = await User.logout(session_id);
+            const { isSuccess, ...res } = await User.logout();
             if (!isSuccess) {
                 if (res.needLogout) {
                     dispatch(logoutProcess(res.message));

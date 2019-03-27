@@ -1,16 +1,20 @@
 import * as types from './actionTypes';
 import Cookies from 'js-cookie';
 
+import CONTENT from '../../contentConstants';
+
 const initialState = {
-  isFetching: false,
-  isAuth: false,
-  session_id: Cookies.get('session_id'),
-  username: '',
-  fullname: '',
-  isclient: null,
-  isagent: null,
-  processDefinitionKeys: [],
-  companyEmployees: [],
+    authType: CONTENT.authType,
+    isFetching: false,
+    isAuth: false,
+    session_id: Cookies.get('session_id'),
+    logout: false,
+    username: '',
+    fullname: '',
+    isclient: null,
+    isagent: null,
+    processDefinitionKeys: [],
+    companyEmployees: [],
 };
 
 export default (state = initialState, action) => {
@@ -21,6 +25,7 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 isFetching: true,
+                logout: false,
             };
         }
         case types.LOGIN_SUCCESS:
@@ -33,8 +38,9 @@ export default (state = initialState, action) => {
             };
         }
         case types.LOGOUT_SUCCESS: {
-            return { 
+            return {
                 ...initialState,
+                logout: true,
                 session_id: '',
             };
         }

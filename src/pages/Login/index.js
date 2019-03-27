@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import cx from 'classnames';
+import { withKeycloak } from 'react-keycloak';
 
+import Overlay from "../../components/Overlay";
 import Modal from '../../containers/Modal';
 import FormLogin from '../../containers/Form/Login';
 import FormForgotPassword from '../../containers/Form/ForgotPassword';
@@ -15,14 +17,14 @@ import CONTENT from '../../contentConstants';
 
 class Login extends PureComponent {
     static propTypes = {
+        authType: PropTypes.string.isRequired,
         isFetching: PropTypes.bool.isRequired,
         isAuth: PropTypes.bool.isRequired,
-        session_id: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.string]),
-        loginUser: PropTypes.func.isRequired,
-        authenticationUser: PropTypes.func.isRequired,
     };
 
     state = {
+        keycloakAuth: false,
+        keycloakFetch: true,
         login: {
             name: 'login',
             placeholder: 'Логин',
@@ -40,9 +42,17 @@ class Login extends PureComponent {
     };
 
     componentDidMount() {
-        const { session_id, authenticationUser } = this.props;
-        if (session_id) {
-            authenticationUser(session_id);
+        const { authType } = this.props;
+        if (authType === 'keycloak') {
+            const { keycloak } = this.props;
+            if (keycloak.authenticated) {
+                this.setState({ keycloakAuth: true, keycloakFetch: false });
+            }
+        }
+        if (authType === 'standard') {
+            const { dispatch } = this.props;
+            dispatch(authenticationUser())
+                .then(() => this.setState({ keycloakFetch: false }));
         }
     }
 
@@ -71,7 +81,8 @@ class Login extends PureComponent {
             canSubmit = false;
         }
         if (canSubmit) {
-            this.props.loginUser(login.value, password.value);
+            const { dispatch } = this.props;
+            dispatch(loginUser(login.value, password.value));
         } else {
             this.errorTimeout = setTimeout(() => {
                 this.setState(prevState => ({
@@ -83,23 +94,25 @@ class Login extends PureComponent {
     };
 
     renderELogin() {
+        const { history } = this.props;
         return (
-            <Modal key={2} topPosition onCloseModal={this.props.history.goBack}>
+            <Modal key={2} topPosition onCloseModal={history.goBack}>
                 <div className={cx('modal-custom-header')}>Банковская гарантия 101-ЭГБ/17</div>
             </Modal>
         );
     }
 
     renderRestorePassword() {
+        const { history } = this.props;
         return (
             <Modal
                 key={1}
                 centerPosition
                 preventOutsideClick
-                onCloseModal={this.props.history.goBack}
+                onCloseModal={history.goBack}
             >
                 <FormForgotPassword
-                    onCloseModal={this.props.history.goBack}
+                    onCloseModal={history.goBack}
                 />
             </Modal>
         );
@@ -134,8 +147,13 @@ class Login extends PureComponent {
 
     render() {
         const { location: { search }, isAuth, showSnackBar } = this.props;
+        const { keycloakAuth, keycloakFetch } = this.state;
 
-        if (isAuth) {
+        if (keycloakFetch) {
+            return <Overlay size="big" />;
+        }
+
+        if (isAuth || keycloakAuth) {
             return <Redirect to="/tasks" />
         }
 
@@ -150,21 +168,11 @@ class Login extends PureComponent {
 
 const mapStateToProps = ({ User, Error }) => {
     return {
+        authType: User.authType,
         isFetching: User.isFetching,
         isAuth: User.isAuth,
-        session_id: User.session_id,
         showSnackBar: Error.show,
     };
 };
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        loginUser: (username, password) => dispatch(loginUser(username, password)),
-        authenticationUser: (session_id) => dispatch(authenticationUser(session_id)),
-    };
-};
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(Login);
+export default withKeycloak(connect(mapStateToProps)(Login));
