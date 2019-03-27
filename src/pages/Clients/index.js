@@ -66,7 +66,7 @@ class Clients extends PureComponent {
     };
     
     render() {
-        const { agents, company, clientsCount, isFetching, isFetchingNext, filters } = this.props;
+        const { agents, company, stat, isFetching, isFetchingNext, filters } = this.props;
 
         return (
             <section className={cx('fr-content fr-content--with-filter')}>
@@ -81,7 +81,7 @@ class Clients extends PureComponent {
                     : [
                         <ClientsStatsPanel
                             key={0}
-                            clientsCount={clientsCount}
+                            companiesStat={stat.company}
                         />,
                         <ClientsList
                             key={1}
@@ -101,7 +101,7 @@ const mapStateToProps = ({ Agents, Clients }) => {
         isFetchingNext: Clients.isFetchingNext,
         company: Clients.company,
         filters: Clients.filters,
-        clientsCount: Clients.total,
+        stat: Clients.stat,
         nextPage: Clients.page + 1,
         hasMorePage: Clients.more,
         agents: Agents.agents,

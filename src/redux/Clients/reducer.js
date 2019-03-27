@@ -5,7 +5,7 @@ const initialState = {
   isFetchingNext: false,
   filters: {},
   company: [],
-  total: 0,
+  stat: { company: {} },
 };
 
 export default (state = initialState, action) => {
