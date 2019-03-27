@@ -16,6 +16,7 @@ import CONTENT from '../../contentConstants';
 
 class Sidebar extends PureComponent {
     static propTypes = {
+        authType: PropTypes.string.isRequired,
         name: PropTypes.string,
         isManager: PropTypes.bool,
         widget: PropTypes.shape({
@@ -36,8 +37,15 @@ class Sidebar extends PureComponent {
     }
 
     handleLogout = () => {
-        const { dispatch } = this.props;
-        dispatch(logoutUser());
+        const { authType, keycloak, dispatch } = this.props;
+        if (authType === 'keycloak') {
+            if (keycloak.authenticated) {
+                keycloak.logout();
+            }
+        }
+        if (authType === 'standard') {
+            dispatch(logoutUser());
+        }
     };
 
     renderStatsWidget() {
@@ -111,6 +119,7 @@ class Sidebar extends PureComponent {
 
 const mapStateToProps = ({ User, Statistics }) => {
     return {
+        authType: User.authType,
         name: User.fullname,
         isManager: User.ismanager,
         widget: Statistics.widget,
