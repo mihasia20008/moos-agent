@@ -74,7 +74,7 @@ class Clients extends PureComponent {
         const { agents, company, stat, isFetching, isFetchingNext, filters } = this.props;
 
         return (
-            <section className={cx('fr-content fr-content--with-filter')}>
+            <section className={cx('fr-content fr-content--clients')}>
                 <ClientsFilter
                     isDisable={!company.length && !Object.keys(filters).length}
                     agents={agents}
