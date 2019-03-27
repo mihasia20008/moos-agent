@@ -53,7 +53,12 @@ class Clients extends PureComponent {
             hasMorePage,
             dispatch,
         } = this.props;
-        const { height } = document.querySelector('.block-list.block-list--clients').getBoundingClientRect();
+        const container = document.querySelector('.block-list.block-list--clients');
+        if (!container) {
+            return null;
+        }
+
+        const { height } = container.getBoundingClientRect();
 
         if (!isFetchingNext && company.length > 0 && hasMorePage && height - window.scrollY < 1000) {
             dispatch(getNextClientsList(nextPage, filters));
