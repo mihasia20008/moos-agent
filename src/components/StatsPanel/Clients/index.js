@@ -2,39 +2,63 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 
+import CONTENT from '../../../contentConstants';
+
 import { formatNumber } from '../../../services/utility';
 
-const ClientsStatsPanel = ({ clientsCount }) => {
+const ClientsStatsPanel = ({ companiesStat }) => {
+    const { statusItems } = CONTENT;
+    const { count = 0, order = {} } = companiesStat;
+    const { total = {} } = order;
+
     return (
         <div className={cx('main-stats')}>
             <div className={cx('main-stats__item')}>
                 <span className={cx('main-stats__title')}>Клиенты</span>
-                <span className={cx('main-stats__value')}>{formatNumber(clientsCount)}</span>
+                <span className={cx('main-stats__value')}>{formatNumber(count)}</span>
             </div>
             <div className={cx('main-stats__item')}>
                 <span className={cx('main-stats__title')}>Заявки</span>
                 <ul className={cx('deals-list')}>
-                    <li className={cx('deals-list__item')}>&mdash;</li>
-                    <li className={cx('deals-list__item deals-list__item--purple')}>&mdash;</li>
-                    <li className={cx('deals-list__item deals-list__item--yellow')}>&mdash;</li>
-                    <li className={cx('deals-list__item deals-list__item--red')}>&mdash;</li>
-                    <li className={cx('deals-list__item deals-list__item--green')}>&mdash;</li>
+                    {statusItems.map(({ key, text, className }) => {
+                        return (typeof order[key] !== 'undefined')
+                            ? (
+
+                                <li
+                                    key={key}
+                                    className={cx('deals-list__item', {
+                                        [`deals-list__item--${className}`]: className
+                                    })}
+                                    title={text}
+                                >
+                                    {formatNumber(order[key].count)}
+                                </li>
+                            ) : null;
+                    })}
                 </ul>
             </div>
             <div className={cx('main-stats__item')}>
                 <span className={cx('main-stats__title')}>Сумма</span>
-                <span className={cx('main-stats__value')}>&mdash; ₽</span>
+                <span className={cx('main-stats__value')}>
+                    {`${formatNumber(total.amount ? total.amount : 0, true)} ₽`}
+                </span>
             </div>
         </div>
     );
 };
 
 ClientsStatsPanel.propTypes = {
-    clientsCount: PropTypes.number,
+    companiesStat: PropTypes.shape({
+        count: PropTypes.number,
+        order: PropTypes.object,
+    }),
 };
 
 ClientsStatsPanel.defaultProps = {
-    clientsCount: 0,
+    companiesStat: {
+        count: 0,
+        order: {},
+    }
 };
 
 export default ClientsStatsPanel;

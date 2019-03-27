@@ -83,9 +83,8 @@ class Layout extends PureComponent {
     }
 
     componentDidMount() {
-        const { authType, isAuth, dispatch } = this.props;
+        const { authType, keycloak, isAuth, dispatch } = this.props;
         if (authType === 'keycloak') {
-            const { keycloak } = this.props;
             if (keycloak.authenticated) {
                 Cookies.set('JWT', keycloak.token);
                 this.setState({ keycloakAuth: true, keycloakFetch: false });
@@ -304,6 +303,7 @@ class Layout extends PureComponent {
         const { keycloakAuth, keycloakFetch, prevFetchStatus } = this.state;
         const {
             component: Component,
+            keycloak,
             isNotFound,
             isManager,
             authType,
@@ -370,7 +370,7 @@ class Layout extends PureComponent {
                         <div className={cx('fr-container', {
                             'fr-container--error': isNotFound,
                         })}>
-                            {!isNotFound && <Sidebar />}
+                            {!isNotFound && <Sidebar keycloak={keycloak} />}
                             <Component {...matchProps} />
                         </div>
                         {this.renderAddButton()}

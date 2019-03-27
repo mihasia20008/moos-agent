@@ -37,7 +37,10 @@ const ClientCard = ({
             <div className={cx('block-list__row')}>
                 <ul className={cx('stats-list')}>
                     {statusItems.map(({ key, className }) => {
-                        return (typeof stats[key] !== 'undefined' && stats[key])
+                        if (key === 'total') {
+                            return null;
+                        }
+                        return (typeof stats[key] !== 'undefined' && stats[key].count)
                             ? (
                                 <li
                                     key={key}
@@ -46,7 +49,7 @@ const ClientCard = ({
                                     })}
                                 >
                                     <i className={cx('icon icon-ok')} />
-                                    <span>{formatNumber(stats[key])}</span>
+                                    <span>{formatNumber(stats[key].count)}</span>
                                 </li>
                             ) : null;
                     })}

@@ -42,15 +42,13 @@ class Login extends PureComponent {
     };
 
     componentDidMount() {
-        const { authType } = this.props;
+        const { authType, keycloak, dispatch } = this.props;
         if (authType === 'keycloak') {
-            const { keycloak } = this.props;
             if (keycloak.authenticated) {
                 this.setState({ keycloakAuth: true, keycloakFetch: false });
             }
         }
         if (authType === 'standard') {
-            const { dispatch } = this.props;
             dispatch(authenticationUser())
                 .then(() => this.setState({ keycloakFetch: false }));
         }

@@ -53,7 +53,12 @@ class Clients extends PureComponent {
             hasMorePage,
             dispatch,
         } = this.props;
-        const { height } = document.querySelector('.block-list.block-list--clients').getBoundingClientRect();
+        const container = document.querySelector('.block-list.block-list--clients');
+        if (!container) {
+            return null;
+        }
+
+        const { height } = container.getBoundingClientRect();
 
         if (!isFetchingNext && company.length > 0 && hasMorePage && height - window.scrollY < 1000) {
             dispatch(getNextClientsList(nextPage, filters));
@@ -66,10 +71,10 @@ class Clients extends PureComponent {
     };
     
     render() {
-        const { agents, company, clientsCount, isFetching, isFetchingNext, filters } = this.props;
+        const { agents, company, stat, isFetching, isFetchingNext, filters } = this.props;
 
         return (
-            <section className={cx('fr-content fr-content--with-filter')}>
+            <section className={cx('fr-content fr-content--clients')}>
                 <ClientsFilter
                     isDisable={!company.length && !Object.keys(filters).length}
                     agents={agents}
@@ -81,7 +86,7 @@ class Clients extends PureComponent {
                     : [
                         <ClientsStatsPanel
                             key={0}
-                            clientsCount={clientsCount}
+                            companiesStat={stat.company}
                         />,
                         <ClientsList
                             key={1}
@@ -101,7 +106,7 @@ const mapStateToProps = ({ Agents, Clients }) => {
         isFetchingNext: Clients.isFetchingNext,
         company: Clients.company,
         filters: Clients.filters,
-        clientsCount: Clients.total,
+        stat: Clients.stat,
         nextPage: Clients.page + 1,
         hasMorePage: Clients.more,
         agents: Agents.agents,
