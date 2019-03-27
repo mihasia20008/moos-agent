@@ -5,6 +5,7 @@ import cx from 'classnames';
 
 import TextField from '../../../components/TextField';
 import Dropdown from "../../../components/Dropdown";
+import CheckboxList from "../../../components/CheckboxList";
 
 class ClientsFilter extends PureComponent {
     static propTypes = {
@@ -76,6 +77,8 @@ class ClientsFilter extends PureComponent {
 
     handleClearField = (name, value) => this.props.onChangeFilter({ [`${name}`]: value });
 
+    handleCheckboxSelect = ({ target }) => this.props.onChangeFilter({ [`${target.name}`]: target.value });
+
     render() {
         const { isFixed } = this.state;
         const { isDisable, agents, filters } = this.props;
@@ -114,6 +117,14 @@ class ClientsFilter extends PureComponent {
                                     <i className={cx('icon icon-seacrh-m')} />
                                 </Link>
                             </div>
+                        </div>
+                        <div className={cx('main-filter__row', {
+                            'main-filter__row--disabled': isDisable,
+                        })}>
+                            <CheckboxList
+                                activeValue={filters.status}
+                                onChangeItem={this.handleCheckboxSelect}
+                            />
                         </div>
                     </div>
                 </div>
