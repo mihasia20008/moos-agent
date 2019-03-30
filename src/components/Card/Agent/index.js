@@ -12,6 +12,7 @@ const clients = ['клиент', 'клиента', 'клиентов'];
 
 const AgentCard = ({
     id,
+    level,
     name,
     inn,
     agentsCount,
@@ -20,7 +21,7 @@ const AgentCard = ({
     onShowClients,
 }) => {
     return (
-        <div className={cx('fr-agent-card')}>
+        <div className={cx('fr-agent-card')} style={{ marginLeft: `${30 * level}px` }}>
             <div className={cx('fr-agent-card__body')}>
                 <div className={cx('fr-agent-card__main')}>
                     <span className={cx('fr-agent-card__title')} dangerouslySetInnerHTML={{ __html: name }} />
@@ -58,6 +59,7 @@ const AgentCard = ({
 };
 
 AgentCard.propTypes = {
+    level: PropTypes.number,
     name: PropTypes.string,
     inn: PropTypes.string,
     statList: PropTypes.shape({
@@ -84,6 +86,7 @@ AgentCard.propTypes = {
 };
 
 AgentCard.defaultProps = {
+    level: 0,
     name: '<i style="font-style: italic; color: #ccc;">Название не указано</i>',
     inn: '<i style="font-style: italic; color: #ccc;">Не указан</i>',
 };
