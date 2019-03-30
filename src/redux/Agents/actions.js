@@ -4,7 +4,20 @@ import { Agents } from '../../services/api';
 import { logoutProcess } from "../User/actions";
 import { setErrorContent } from "../Error/actions";
 
-export function getAgentsList() {
+function prepareChildrenAgent(ids, list) {
+    const rootAgents = [];
+    ids.forEach(id => {
+        const parent = list[id].parentId;
+        if (parent) {
+            list[parent].children.push(id);
+        } else {
+            rootAgents.push(id);
+        }
+    });
+    return { rootAgents, ids, list };
+}
+
+export function getAgentsList(needPrepareChildren = false) {
     return async dispatch => {
         try {
             dispatch({ type: types.AGENTS_FETCH });
@@ -16,7 +29,28 @@ export function getAgentsList() {
                 }
                 throw new Error(res.message);
             }
-            dispatch({ type: types.AGENTS_SUCCESS, data: res });
+            const { agents, ...restRes } = res;
+            const { list, ids } = agents.reduce((acc, item) => {
+                return {
+                    list: Object.assign({}, acc.list, {
+                        [`${item.id}`]: Object.assign({}, item, { children: [] }),
+                    }),
+                    ids: acc.ids.concat(item.id)
+                }
+            }, { list: {}, ids: [] });
+            dispatch({
+                type: types.AGENTS_SUCCESS,
+                data: Object.assign(
+                    {},
+                    {
+                        agents,
+                        ...restRes,
+                    },
+                    needPrepareChildren
+                        ? prepareChildrenAgent(ids, list)
+                        : {}
+                )
+            });
         } catch (err) {
             console.log(err);
             dispatch(setErrorContent(err.message));
