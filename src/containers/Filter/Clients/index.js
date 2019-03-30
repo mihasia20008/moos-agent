@@ -77,7 +77,13 @@ class ClientsFilter extends PureComponent {
 
     handleClearField = (name, value) => this.props.onChangeFilter({ [`${name}`]: value });
 
-    handleCheckboxSelect = ({ target }) => this.props.onChangeFilter({ [`${target.name}`]: target.value });
+    handleCheckboxSelect = ({ target }) => {
+        if (target.value === 'all') {
+            this.handleClearField(target.name, '');
+        } else {
+            this.props.onChangeFilter({ [`${target.name}`]: target.value });
+        }
+    };
 
     render() {
         const { isFixed } = this.state;

@@ -72,6 +72,8 @@ class TasksFilter extends PureComponent {
         }
     };
 
+    handleClearField = (name, value) => this.props.onChangeFilter({ [`${name}`]: value });
+
     handleSelectDropdown = (name, key) => {
         const { onChangeFilter } = this.props;
         if (name === 'orderTypeRefId' && key === 'all') {
@@ -88,7 +90,13 @@ class TasksFilter extends PureComponent {
         }
     };
 
-    handleCheckboxSelect = ({ target }) => this.props.onChangeFilter({ [`${target.name}`]: target.value });
+    handleCheckboxSelect = ({ target }) => {
+        if (target.value === 'all') {
+            this.handleClearField(target.name, '');
+        } else {
+            this.props.onChangeFilter({ [`${target.name}`]: target.value });
+        }
+    };
 
     handleTypeText = ({ target }) => this.props.onChangeFilter({ [`${target.name}`]: target.value });
 
@@ -115,8 +123,6 @@ class TasksFilter extends PureComponent {
         const { onChangeFilter } = this.props;
         onChangeFilter({ [`${name}`]: value })
     };
-
-    handleClearField = (name, value) => this.props.onChangeFilter({ [`${name}`]: value });
 
     render() {
         const { isFixed } = this.state;
