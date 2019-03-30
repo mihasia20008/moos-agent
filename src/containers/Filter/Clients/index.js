@@ -112,11 +112,11 @@ class ClientsFilter extends PureComponent {
                                 onChange={this.handleTypeText}
                                 onClear={this.handleClearField}
                             />
-                            <div className={cx('main-filter__control main-filter__control--button')}>
-                                <Link className={cx('btn btn-search')} to="?search">
-                                    <i className={cx('icon icon-seacrh-m')} />
-                                </Link>
-                            </div>
+                            {/*<div className={cx('main-filter__control main-filter__control--button')}>*/}
+                                {/*<Link className={cx('btn btn-search')} to="?search">*/}
+                                    {/*<i className={cx('icon icon-seacrh-m')} />*/}
+                                {/*</Link>*/}
+                            {/*</div>*/}
                         </div>
                         <div className={cx('main-filter__row', {
                             'main-filter__row--disabled': isDisable,
