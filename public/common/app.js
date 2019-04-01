@@ -26,28 +26,7 @@ $(document).ready(function(){
             $('input', parent).autocomplete('dispose');
         }
     });
-    if (typeof $.cookie('JWT') !== "undefined") {
-        setTimeout(function () { check_jwt(); }, 0);
-    }
 });
-
-function check_jwt() {
-    var dt = new Date().getTime();
-    $.getJSON('/check_jwt?time=' + dt, function (res) {
-        if (typeof res.status !== "undefined") {
-            if (res.status == 'expired') {
-                $.getJSON('/api/logout', function (data) {});
-                window.location.href = '/';
-            } else if (typeof res.refresh !== "undefined") {
-                setTimeout(function () { check_jwt(); }, res.refresh * 1000);
-            }
-        } else {
-            setTimeout(function () { check_jwt(); }, 5000);    
-        }
-    }).fail(function() {
-        setTimeout(function () { check_jwt(); }, 5000);
-    });
-}
 
 /**
  * Делаем проверку сессии camunda для тех запросов, которые не возвращают ошибку авторизации
