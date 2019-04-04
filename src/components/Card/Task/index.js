@@ -4,6 +4,8 @@ import cx from 'classnames';
 
 import { declOfNum } from '../../../services/utility';
 
+import CONTENT from '../../../contentConstants';
+
 class TaskCard extends PureComponent {
     static propTypes = {
         orderNumber: PropTypes.string.isRequired,
@@ -15,6 +17,7 @@ class TaskCard extends PureComponent {
         contract_max_price: PropTypes.string,
         daysToStart: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.number]),
         phases: PropTypes.array,
+        status: PropTypes.string,
         tasks: PropTypes.array,
         onOpenDetail: PropTypes.func.isRequired,
     };
@@ -23,7 +26,8 @@ class TaskCard extends PureComponent {
         principalCompany_INN: '&mdash;',
         purchaseAmount: '&mdash;',
         contract_max_price: '&mdash;',
-        phases: []
+        phases: [],
+        status: '',
     };
 
     static days = ['день', 'дня', 'дней'];
@@ -74,12 +78,58 @@ class TaskCard extends PureComponent {
                     >
                         <i className={cx('stages-progress__icon icon icon-ok')} />
                         <span className={cx('stages-progress__text')}>
-                                {phasesText[phasesCount + item]}
-                            </span>
+                            {phasesText[phasesCount + item]}
+                        </span>
                     </div>
                 ))}
             </div>
         );
+    }
+
+    renderStatus() {
+        const { status } = this.props;
+
+        if (!status) {
+            return null;
+        }
+
+        const { statusItems } = CONTENT;
+        let renderPastStatuses = true;
+
+        return (
+            <div className={cx('stages-progress')}>
+                {statusItems.map(({ key, className, text }) => {
+                    if (key === 'total') {
+                        return null;
+                    }
+                    const isCurrentStatus = key === status;
+                    const item = (
+                        <div
+                            key={key}
+                            className={cx('stages-progress__item', {
+                                'stages-progress__item--disabled': !renderPastStatuses,
+                                'stages-progress__item--confirmed': renderPastStatuses && !isCurrentStatus,
+                                'stages-progress__item--active': isCurrentStatus,
+                                [`stages-progress__item--${className}`]: className
+                            })}
+                            title={text}
+                        >
+                            <i className={cx('stages-progress__icon icon icon-ok')} />
+                            <span className={cx('stages-progress__text')}>
+                                {text}
+                            </span>
+                        </div>
+                    );
+
+                    if (renderPastStatuses) {
+                        renderPastStatuses = !isCurrentStatus;
+                    }
+
+                    return item;
+                })}
+            </div>
+        );
+
     }
 
     renderDaysToStart() {
@@ -108,14 +158,15 @@ class TaskCard extends PureComponent {
             tasks,
         } = this.props;
 
-        const phasesBlock = this.renderPhases();
+        // const phasesBlock = this.renderPhases();
         const daysToStartBlock = this.renderDaysToStart();
+        const statusBlock = this.renderStatus();
 
         return (
             <div className={cx('block-list__item')}>
-                {phasesBlock || daysToStartBlock ? (
+                {statusBlock || daysToStartBlock ? (
                     <div className={cx('block-list__row')}>
-                        {phasesBlock}
+                        {statusBlock}
                         {daysToStartBlock}
                     </div>
                 ) : null}
@@ -133,7 +184,7 @@ class TaskCard extends PureComponent {
                             <tr>
                                 <th>Срок БГ</th>
                                 <th>НМЦ закупки</th>
-                                <th>Предложеная цена</th>
+                                <th>Сумма гарантии</th>
                             </tr>
                             <tr>
                                 <td>{durationDays} {declOfNum(durationDays, TaskCard.days)}</td>

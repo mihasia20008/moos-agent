@@ -22,22 +22,22 @@
       color: #fff;
     }
 
-    &--sold {
+    &--green {
       #{$r}__icon {
         color: $color-green;
       }
     }
-    &--lost {
+    &--red {
       #{$r}__icon {
         color: $color-red;
       }
     }
-    &--inprogress {
+    &--yellow {
       #{$r}__icon {
         color: $color-yellow;
       }
     }
-    &--assigned {
+    &--purple {
       #{$r}__icon {
         color: $color-purple;
       }
@@ -57,16 +57,16 @@
         right: 12px;
       };
 
-      &.stages-progress__item--sold {
+      &.stages-progress__item--green {
         background-color: $color-green;
       }
-      &.stages-progress__item--lost {
+      &.stages-progress__item--red {
         background-color: $color-red;
       }
-      &.stages-progress__item--inprogress {
+      &.stages-progress__item--yellow {
         background-color: $color-yellow;
       }
-      &.stages-progress__item--assigned {
+      &.stages-progress__item--purple {
         background-color: $color-purple;
       }
 
