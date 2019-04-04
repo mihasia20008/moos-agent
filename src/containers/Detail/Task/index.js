@@ -41,6 +41,7 @@ class TaskDetail extends PureComponent {
                                 containerElement: $('#camunda'),
                                 done: function (err, camForm) {
                                     if (err) {
+                                        console.log('all', err);
                                         throw err;
                                     }
                 
@@ -49,17 +50,18 @@ class TaskDetail extends PureComponent {
                                     });
                 
                                     camForm.on('submit-error', function (evt, res) {
-                                        console.log('submit-error', res);
-                                        //uas.flash.error(res[0]);
-                
-                                        //$container.removeOverlay();
+                                        removePreloader();
+                                        setErrorNotification(res[0]);
+                                        setTimeout(function () {
+                                            clearErrorNotification();
+                                        }, 3000);
                                     });
                 
                                     $('#camunda_complete').click(function () {
-                                        //$container.addOverlay();
-                
+                                        setPreloader();
                                         camForm.submit(function (err) {
                                             if (err) {
+                                                removePreloader();
                                                 setErrorNotification(err);
                                                 setTimeout(function () {
                                                     clearErrorNotification();
@@ -153,6 +155,25 @@ class TaskDetail extends PureComponent {
                     
                     function clearErrorNotification() {
                         $('#error-note').remove();
+                    }
+                
+                    function setPreloader() {
+                        var innerHtml = 
+                            '<svg viewBox="-2000 -1000 4000 2000">' +
+                                '<path id="inf" d="M354-354A500 500 0 1 1 354 354L-354-354A500 500 0 1 0-354 354z" />' +
+                                '<use xlink:href="#inf" stroke-dasharray="1570 5143" stroke-dashoffset="6713px" />' +
+                            '</svg>';
+                            
+                        var elem = $(document.createElement('div'))
+                            .addClass('preloader preloader--big')
+                            .attr('id', 'preloader')
+                            .html(innerHtml);
+                            
+                        $('#camunda').closest('.modal-content').append(elem);
+                    }
+                    
+                    function removePreloader() {
+                        $('#preloader').remove();
                     }
                     
                     getTask('#task_id#');
