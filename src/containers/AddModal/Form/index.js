@@ -129,7 +129,7 @@ class AddModalForm extends PureComponent {
                         .attr('id', 'preloader')
                         .html(innerHtml);
                         
-                    $('#camunda').closest('.modal-content').append(elem);
+                    $('#root').append(elem);
                 }
                 
                 function removePreloader() {
