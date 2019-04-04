@@ -22,6 +22,7 @@ const TasksList = ({ list, isLoading, isLoadingNext, onOpenDetail }) => {
                         contract_max_price={item.contract_max_price}
                         daysToStart={item.daysToStart}
                         phases={item.phases}
+                        status={item.status}
                         tasks={item.tasks || []}
                         onOpenDetail={onOpenDetail}
                     />
