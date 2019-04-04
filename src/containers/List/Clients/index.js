@@ -25,7 +25,7 @@ const ClientsList = ({ list, isLoading, isLoadingNext }) => {
                         INN={item.INN ? item.INN : undefined}
                         KPP={item.KPP ? item.KPP : undefined}
                         OGRN={item.OGRN ? item.OGRN : undefined}
-                        stats={item.stats}
+                        stats={item.stat}
                     />
                 })}
             {isLoadingNext && <Skelet key={list.length + 10} showLoader />}
