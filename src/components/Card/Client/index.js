@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import { Link } from 'react-router-dom';
+import _get from 'lodash/get';
 
 import CONTENT from '../../../contentConstants';
 
@@ -64,7 +65,7 @@ const ClientCard = ({
                             </tr>
                             <tr>
                                 <td>
-                                    {`${formatNumber(stats.amount ? stats.amount : 0, true)} ₽`}
+                                    {`${formatNumber(_get(stats, 'total.amount', 0), true)} ₽`}
                                 </td>
                                 <td dangerouslySetInnerHTML={{ __html: KPP }} />
                                 <td dangerouslySetInnerHTML={{ __html: OGRN }} />

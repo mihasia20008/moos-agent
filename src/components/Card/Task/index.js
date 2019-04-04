@@ -133,7 +133,7 @@ class TaskCard extends PureComponent {
                             <tr>
                                 <th>Срок БГ</th>
                                 <th>НМЦ закупки</th>
-                                <th>Предложеная цена</th>
+                                <th>Сумма гарантии</th>
                             </tr>
                             <tr>
                                 <td>{durationDays} {declOfNum(durationDays, TaskCard.days)}</td>
