@@ -1,0 +1,46 @@
+.styled-switcher {
+  width: 32px;
+  margin: 16px 0;
+
+  $ss: &;
+
+  input {
+    display: none;
+
+    &:checked + #{$ss}__field {
+
+
+      #{$ss}__handler {
+        left: 100%;
+        right: 0;
+        margin: 0 0 0 -16px;
+      }
+    }
+  }
+
+  &__field {
+    display: block;
+    position: relative;
+    width: 32px;
+    height: 8px;
+    background-color: #eee;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  &__handler {
+    display: block;
+    width: 16px;
+    height: 16px;
+    border-radius: 32px;
+    background-color: #ffffff;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.24);
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 100%;
+    margin: 0;
+    transform: translateY(-50%);
+    transition: all 0.5s 0s;
+  }
+}

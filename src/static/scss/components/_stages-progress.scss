@@ -1,0 +1,99 @@
+.stages-progress {
+  display: flex;
+  align-items: center;
+
+  $r: &;
+
+  &__item {
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+    padding: 4px;
+
+    #{$r}__icon {
+      width: 16px;
+      height: 16px;
+    }
+    #{$r}__text {
+      font: {
+        size: 12px;
+        weight: 500;
+      };
+      color: #fff;
+    }
+
+    &--green {
+      #{$r}__icon {
+        color: $color-green;
+      }
+    }
+    &--red {
+      #{$r}__icon {
+        color: $color-red;
+      }
+    }
+    &--yellow {
+      #{$r}__icon {
+        color: $color-yellow;
+      }
+    }
+    &--purple {
+      #{$r}__icon {
+        color: $color-purple;
+      }
+    }
+
+    &--confirmed {
+      #{$r}__icon {
+        display: inline-flex;
+      }
+      #{$r}__text {
+        display: none;
+      }
+    }
+    &--active {
+      padding: {
+        left: 12px;
+        right: 12px;
+      };
+
+      &.stages-progress__item--green {
+        background-color: $color-green;
+      }
+      &.stages-progress__item--red {
+        background-color: $color-red;
+      }
+      &.stages-progress__item--yellow {
+        background-color: $color-yellow;
+      }
+      &.stages-progress__item--purple {
+        background-color: $color-purple;
+      }
+
+      #{$r}__icon {
+        display: none;
+      }
+      #{$r}__text {
+        display: inline-block;
+      }
+    }
+    &--disabled {
+      background-color: #eee;
+      border-radius: 50%;
+      width: 16px;
+      height: 16px;
+
+      #{$r}__icon {
+        display: none;
+      }
+      #{$r}__text {
+        display: none;
+      }
+    }
+
+    &--active,
+    &--disabled {
+      margin: 0 4px;
+    }
+  }
+}

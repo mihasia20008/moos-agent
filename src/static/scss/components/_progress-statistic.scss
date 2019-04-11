@@ -1,0 +1,67 @@
+.progress-statistic {
+
+  $b: &;
+
+  &__item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    padding: 4px 4px 4px 8px;
+
+    &--red {
+      background-color: rgba($color-red, 0.48);
+
+      #{$b}__bar {
+        background-color: $color-red;
+      }
+    }
+    &--green {
+      background-color: rgba($color-green, 0.48);
+
+      #{$b}__bar {
+        background-color: $color-green;
+      }
+    }
+    &--yellow {
+      background-color: rgba($color-yellow, 0.48);
+
+      #{$b}__bar {
+        background-color: $color-yellow;
+      }
+    }
+    &--purple {
+      background-color: rgba($color-purple, 0.48);
+
+      #{$b}__bar {
+        background-color: $color-purple;
+      }
+    }
+  }
+
+  &__counter {
+    font: {
+      size: 12px;
+      weight: 500;
+    };
+    color: #fff;
+    line-height: 1.33;
+  }
+
+  &__status {
+    font: {
+      size: 9px;
+      weight: 500;
+    };
+    color: #000;
+    line-height: 1.78;
+  }
+
+  &__bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    z-index: -1;
+  }
+}

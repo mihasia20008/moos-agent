@@ -1,0 +1,24 @@
+.badge {
+  font: {
+    size: 12px;
+    weight: 500;
+  };
+  line-height: 1.33;
+  color: #000;
+  background-color: #9b9b9b;
+  border-radius: 8px;
+  padding: 4px 12px;
+
+  &--assigned {
+    background-color: $color-purple;
+  }
+  &--inprogress {
+    background-color: $color-yellow;
+  }
+  &--lost {
+    background-color: $color-red;
+  }
+  &--sold {
+    background-color: $color-green;
+  }
+}

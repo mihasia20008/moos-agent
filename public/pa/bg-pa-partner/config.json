@@ -1,0 +1,18 @@
+{
+  "modules": [
+    {
+      "moduleName": "process-ui@bg-pa-partner",
+      "files": [
+        "/pa/bg-pa-partner/app/bg-pa-partner.js",
+        "/pa/bg-pa-partner/app/bg-pa-partner.css"
+      ]
+    },
+    {
+      "moduleName": "process-ui@bg-pa-partner-bo",
+      "files": [
+        "/pa/bg-pa-partner/app/bg-pa-partner.js",
+        "/pa/bg-pa-partner/app/bg-pa-partner.css"
+      ]
+    }
+  ]
+}

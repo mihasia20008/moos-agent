@@ -1,0 +1,47 @@
+.history-list {
+
+  &__item {
+    display: flex;
+    padding: 8px 16px;
+
+    &-body {
+      max-width: 136px;
+      padding-right: 5px;
+    }
+  }
+
+  &__icon {
+    margin-right: 8px;
+  }
+
+  &__info {
+    margin-bottom: 5px;
+
+    span {
+      font: {
+        size: 8px;
+        weight: 500;
+      };
+      line-height: 1.5;
+      color: #fff;
+
+      &:not(:last-child) {
+        margin-right: 8px;
+      }
+    }
+  }
+
+  &__title {
+    margin-bottom: 5px;
+  }
+
+  &__title,
+  &__status {
+    font: {
+      size: 12px;
+      weight: 500;
+    };
+    line-height: 1;
+    color: #fff;
+  }
+}

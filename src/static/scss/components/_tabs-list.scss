@@ -1,0 +1,64 @@
+.tabs-list {
+
+  $tl: &;
+
+  &__item {
+    display: flex;
+    padding: 8px 8px 6px;
+    background-color: transparent;
+    transition: all 0.5s 0s;
+
+    &--active {
+      background-color: #fff;
+
+      #{$tl}__item-icon {
+        color: #4a4a4a;
+      }
+      #{$tl}__item-title {
+        color: #000;
+      }
+    }
+
+    &:hover {
+      cursor: pointer;
+      background-color: #fff;
+    }
+  }
+
+  &__item-icon {
+    margin-right: 8px;
+    color: #9b9b9b;
+    opacity: 0.8;
+  }
+
+  &__item-title {
+    font: {
+      size: 14px;
+      weight: 500;
+    };
+    color: #9b9b9b;
+    line-height: 1.14;
+  }
+
+  &__item-progress {
+    position: relative;
+    width: 80px;
+    height: 4px;
+    border-radius: 4px;
+    background-color: rgba(36, 34, 50, 0.32);
+    margin-top: 6px;
+
+    &--hidden {
+      visibility: hidden;
+    }
+  }
+
+  &__item-bar {
+    position: absolute;
+    height: 100%;
+    top: 0;
+    left: 0;
+    border-radius: 4px;
+  }
+
+}

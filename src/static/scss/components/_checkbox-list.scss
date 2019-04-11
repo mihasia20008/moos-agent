@@ -1,0 +1,90 @@
+.checkbox-list {
+  display: flex;
+  align-items: stretch;
+
+  &__item {
+    overflow: hidden;
+
+    input {
+      display: none;
+    }
+    label {
+      display: flex;
+      padding: 6px 12px;
+      height: 100%;
+      align-items: center;
+      margin-bottom: 0;
+      font: {
+        weight: 500;
+        size: 12px;
+      };
+      color: #000;
+      mix-blend-mode: overlay;
+      cursor: pointer;
+      transition: all 0.3s 0s;
+    }
+
+    &--purple {
+      label {
+        background-color: rgba(#b060ef, 0.7);
+      }
+
+      input {
+        &:checked + label {
+          background-color: darken(#b060ef, 5);
+        }
+      }
+    }
+    &--red {
+      label {
+        background-color: rgba(#fa6a47, 0.7);
+      }
+
+      input {
+        &:checked + label {
+          background-color: darken(#fa6a47, 5);
+        }
+      }
+    }
+    &--yellow {
+      label {
+        background-color: rgba(#ffbe00, 0.7);
+      }
+
+      input {
+        &:checked + label {
+          background-color: darken(#ffbe00, 5);
+        }
+      }
+    }
+    &--green {
+      label {
+        background-color: rgba(#22c7b5, 0.7);
+      }
+
+      input {
+        &:checked + label {
+          background-color: darken(#22c7b5, 5);
+        }
+      }
+    }
+    &--white {
+      label {
+        background-color: #fff;
+      }
+
+      input {
+        &:checked + label {
+          background-color: darken(#fff, 5);
+        }
+      }
+    }
+
+    &:first-child {
+      border-radius: 8px 0 0 8px;
+    }
+    &:last-child {
+      border-radius: 0 8px 8px 0;
+    }
+  }
+}

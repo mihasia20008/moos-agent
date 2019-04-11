@@ -1,0 +1,65 @@
+#root {
+    height: 100%;
+}
+
+// Plugins
+@import "bootstrap/bootstrap";
+
+// Helpers
+@import "helpers/variables";
+@import "helpers/helpers";
+
+// Elements
+@import "elements/buttons";
+@import "elements/icons";
+@import "elements/dropdown";
+@import "elements/notification";
+@import "elements/badge";
+@import "elements/styled-switcher";
+@import "elements/document-timer";
+@import "elements/preloader-field";
+@import "elements/preloader";
+
+// Components
+@import "components/grid";
+@import "components/base";
+@import "components/sidebar";
+@import "components/main-filter";
+@import "components/fonts";
+@import "components/block-list";
+@import "components/modal";
+@import "components/stages-progress";
+@import "components/checkbox-list";
+@import "components/filter-slider";
+@import "components/stats-list";
+@import "components/main-stats";
+@import "components/deals-list";
+@import "components/empty-message";
+@import "components/error";
+@import "components/form";
+@import "components/create-form";
+@import "components/info-block";
+@import "components/orders-list";
+@import "components/modal-help-block";
+@import "components/history-list";
+@import "components/modal-menu";
+@import "components/modal-steps-list";
+@import "components/fr-user-menu";
+@import "components/progress-statistic";
+@import "components/statistic-values";
+@import "components/autocomplete";
+@import "components/card";
+@import "components/table";
+@import "components/creadit-info";
+@import "components/documents-list";
+@import "components/bf-container";
+@import "components/tabs-list";
+@import "components/centred-message-container";
+@import "components/user-panel";
+@import "components/chart-stats";
+@import "components/stats-panel";
+@import "components/agent-card";
+
+// Layout
+@import "layout/login";
+@import "layout/main";

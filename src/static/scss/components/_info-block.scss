@@ -1,0 +1,99 @@
+.info-block {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  padding: 16px 0 0;
+  border-bottom: 1px solid #ddd;
+
+  &--last {
+    border-bottom: 0;
+  }
+
+  &__item {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    margin-bottom: 16px;
+
+    a {
+      font: {
+        size: 14px;
+        weight: 500;
+      };
+      color: #4a4a4a;
+
+      span {
+        &:not(:last-child) {
+          margin-right: 8px;
+        }
+      }
+    }
+
+    &--title {
+      font: {
+        size: 18px;
+        weight: 500;
+      };
+      color: #9b9b9b;
+      line-height: 1.33;
+      margin-bottom: 16px;
+
+      &-main {
+        font: {
+          size: 18px;
+          weight: 500;
+        };
+        max-width: 320px;
+        line-height: 1.33;
+        color: #4a4a4a;
+      }
+    }
+
+    &--left {
+      max-width: 320px;
+      min-width: 150px;
+      justify-content: flex-start;
+      margin: {
+        left: 0;
+        right: auto;
+      };
+    }
+
+    &--right {
+      flex: none;
+      width: 175px;
+
+      span {
+        justify-content: flex-end;
+        text-align: right;
+      }
+    }
+
+    &-title {
+      display: flex;
+      width: 100%;
+      font: {
+        size: 11px;
+      };
+      color: #bbb;
+      margin-bottom: 4px;
+      line-height: 1;
+    }
+
+    &-value {
+      display: flex;
+      width: 100%;
+      font: {
+        size: 14px;
+        weight: 500;
+      };
+      color: #4a4a4a;
+      line-height: 1.71;
+    }
+
+    &--fullwidth {
+      max-width: none;
+      width: 100%;
+    }
+  }
+}

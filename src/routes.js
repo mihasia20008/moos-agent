@@ -1,16 +1,24 @@
 import React from 'react';
-import { Switch } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 
 import Layout from './containers/Layout';
+import Login from './pages/Login';
+import Tasks from './pages/Tasks';
+import Clients from './pages/Clients';
+import Agents from './pages/Agents';
 import NotFound from './pages/NotFound';
 
 export default (
     <Switch>
-        <Layout exact path="/" component={() => <div>Main</div>} />
-        {/* <Layout path="/catalog/:name/" component={CatalogSectionPage} image="/assets/img/Catalog/bg-img.jpg" />
-        <Layout path="/dealers/" component={DealersPage} image="/assets/img/Catalog/bg-img.jpg" />
-        {/*<Layout path="/catalog/" component={CatalogSectionPage} />*/}
-        {/*<Layout path="/products/:name/" component={DetailPage} image="/assets/img/Detail/bg-img.jpg" /> */}
+        <Route exact path="/" component={Login} />
+        <Layout path="/tasks/:id" component={Tasks} />
+        <Layout path="/tasks" component={Tasks} />
+        <Layout path="/clients/:id" component={Clients} />
+        <Layout path="/clients" component={Clients} />
+        <Layout path="/agents/:agent/users/new" component={Agents} />
+        <Layout path="/agents/:agent/users/:user" component={Agents} />
+        <Layout path="/agents/:agent/users" component={Agents} />
+        <Layout path="/agents" component={Agents} />
         <Layout component={NotFound} isNotFound />
     </Switch>
 );
