@@ -57,14 +57,19 @@ class AddModalForm extends PureComponent {
         
                                 camForm.on('submit-error', function (evt, res) {
                                     console.log('submit-error', res);
-                                    // uas.flash.error(res[0]);
-                                    //$container.removeOverlay();
+                                    removePreloader();
+                                    setErrorNotification(res[0]);
+                                    setTimeout(function () {
+                                        clearErrorNotification();
+                                    }, 3000);
                                 });
         
                                 $('#camunda_submit').click(function (e) {
                                     e.preventDefault();
+                                    setPreloader();
                                     camForm.submit(function (err, data) {
-                                        if (err) { 
+                                        if (err) {
+                                            removePreloader();
                                             var $scope = angular.element('#create-task form').scope();
                                             if ($scope.$$camForm.$valid) {
                                                 setErrorNotification(err.message);
@@ -110,6 +115,25 @@ class AddModalForm extends PureComponent {
                 
                 function clearErrorNotification() {
                     $('#error-note').remove();
+                }
+                
+                function setPreloader() {
+                    var innerHtml = 
+                        '<svg viewBox="-2000 -1000 4000 2000">' +
+                            '<path id="inf" d="M354-354A500 500 0 1 1 354 354L-354-354A500 500 0 1 0-354 354z" />' +
+                            '<use xlink:href="#inf" stroke-dasharray="1570 5143" stroke-dashoffset="6713px" />' +
+                        '</svg>';
+                        
+                    var elem = $(document.createElement('div'))
+                        .addClass('preloader preloader--big')
+                        .attr('id', 'preloader')
+                        .html(innerHtml);
+                        
+                    $('#root').append(elem);
+                }
+                
+                function removePreloader() {
+                    $('#preloader').remove();
                 }
             });
         `
