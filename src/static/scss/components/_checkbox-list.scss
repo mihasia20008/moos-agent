@@ -26,50 +26,55 @@
 
     &--purple {
       label {
-        background-color: rgba(#b060ef, 0.7);
+        background-color: #b060ef;
       }
 
       input {
         &:checked + label {
-          background-color: darken(#b060ef, 5);
+          color: #b060ef;
+          background-color: #fff;
         }
       }
     }
     &--red {
       label {
-        background-color: rgba(#fa6a47, 0.7);
+        background-color: #fa6a47;
       }
 
       input {
         &:checked + label {
-          background-color: darken(#fa6a47, 5);
+          color: #fa6a47;
+          background-color: #fff;
         }
       }
     }
     &--yellow {
       label {
-        background-color: rgba(#ffbe00, 0.7);
+        background-color: #ffbe00;
       }
 
       input {
         &:checked + label {
-          background-color: darken(#ffbe00, 5);
+          color: #ffbe00;
+          background-color: #fff;
         }
       }
     }
     &--green {
       label {
-        background-color: rgba(#22c7b5, 0.7);
+        background-color: #22c7b5;
       }
 
       input {
         &:checked + label {
-          background-color: darken(#22c7b5, 5);
+          color: #22c7b5;
+          background-color: #fff;
         }
       }
     }
     &--white {
       label {
+        border-left: 1px solid #f8f8f8;
         background-color: #fff;
       }
 
