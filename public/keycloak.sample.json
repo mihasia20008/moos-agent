@@ -1,0 +1,8 @@
+{
+  "realm": "fplace-develop",
+  "auth-server-url": "https://keycloak.moos.solutions/auth",
+  "ssl-required": "external",
+  "resource": "spa-client",
+  "public-client": true,
+  "confidential-port": 0
+}
