@@ -25,9 +25,11 @@ class Clients extends PureComponent {
     };
 
     componentDidMount() {
-        const { filters, dispatch } = this.props;
+        const { isManager, filters, dispatch } = this.props;
         dispatch(getClientsList(filters));
-        dispatch(getAgentsList());
+        if (isManager) {
+            dispatch(getAgentsList());
+        }
         window.addEventListener('scroll', this.handleScroll);
     }
 
@@ -71,7 +73,7 @@ class Clients extends PureComponent {
     };
     
     render() {
-        const { agents, company, stat, isFetching, isFetchingNext, filters } = this.props;
+        const { agents, company, stat, isManager, isFetching, isFetchingNext, filters } = this.props;
 
         return (
             <section className={cx('fr-content fr-content--clients')}>
@@ -79,6 +81,7 @@ class Clients extends PureComponent {
                     isDisable={!company.length && !Object.keys(filters).length}
                     agents={agents}
                     filters={filters}
+                    isManager={isManager}
                     onChangeFilter={this.handleChangeFilter}
                 />
                 {!company.length && !isFetching
@@ -100,8 +103,9 @@ class Clients extends PureComponent {
     }
 }
 
-const mapStateToProps = ({ Agents, Clients }) => {
+const mapStateToProps = ({ Agents, Clients, User }) => {
     return {
+        isManager: User.ismanager,
         isFetching: Clients.isFetching,
         isFetchingNext: Clients.isFetchingNext,
         company: Clients.company,
