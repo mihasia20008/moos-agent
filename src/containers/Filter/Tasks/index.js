@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import cx from 'classnames';
 
 import Dropdown from '../../../components/Dropdown';

@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import cx from 'classnames';
 
 import TextField from '../../../components/TextField';
@@ -12,6 +11,7 @@ class ClientsFilter extends PureComponent {
         isDisable: PropTypes.bool,
         agents: PropTypes.array,
         filters: PropTypes.object,
+        isManager: PropTypes.bool.isRequired,
         onChangeFilter: PropTypes.func.isRequired,
     };
     static defaultProps = {
@@ -87,9 +87,11 @@ class ClientsFilter extends PureComponent {
 
     render() {
         const { isFixed } = this.state;
-        const { isDisable, agents, filters } = this.props;
+        const { isDisable, agents, filters, isManager } = this.props;
 
-        const agentsFilter = this.getAgentsFilter(agents, filters.agentCompanyId);
+        const agentsFilter = isManager
+            ? this.getAgentsFilter(agents, filters.agentCompanyId)
+            : null;
 
         return (
             <div className={cx('main-filter', {
@@ -100,17 +102,19 @@ class ClientsFilter extends PureComponent {
                         <div className={cx('main-filter__row', {
                             'main-filter__row--disabled': isDisable,
                         })}>
-                            <div className={cx('main-filter__control main-filter__control--icon-right')}>
-                                <Dropdown
-                                    name="agentCompanyId"
-                                    toggleClassName="btn btn-dropdown--hidden-border"
-                                    defaultActive={agentsFilter.active}
-                                    list={agentsFilter.list}
-                                    disabled={agentsFilter.list.length < 3}
-                                    onSelectItem={this.handleSelectDropdown}
-                                />
-                                <i className={cx('icon icon-chevron-down')} />
-                            </div>
+                            {agentsFilter && (
+                                <div className={cx('main-filter__control main-filter__control--icon-right')}>
+                                    <Dropdown
+                                        name="agentCompanyId"
+                                        toggleClassName="btn btn-dropdown--hidden-border"
+                                        defaultActive={agentsFilter.active}
+                                        list={agentsFilter.list}
+                                        disabled={agentsFilter.list.length < 3}
+                                        onSelectItem={this.handleSelectDropdown}
+                                    />
+                                    <i className={cx('icon icon-chevron-down')} />
+                                </div>
+                            )}
                             <TextField
                                 name="q"
                                 placeholder="Клиент"
