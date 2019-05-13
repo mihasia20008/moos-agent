@@ -6,12 +6,24 @@ import Cookies from 'js-cookie';
 import { setErrorContent } from "../Error/actions";
 
 export function logoutProcess(message = '') {
-    return dispatch => {
+    return (dispatch, getState) => {
+        const { authType, keycloak } = getState().user;
+
+        if (authType === 'keycloak' && Object.keys(keycloak).length) {
+            if (keycloak.authenticated) {
+                keycloak.logout();
+                Cookies.remove('JWT');
+            }
+        }
+        if (authType === 'standard') {
+            Cookies.remove('session_id');
+            Cookies.remove('JSESSIONID');
+        }
+
         if (message) {
             dispatch(setErrorContent(message));
         }
-        Cookies.remove('session_id');
-        Cookies.remove('JSESSIONID');
+
         dispatch({type: types.LOGOUT_SUCCESS});
     };
 }
@@ -35,7 +47,7 @@ export function loginUser(username, password) {
                 data: Object.assign(
                     {},
                     { ...res.user },
-                    { 
+                    {
                         processDefinitionKeys: res.process_definition_keys,
                         session_id: res.session.session_id,
                     },
@@ -58,7 +70,7 @@ export function authenticationUser(needNotification) {
             dispatch({ type: types.AUTH_FETCH });
             const { isSuccess, ...res} = await User.auth();
             if (!isSuccess) {
-                dispatch(logoutProcess(needNotification ? res.message : undefined));
+                dispatch(logoutProcess(needNotification ? res.message : ''));
                 dispatch({ type: types.AUTH_ERROR });
                 return;
             }
@@ -83,17 +95,23 @@ export function authenticationUser(needNotification) {
     }
 }
 
-export function logoutUser() {
+export function setKeycloak(keycloak) {
+    return dispatch => dispatch({ type: types.SET_KEYCLOAK, keycloak});
+}
+
+export function logoutUser(authType) {
     return async dispatch => {
         try {
             dispatch({ type: types.LOGOUT_FETCH });
-            const { isSuccess, ...res } = await User.logout();
-            if (!isSuccess) {
-                if (res.needLogout) {
-                    dispatch(logoutProcess(res.message));
-                    return;
+            if (authType === 'standard') {
+                const { isSuccess, ...res } = await User.logout();
+                if (!isSuccess) {
+                    if (res.needLogout) {
+                        dispatch(logoutProcess(res.message));
+                        return;
+                    }
+                    throw new Error(res.message);
                 }
-                throw new Error(res.message);
             }
             dispatch(logoutProcess());
         } catch (err) {

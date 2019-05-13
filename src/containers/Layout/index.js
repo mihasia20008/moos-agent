@@ -24,7 +24,7 @@ import SnackBar from '../SnackBar';
 
 import Overlay from '../../components/Overlay';
 
-import { authenticationUser } from '../../redux/User/actions';
+import { authenticationUser, setKeycloak } from '../../redux/User/actions';
 
 class Layout extends PureComponent {
     static propTypes = {
@@ -88,6 +88,7 @@ class Layout extends PureComponent {
             if (keycloak.authenticated) {
                 Cookies.set('JWT', keycloak.token);
                 this.setState({ keycloakAuth: true, keycloakFetch: false });
+                dispatch(setKeycloak(keycloak));
             }
         }
         if (authType === 'standard') {
@@ -298,7 +299,7 @@ class Layout extends PureComponent {
             }
         }
     }
-    
+
     render() {
         const { keycloakAuth, keycloakFetch, prevFetchStatus } = this.state;
         const {
@@ -349,7 +350,7 @@ class Layout extends PureComponent {
                         return <Overlay size="big" />;
                     }
                 }
-        
+
                 const { match } = matchProps;
 
                 if (match.path.search('/agents/') !== -1 && !isManager) {
@@ -396,7 +397,7 @@ const mapStateToProps = (state, ownProps) => {
         ownProps.path.search('/tasks') !== -1 &&
         !Tasks.order.length &&
         !Tasks.isFetching;
-    
+
     return {
         showAddTask: ownProps.path && ownProps.path.search('/tasks') !== -1,
         showAddHelp: isTaskEmpty,

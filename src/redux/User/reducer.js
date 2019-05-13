@@ -15,6 +15,7 @@ const initialState = {
     isagent: null,
     processDefinitionKeys: [],
     companyEmployees: [],
+    keycloak: {},
 };
 
 export default (state = initialState, action) => {
@@ -51,6 +52,13 @@ export default (state = initialState, action) => {
                 ...state,
                 isFetching: false,
                 session_id: '',
+            };
+        }
+        case types.SET_KEYCLOAK: {
+            const { keycloak } = action;
+            return {
+                ...state,
+                keycloak
             };
         }
         default: {
