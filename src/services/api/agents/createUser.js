@@ -16,7 +16,7 @@ export default async (data) => {
         }
         return {
             isSuccess: false,
-            needLogout: status === 2,
+            // needLogout: status === 2,
             message: rest.error,
         };
     } catch (err) {
