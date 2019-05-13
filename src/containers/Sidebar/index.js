@@ -37,15 +37,8 @@ class Sidebar extends PureComponent {
     }
 
     handleLogout = () => {
-        const { authType, keycloak, dispatch } = this.props;
-        if (authType === 'keycloak') {
-            if (keycloak.authenticated) {
-                keycloak.logout();
-            }
-        }
-        if (authType === 'standard') {
-            dispatch(logoutUser());
-        }
+        const { authType, dispatch } = this.props;
+        dispatch(logoutUser(authType));
     };
 
     renderStatsWidget() {
