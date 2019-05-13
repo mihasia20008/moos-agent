@@ -181,18 +181,20 @@ class DetailClient extends PureComponent {
                         </div>
                     </div>
                 </div>
-                <div className={cx('orders-list')}>{
-                    orders.map((order) => (
-                        <OrderItem
-                            key={order.order_id}
-                            task={order.tasks ? order.tasks[0] : undefined}
-                            orderNumber={order.orderNumber}
-                            createdDate={order.createdDate}
-                            activePhase={order.phases[order.phases.length - 1]}
-                            onOpenTaskDetail={this.handleOpenTaskDetail}
-                        />
-                    ))
-                }</div>
+                {orders.length && (
+                    <div className={cx('orders-list')}>{
+                        orders.map((order) => (
+                            <OrderItem
+                                key={order.order_id}
+                                task={order.tasks ? order.tasks[0] : undefined}
+                                orderNumber={order.orderNumber}
+                                createdDate={order.createdDate}
+                                activePhase={order.phases[order.phases.length - 1]}
+                                onOpenTaskDetail={this.handleOpenTaskDetail}
+                            />
+                        ))
+                    }</div>
+                )}
             </div>,
             <div key={2} className={cx('modal-help-block', {
                 'modal-content--blur': isFetching,
@@ -259,7 +261,7 @@ const mapStateToProps = ({Client}) => {
             : !isFetching
                 ? '<i style="font-style: italic; color: #ccc;">Не указан</i>'
                 : 'Мельникова Е. В.',
-        orders: company.order || [],
+        orders: [], // company.order || [],
         stats: company.stat || {},
         docs: company.docs || [],
     };
