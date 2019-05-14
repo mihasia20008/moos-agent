@@ -211,7 +211,7 @@ class NewSubagentForm extends PureComponent {
                         <Field
                             component={this.renderSearchField}
                             name="companyId"
-                            placeholder="Клиент"
+                            placeholder="Субагент"
                         />
                         <Field
                             component={wasFetchingAgents ? this.renderDropdownItem : this.renderFieldItem}
