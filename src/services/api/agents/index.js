@@ -5,6 +5,7 @@ import createSubagent from './createSubagent';
 import createUser from './createUser';
 import editUser from './editUser';
 import getUserData from './getUserData';
+import createCompany from './createCompany';
 
 export {
     getData,
@@ -14,4 +15,5 @@ export {
     createUser,
     editUser,
     getUserData,
+    createCompany,
 }

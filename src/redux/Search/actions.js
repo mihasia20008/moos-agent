@@ -4,10 +4,11 @@ import { Search } from '../../services/api';
 import { logoutProcess } from "../User/actions";
 import { setErrorContent } from "../Error/actions";
 
-export function searchByString(query) {
+export function searchByString(query, findAll) {
     return async dispatch => {
         try {
-            const { isSuccess, ...res } = await Search.findByString(query);
+            const requestMethod = findAll ? Search.selectByString : Search.findByString;
+            const { isSuccess, ...res } = await requestMethod(query);
             if (!isSuccess) {
                 if (res.needLogout) {
                     dispatch(logoutProcess(res.message));
@@ -17,7 +18,7 @@ export function searchByString(query) {
             }
             dispatch({
                 type: types.SEARCH_SUCCESS,
-                result: res.company ? res.company.slice(0, 7) : []
+                result: res.list ? res.list.slice(0, 7) : []
             });
         } catch (err) {
             console.log(err);

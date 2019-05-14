@@ -17,6 +17,22 @@ function prepareChildrenAgent(ids, list) {
     return { rootAgents, ids, list };
 }
 
+async function getSubAgentParams(formData) {
+    if (typeof formData.companyId === 'string') {
+        return formData;
+    }
+
+    const { isSuccess, ...res } = await Agents.createCompany(formData.companyId);
+    if (!isSuccess) {
+        throw new Error(res.message);
+    }
+
+    return {
+        ...formData,
+        companyId: res.company_id,
+    }
+}
+
 export function getAgentsList(needPrepareChildren = false) {
     return async dispatch => {
         try {
@@ -188,7 +204,8 @@ export function addSubagent(data) {
     return async dispatch => {
         try {
             dispatch({ type: types.AGENT_SUB_NEW_FETCH });
-            const { isSuccess, ...res } = await Agents.createSubagent(data);
+            const params = await getSubAgentParams(data);
+            const { isSuccess, ...res } = await Agents.createSubagent(params);
             if (!isSuccess) {
                 if (res.needLogout) {
                     dispatch(logoutProcess(res.message));
