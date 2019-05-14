@@ -14,10 +14,16 @@ export default async (data) => {
                 ...rest,
             };
         }
+        const error = Object.values(rest.errors).reduce((acc, error) => {
+            if (acc) {
+                return `${acc} ${error}!`;
+            }
+            return `${error}!`;
+        }, '');
         return {
             isSuccess: false,
             // needLogout: status === 2,
-            message: rest.error,
+            message: error,
         };
     } catch (err) {
         console.log(err);
