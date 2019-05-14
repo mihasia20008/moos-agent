@@ -181,7 +181,7 @@ class DetailClient extends PureComponent {
                         </div>
                     </div>
                 </div>
-                {orders.length && (
+                {orders.length ? (
                     <div className={cx('orders-list')}>{
                         orders.map((order) => (
                             <OrderItem
@@ -194,7 +194,7 @@ class DetailClient extends PureComponent {
                             />
                         ))
                     }</div>
-                )}
+                ) : null}
             </div>,
             <div key={2} className={cx('modal-help-block', {
                 'modal-content--blur': isFetching,
