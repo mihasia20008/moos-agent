@@ -5,7 +5,12 @@ import Highlighter from "react-highlight-words";
 
 class ListItem extends PureComponent {
     static propTypes = {
-        id: PropTypes.string.isRequired,
+        data: PropTypes.oneOfType([PropTypes.string, PropTypes.shape({
+            companyTypeRefId: PropTypes.string.isRequired,
+            INN: PropTypes.string.isRequired,
+            displayName: PropTypes.string.isRequired,
+            fullName: PropTypes.string.isRequired,
+        })]).isRequired,
         text: PropTypes.string.isRequired,
         onClick: PropTypes.func.isRequired,
         searchQuery: PropTypes.string,

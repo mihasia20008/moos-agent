@@ -23,6 +23,7 @@ class TextFieldWithAutoComplete extends PureComponent {
             touched: PropTypes.bool,
             error: PropTypes.string
         }),
+        findAll: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -36,7 +37,8 @@ class TextFieldWithAutoComplete extends PureComponent {
         meta: {
             touched: false,
             error: ''
-        }
+        },
+        findAll: false,
     };
 
     state = {
@@ -71,11 +73,11 @@ class TextFieldWithAutoComplete extends PureComponent {
         const { value } = target;
 
         const showResult = !!value.length;
-        const { dispatch } = this.props;
+        const { findAll, dispatch } = this.props;
         this.setState({ value, showResult: showResult });
 
         if (showResult) {
-            dispatch(searchByString(value));
+            dispatch(searchByString(value, findAll));
         } else {
             dispatch(clearSearchResults());
         }
@@ -99,8 +101,8 @@ class TextFieldWithAutoComplete extends PureComponent {
             <div className={cx('dropdown-menu', 'show')}>{
                 list.map(item => (
                     <ListItem
-                        key={item.id}
-                        id={item.id}
+                        key={item.INN}
+                        data={item.id}
                         text={item.displayName}
                         searchQuery={value}
                         onClick={this.handleSelectItem}

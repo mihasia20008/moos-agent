@@ -143,6 +143,7 @@ class NewSubagentForm extends PureComponent {
                     input: cx('form-control form-control--transporent'),
                     error: cx('form-error')
                 }}
+                findAll
             />
         );
     };
