@@ -9,7 +9,7 @@ function createHash(string) {
     }
 
     for (let i = 0; i < string.length; i++) {
-        const chr   = this.charCodeAt(i);
+        const chr   = string.charCodeAt(i);
         hash  = ((hash << 5) - hash) + chr;
         hash |= 0; // Convert to 32bit integer
     }
