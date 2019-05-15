@@ -93,7 +93,7 @@ class NewSubagentForm extends PureComponent {
 
     handleChangeSearchField = (name, value) => {
         const { dispatch } = this.props;
-        dispatch(changeFormValue(formSettings.form, name, value));
+        dispatch(changeFormValue(formSettings.form, name, JSON.stringify(value)));
     };
 
     renderFieldItem = ({ input, meta: { touched, error }, ...rest }) => {

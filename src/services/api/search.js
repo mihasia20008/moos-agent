@@ -1,7 +1,21 @@
 import axios from 'axios';
 
 import { SERVER } from '../constants';
-import PropTypes from "prop-types";
+
+function createHash(string) {
+    let hash = 0;
+    if (string.length === 0) {
+        return hash;
+    }
+
+    for (let i = 0; i < string.length; i++) {
+        const chr   = this.charCodeAt(i);
+        hash  = ((hash << 5) - hash) + chr;
+        hash |= 0; // Convert to 32bit integer
+    }
+
+    return hash;
+}
 
 export const findByString = async (query) => {
   try {
@@ -43,7 +57,8 @@ export const selectByString = async (query) => {
                     INN: item.INN,
                     displayName: item.displayName,
                     fullName: item.fullName,
-                }
+                },
+                key: createHash(new Date().getTime().toString())
             }));
             return {
                 isSuccess: true,
