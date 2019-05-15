@@ -101,7 +101,7 @@ class TextFieldWithAutoComplete extends PureComponent {
             <div className={cx('dropdown-menu', 'show')}>{
                 list.map(item => (
                     <ListItem
-                        key={item.INN}
+                        key={typeof item.id === 'string' ? item.id : item.key}
                         data={item.id}
                         text={item.displayName}
                         searchQuery={value}

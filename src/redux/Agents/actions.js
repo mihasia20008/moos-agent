@@ -18,11 +18,12 @@ function prepareChildrenAgent(ids, list) {
 }
 
 async function getSubAgentParams(formData) {
-    if (typeof formData.companyId === 'string') {
+    const companyId = JSON.parse(formData.companyId);
+    if (typeof companyId === 'string') {
         return formData;
     }
 
-    const { isSuccess, ...res } = await Agents.createCompany(formData.companyId);
+    const { isSuccess, ...res } = await Agents.createCompany(companyId);
     if (!isSuccess) {
         throw new Error(res.message);
     }
