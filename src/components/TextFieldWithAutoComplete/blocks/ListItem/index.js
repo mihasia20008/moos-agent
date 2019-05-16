@@ -17,8 +17,8 @@ class ListItem extends PureComponent {
     };
 
     handleClick = () => {
-        const { id, text, onClick } = this.props;
-        onClick(id, text);
+        const { data, text, onClick } = this.props;
+        onClick(data, text);
     };
 
     render() {
