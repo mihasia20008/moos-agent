@@ -67,7 +67,7 @@ class NewSubagentForm extends PureComponent {
         const { onCloseModal, dispatch } = this.props;
         onCloseModal();
 
-        dispatch(getAgentsList());
+        dispatch(getAgentsList(true));
         dispatch(resetAddingSubagentStatus());
     };
 
