@@ -75,7 +75,15 @@ class NewSubagentForm extends PureComponent {
 
     onFormSubmit = (values) => {
         const { dispatch } = this.props;
-        dispatch(addSubagent(values));
+        const preparedValues = {};
+        Object.keys(values).forEach(key => {
+            if (values[key] === 'state') {
+                preparedValues[key] = this.state[key];
+                return;
+            }
+            preparedValues[key] = values[key];
+        });
+        dispatch(addSubagent(preparedValues));
     };
 
     handleSubmitForm = (event) => {
@@ -93,7 +101,13 @@ class NewSubagentForm extends PureComponent {
 
     handleChangeSearchField = (name, value) => {
         const { dispatch } = this.props;
-        dispatch(changeFormValue(formSettings.form, name, JSON.stringify(value)));
+        if (typeof value === 'string') {
+            this.setState({ [`${name}`]: {} });
+            dispatch(changeFormValue(formSettings.form, name, value));
+        } else {
+            this.setState({ [`${name}`]: value });
+            dispatch(changeFormValue(formSettings.form, name, 'state'));
+        }
     };
 
     renderFieldItem = ({ input, meta: { touched, error }, ...rest }) => {
