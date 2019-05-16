@@ -14,7 +14,7 @@ function createHash(string) {
         hash |= 0; // Convert to 32bit integer
     }
 
-    return hash;
+    return `${-hash}`;
 }
 
 export const findByString = async (query) => {
