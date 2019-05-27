@@ -29,6 +29,14 @@ Copy `src/contentConstants.sample.json` to `contentConstants.json` then edit it 
 - `authType` need write one of `keycloak` or `standard`
     - `keycloak` - if need authorize user by Keycloak server
     - `standard` - if need authorize user by session_id in `/api/`
+    
+### Folder structure
+
+    /build - compiled production version of app
+    /config - config files ejected from create-react-app
+    /public - public files that coping in build folder without changing
+    /scripts - scripts for run development server, production build or tests, ejected from create-react-app
+    /src - app source files
 
 ## Start & watch
 
