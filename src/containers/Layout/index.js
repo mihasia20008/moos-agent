@@ -26,6 +26,9 @@ import Overlay from '../../components/Overlay';
 
 import { authenticationUser, setKeycloak } from '../../redux/User/actions';
 
+import store from '../../redux/configureStore';
+const { authType } = store.getState().User;
+
 class Layout extends PureComponent {
     static propTypes = {
         component: PropTypes.func.isRequired,
@@ -411,4 +414,8 @@ const mapStateToProps = (state, ownProps) => {
     };
 };
 
-export default withKeycloak(connect(mapStateToProps)(Layout));
+const ConnectedLayout = connect(mapStateToProps)(Layout);
+
+export default authType === 'keycloak'
+    ? withKeycloak(ConnectedLayout)
+    : ConnectedLayout;

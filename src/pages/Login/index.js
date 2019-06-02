@@ -15,6 +15,9 @@ import { loginUser, authenticationUser } from '../../redux/User/actions';
 
 import CONTENT from '../../contentConstants';
 
+import store from '../../redux/configureStore';
+const { authType } = store.getState().User;
+
 class Login extends PureComponent {
     static propTypes = {
         authType: PropTypes.string.isRequired,
@@ -173,4 +176,8 @@ const mapStateToProps = ({ User, Error }) => {
     };
 };
 
-export default withKeycloak(connect(mapStateToProps)(Login));
+const ConnectedLogin = connect(mapStateToProps)(Login);
+
+export default authType === 'keycloak'
+    ? withKeycloak(ConnectedLogin)
+    : ConnectedLogin;

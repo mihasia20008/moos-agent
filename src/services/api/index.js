@@ -8,15 +8,15 @@ import * as Agents from './agents/';
 import * as Search from './search';
 import * as Statistics from './statistics';
 
-import { store } from '../../index';
+import store from '../../redux/configureStore';
 
 axios.interceptors.request.use(async (config) => {
     try {
         const { User } = store.getState();
         const { authType } = User;
         if (authType === 'standard') {
-            const {isAuth, session_id} = User;
-            if (isAuth && session_id) {
+            const { session_id } = User;
+            if (session_id) {
                 const {url} = config;
                 const [location, params = ''] = url.split('?');
                 let kvp = params.split('&');

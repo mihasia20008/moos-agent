@@ -12,9 +12,7 @@ import './static/scss/style.scss';
 import Overlay from './components/Overlay';
 
 import routes from './routes.js';
-import configureStore from './redux/configureStore';
-
-export const store = configureStore();
+import store from './redux/configureStore';
 
 class App extends PureComponent {
     handleKeycloakError = (...arg) => {
