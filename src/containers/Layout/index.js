@@ -176,7 +176,7 @@ class Layout extends PureComponent {
                 );
             }
             case search.search(/\?add-task/) !== -1: {
-                const addResult = search.match(/add-task=[a-z-]+/g);
+                const addResult = search.match(/add-task=[A-Za-z\d-]+/g);
                 if (addResult) {
                     const definitionKey = addResult[0].split('=')[1];
                     return (
