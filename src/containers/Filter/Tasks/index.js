@@ -125,7 +125,7 @@ class TasksFilter extends PureComponent {
 
     render() {
         const { isFixed } = this.state;
-        const { isDisable, filters, filterAmount, processes } = this.props;
+        const { isDisable, filters, filterAmount, processes, statusItems } = this.props;
 
         const processesFilter = this.getProcessesFilter(processes, filters.orderTypeRefId);
         const phaseFilter = filters.orderTypeRefId
@@ -197,6 +197,7 @@ class TasksFilter extends PureComponent {
                             'main-filter__row--disabled': isDisable,
                         })}>
                             <CheckboxList
+                                statusItems={statusItems}
                                 activeValue={filters.status}
                                 onChangeItem={this.handleCheckboxSelect}
                             />

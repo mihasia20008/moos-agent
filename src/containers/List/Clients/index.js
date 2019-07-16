@@ -5,7 +5,7 @@ import cx from 'classnames';
 import ClientCard from '../../../components/Card/Client';
 import Skelet from '../../../components/Card/Skelet';
 
-const ClientsList = ({ list, isLoading, isLoadingNext }) => {
+const ClientsList = ({ list, isLoading, isLoadingNext, statusItems }) => {
     return (
         <div className={cx('block-list block-list--clients')}>
             {isLoading
@@ -26,6 +26,7 @@ const ClientsList = ({ list, isLoading, isLoadingNext }) => {
                         KPP={item.KPP ? item.KPP : undefined}
                         OGRN={item.OGRN ? item.OGRN : undefined}
                         stats={item.stat}
+                        statusItems={statusItems}
                     />
                 })}
             {isLoadingNext && <Skelet key={list.length + 10} showLoader />}

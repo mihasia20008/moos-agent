@@ -1,10 +1,7 @@
 import * as types from './actionTypes';
 import Cookies from 'js-cookie';
 
-import CONTENT from '../../contentConstants';
-
 const initialState = {
-    authType: CONTENT.authType,
     isFetching: false,
     isAuth: false,
     session_id: Cookies.get('session_id'),
@@ -16,6 +13,8 @@ const initialState = {
     processDefinitionKeys: [],
     companyEmployees: [],
     keycloak: {},
+    settingsFetch: true,
+    settings: {},
 };
 
 export default (state = initialState, action) => {
@@ -43,6 +42,8 @@ export default (state = initialState, action) => {
                 ...initialState,
                 logout: true,
                 session_id: '',
+                settingsFetch: state.settingsFetch,
+                settings: state.settings,
             };
         }
         case types.LOGIN_ERROR:
@@ -60,6 +61,20 @@ export default (state = initialState, action) => {
                 ...state,
                 keycloak
             };
+        }
+        case types.GET_SETTINGS_SUCCESS: {
+            const { data } = action;
+            return {
+                ...state,
+                settingsFetch: false,
+                settings: data
+            };
+        }
+        case types.GET_SETTINGS_ERROR: {
+            return {
+                ...state,
+                settingsFetch: false,
+            }
         }
         default: {
             return state;

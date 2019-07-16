@@ -1,12 +1,9 @@
 import React from 'react';
 import cx from 'classnames';
 
-import CONTENT from '../../../contentConstants';
-
 import { formatNumber } from '../../../services/utility';
 
-const AgentsStatsPanel = ({ list }) => {
-    const { statusItems } = CONTENT;
+const AgentsStatsPanel = ({ list, statusItems }) => {
     const { company = {}, order = {} } = list;
     const { total = {} } = order;
 
@@ -50,5 +47,7 @@ const AgentsStatsPanel = ({ list }) => {
         </div>
     );
 };
+
+AgentsStatsPanel.defaultProps = { statusItems: [] };
 
 export default AgentsStatsPanel;

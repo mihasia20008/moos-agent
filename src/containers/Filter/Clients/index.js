@@ -18,7 +18,7 @@ class ClientsFilter extends PureComponent {
         isDisable: false,
         agents: []
     };
-    
+
     state = { isFixed: false };
 
     componentDidMount() {
@@ -87,7 +87,7 @@ class ClientsFilter extends PureComponent {
 
     render() {
         const { isFixed } = this.state;
-        const { isDisable, agents, filters, isManager } = this.props;
+        const { isDisable, agents, filters, isManager, statusItems } = this.props;
 
         const agentsFilter = isManager
             ? this.getAgentsFilter(agents, filters.agentCompanyId)
@@ -132,6 +132,7 @@ class ClientsFilter extends PureComponent {
                             'main-filter__row--disabled': isDisable,
                         })}>
                             <CheckboxList
+                                statusItems={statusItems}
                                 activeValue={filters.status}
                                 onChangeItem={this.handleCheckboxSelect}
                             />

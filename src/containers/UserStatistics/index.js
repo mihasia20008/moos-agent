@@ -174,7 +174,7 @@ class UserStatistics extends Component {
 
     render() {
         const { periods, employees, indicator } = this.state;
-        const { fetchStatus, companyStats, employeeStats } = this.props;
+        const { fetchStatus, companyStats, employeeStats, settings } = this.props;
 
         return (
             <div className={cx('modal-content__inner chart-stats')}>
@@ -219,6 +219,7 @@ class UserStatistics extends Component {
                             <StatsInfoBlock
                                 infoBlock={employeeStats}
                                 indicator={indicator}
+                                statusItems={settings.statusItems}
                             />
                         </div>
                     )}
@@ -243,6 +244,7 @@ class UserStatistics extends Component {
                                 infoBlock={companyStats}
                                 indicator={indicator}
                                 globalColor="white"
+                                statusItems={settings.statusItems}
                             />
                         </div>
                     )}
@@ -260,6 +262,7 @@ const mapStateToProps = ({ User, Statistics }) => {
         employeeStats: Statistics.employee,
         username: User.username,
         employees: User.companyEmployees,
+        settings: User.settings,
     };
 };
 

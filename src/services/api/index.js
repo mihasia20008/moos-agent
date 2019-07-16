@@ -13,7 +13,7 @@ import store from '../../redux/configureStore';
 axios.interceptors.request.use(async (config) => {
     try {
         const { User } = store.getState();
-        const { authType } = User;
+        const { settings: { authType } } = User;
         if (authType === 'standard') {
             const { session_id } = User;
             if (session_id) {

@@ -4,8 +4,6 @@ import cx from 'classnames';
 
 import { declOfNum } from '../../../services/utility';
 
-import CONTENT from '../../../contentConstants';
-
 class TaskCard extends PureComponent {
     static propTypes = {
         orderNumber: PropTypes.string.isRequired,
@@ -20,6 +18,11 @@ class TaskCard extends PureComponent {
         status: PropTypes.string,
         tasks: PropTypes.array,
         onOpenDetail: PropTypes.func.isRequired,
+        statusItems: PropTypes.arrayOf(PropTypes.shape({
+            key: PropTypes.string.isRequired,
+            text: PropTypes.string.isRequired,
+            className: PropTypes.string
+        })),
     };
 
     static defaultProps = {
@@ -28,6 +31,7 @@ class TaskCard extends PureComponent {
         contract_max_price: '&mdash;',
         phases: [],
         status: '',
+        statusItems: []
     };
 
     static days = ['день', 'дня', 'дней'];
@@ -87,13 +91,12 @@ class TaskCard extends PureComponent {
     }
 
     renderStatus() {
-        const { status } = this.props;
+        const { status, statusItems } = this.props;
 
         if (!status) {
             return null;
         }
 
-        const { statusItems } = CONTENT;
         let renderPastStatuses = true;
 
         return (

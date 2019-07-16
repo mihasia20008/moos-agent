@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { Route, Link, Redirect } from 'react-router-dom';
 import cx from 'classnames';
 import { CSSTransition } from 'react-transition-group';
-import { withKeycloak } from 'react-keycloak';
 import Cookies from 'js-cookie';
 
 import Sidebar from '../Sidebar';
@@ -26,13 +25,9 @@ import Overlay from '../../components/Overlay';
 
 import { authenticationUser, setKeycloak } from '../../redux/User/actions';
 
-import store from '../../redux/configureStore';
-const { authType } = store.getState().User;
-
 class Layout extends PureComponent {
     static propTypes = {
         component: PropTypes.func.isRequired,
-        authType: PropTypes.string.isRequired,
         isAuth: PropTypes.bool.isRequired,
         logout: PropTypes.bool.isRequired,
         showAddAgent: PropTypes.bool,
@@ -68,10 +63,10 @@ class Layout extends PureComponent {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        const { authType, path: pathNow, location: locationNow, dispatch } = this.props;
+        const { settings, path: pathNow, location: locationNow, dispatch } = this.props;
         const { location: locationPrev } = prevProps;
 
-        if (authType === 'keycloak') {
+        if (settings.authType === 'keycloak') {
             const { keycloakAuth: nowKeycloakAuth } = this.state;
             const { keycloakAuth: prevKeycloakAuth } = prevState;
 
@@ -86,15 +81,15 @@ class Layout extends PureComponent {
     }
 
     componentDidMount() {
-        const { authType, keycloak, isAuth, dispatch } = this.props;
-        if (authType === 'keycloak') {
+        const { settings, keycloak, isAuth, dispatch } = this.props;
+        if (settings.authType === 'keycloak') {
             if (keycloak.authenticated) {
                 Cookies.set('JWT', keycloak.token);
                 this.setState({ keycloakAuth: true, keycloakFetch: false });
                 dispatch(setKeycloak(keycloak));
             }
         }
-        if (authType === 'standard') {
+        if (settings.authType === 'standard') {
             if (!isAuth) {
                 dispatch(authenticationUser());
             }
@@ -310,7 +305,7 @@ class Layout extends PureComponent {
             keycloak,
             isNotFound,
             isManager,
-            authType,
+            settings,
             isAuth,
             logout,
             isFetching,
@@ -320,7 +315,7 @@ class Layout extends PureComponent {
 
         return (
             <Route {...rest} render={matchProps => {
-                if (authType === 'keycloak') {
+                if (settings.authType === 'keycloak') {
                     if (keycloakFetch) {
                         return <Overlay size="big" />;
                     }
@@ -337,7 +332,7 @@ class Layout extends PureComponent {
                     }
                 }
 
-                if (authType === 'standard') {
+                if (settings.authType === 'standard') {
                     if ((prevFetchStatus || logout) && !isFetching && !isAuth) {
                         return (
                             <Redirect
@@ -405,7 +400,7 @@ const mapStateToProps = (state, ownProps) => {
         showAddTask: ownProps.path && ownProps.path.search('/tasks') !== -1,
         showAddHelp: isTaskEmpty,
         showAddAgent: ownProps.path && ownProps.path.search('/agents') !== -1,
-        authType: User.authType,
+        settings: User.settings,
         isAuth: User.isAuth,
         logout: User.logout,
         isFetching: User.isFetching,
@@ -414,8 +409,4 @@ const mapStateToProps = (state, ownProps) => {
     };
 };
 
-const ConnectedLayout = connect(mapStateToProps)(Layout);
-
-export default authType === 'keycloak'
-    ? withKeycloak(ConnectedLayout)
-    : ConnectedLayout;
+export default connect(mapStateToProps)(Layout);

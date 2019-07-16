@@ -6,9 +6,7 @@ import cx from 'classnames';
 import Overlay from '../../../components/Overlay';
 import Input from '../../../components/Input';
 
-import CONTENT from '../../../contentConstants';
-
-const FormLogin = ({ fields, showLoader, onInputChange, onFormSubmit }) => {
+const FormLogin = ({ fields, showLoader, settings, onInputChange, onFormSubmit }) => {
     return (
         <form className={cx('form-login')} onSubmit={onFormSubmit}>
             <div className={cx('form-group')}>
@@ -36,7 +34,7 @@ const FormLogin = ({ fields, showLoader, onInputChange, onFormSubmit }) => {
             </div>
             <div className={cx('form-login-bottom')}>
                 <Link to="?forgot-password">Забыл пароль?</Link>
-                <span>Поддержка: {CONTENT.PHONE}</span>
+                <span>Поддержка: {settings.PHONE}</span>
             </div>
         </form>
     );
