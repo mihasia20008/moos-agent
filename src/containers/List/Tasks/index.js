@@ -5,7 +5,7 @@ import cx from 'classnames';
 import TaskCard from '../../../components/Card/Task';
 import Skelet from '../../../components/Card/Skelet';
 
-const TasksList = ({ list, isLoading, isLoadingNext, onOpenDetail }) => {
+const TasksList = ({ list, isLoading, isLoadingNext, onOpenDetail, statusItems }) => {
     return (
         <div className={cx('block-list block-list--tasks')}>
             {isLoading
@@ -25,6 +25,7 @@ const TasksList = ({ list, isLoading, isLoadingNext, onOpenDetail }) => {
                         status={item.status}
                         tasks={item.tasks || []}
                         onOpenDetail={onOpenDetail}
+                        statusItems={statusItems}
                     />
                 ))}
             {isLoadingNext && <Skelet key={list.length + 10} showLoader />}

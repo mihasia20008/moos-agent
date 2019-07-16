@@ -2,12 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 
-import CONTENT from '../../../contentConstants';
-
 import { formatNumber } from '../../../services/utility';
 
-const ClientsStatsPanel = ({ companiesStat }) => {
-    const { statusItems } = CONTENT;
+const ClientsStatsPanel = ({ companiesStat, statusItems }) => {
     const { count = 0, order = {} } = companiesStat;
     const { total = {} } = order;
 
@@ -58,7 +55,8 @@ ClientsStatsPanel.defaultProps = {
     companiesStat: {
         count: 0,
         order: {},
-    }
+    },
+    statusItems: []
 };
 
 export default ClientsStatsPanel;

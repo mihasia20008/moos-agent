@@ -4,8 +4,6 @@ import cx from 'classnames';
 import { Link } from 'react-router-dom';
 import _get from 'lodash/get';
 
-import CONTENT from '../../../contentConstants';
-
 import { formatNumber } from '../../../services/utility';
 
 const ClientCard = ({
@@ -15,9 +13,8 @@ const ClientCard = ({
     KPP,
     OGRN,
     stats,
+    statusItems,
 }) => {
-    const { statusItems } = CONTENT;
-
     return (
         <div className={cx('block-list__item')}>
             <div className={cx('block-list__row')}>
@@ -92,6 +89,11 @@ ClientCard.propTypes = {
         lost: PropTypes.number,
         sold: PropTypes.number,
     }).isRequired,
+    statusItems: PropTypes.arrayOf(PropTypes.shape({
+        key: PropTypes.string.isRequired,
+        text: PropTypes.string.isRequired,
+        className: PropTypes.string
+    })),
 };
 
 ClientCard.defaultProps = {
@@ -99,6 +101,7 @@ ClientCard.defaultProps = {
     INN: '<i style="font-style: italic; color: #ccc;">Не указано</i>',
     KPP: '<i style="font-style: italic; color: #ccc;">Не указано</i>',
     OGRN: '<i style="font-style: italic; color: #ccc;">Не указано</i>',
+    statusItems: []
 };
 
 export default ClientCard;

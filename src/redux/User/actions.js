@@ -1,3 +1,4 @@
+import axios from "axios";
 import * as types from './actionTypes';
 
 import { User } from '../../services/api';
@@ -7,7 +8,7 @@ import { setErrorContent } from "../Error/actions";
 
 export function logoutProcess(message = '') {
     return (dispatch, getState) => {
-        const { authType, keycloak } = getState().User;
+        const { settings: { authType }, keycloak } = getState().User;
 
         if (authType === 'keycloak' && Object.keys(keycloak).length) {
             if (keycloak.authenticated) {
@@ -120,4 +121,20 @@ export function logoutUser(authType) {
             dispatch({ type: types.LOGOUT_ERROR });
         }
     };
+}
+
+export function getAppSettings() {
+    return async dispatch => {
+        try {
+            const { data } = await axios({
+                method: 'GET',
+                url: '/contentConstants.json',
+            });
+            dispatch({ type: types.GET_SETTINGS_SUCCESS, data });
+        } catch (err) {
+            console.log(err);
+            dispatch(setErrorContent(err.message));
+            dispatch({ type: types.GET_SETTINGS_ERROR });
+        }
+    }
 }

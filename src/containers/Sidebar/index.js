@@ -12,11 +12,8 @@ import UserMenu from '../../components/UserMenu';
 import { logoutUser } from '../../redux/User/actions';
 import { fetchWidgetData } from "../../redux/Statistics/actions";
 
-import CONTENT from '../../contentConstants';
-
 class Sidebar extends PureComponent {
     static propTypes = {
-        authType: PropTypes.string.isRequired,
         name: PropTypes.string,
         isManager: PropTypes.bool,
         widget: PropTypes.shape({
@@ -37,21 +34,20 @@ class Sidebar extends PureComponent {
     }
 
     handleLogout = () => {
-        const { authType, dispatch } = this.props;
-        dispatch(logoutUser(authType));
+        const { settings, dispatch } = this.props;
+        dispatch(logoutUser(settings.authType));
     };
 
     renderStatsWidget() {
-        const { widget } = this.props;
+        const { widget, settings } = this.props;
 
         if (widget.noItems) {
             return null;
         }
 
-        const { statusItems } = CONTENT;
         return (
             <div className={cx('fr-sidebar-bm__statistics-cont progress-statistic')}>{
-                statusItems.map(({ key, text, className }, index) => {
+                settings.statusItems.map(({ key, text, className }, index) => {
                     return (typeof widget.items[key] !== 'undefined')
                         ? (
                             <ProgressStatistic
@@ -112,7 +108,7 @@ class Sidebar extends PureComponent {
 
 const mapStateToProps = ({ User, Statistics }) => {
     return {
-        authType: User.authType,
+        settings: User.settings,
         name: User.fullname,
         isManager: User.ismanager,
         widget: Statistics.widget,

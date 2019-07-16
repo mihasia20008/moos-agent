@@ -35,11 +35,11 @@ class Agents extends PureComponent {
     };
 
     render() {
-        const { isFetching, ids, list, rootAgents, statSummury } = this.props;
+        const { isFetching, ids, list, rootAgents, statSummury, settings } = this.props;
 
         return (
             <section className={cx('fr-content')}>
-                <AgentsStatsPanel list={statSummury} />
+                <AgentsStatsPanel list={statSummury} statusItems={settings.statusItems} />
                 {!ids.length && !isFetching
                     ? <EmptyAgentsList />
                     : (
@@ -48,6 +48,7 @@ class Agents extends PureComponent {
                             rootAgents={rootAgents}
                             isLoading={isFetching}
                             onShowClients={this.handleShowClients}
+                            statusItems={settings.statusItems}
                         />
                     )}
             </section>
@@ -55,13 +56,14 @@ class Agents extends PureComponent {
     }
 }
 
-const mapStateToProps = ({ Agents }) => {
+const mapStateToProps = ({ Agents, User }) => {
     return {
         isFetching: Agents.isFetching,
         ids: Agents.ids,
         list: Agents.list,
         rootAgents: Agents.rootAgents,
         statSummury: Agents.stat,
+        settings: User.settings,
     }
 };
 

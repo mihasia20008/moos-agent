@@ -45,7 +45,7 @@ class Clients extends PureComponent {
         dispatch(clearAllFilters());
         window.removeEventListener('scroll', this.handleScroll);
     }
-    
+
     handleScroll = () => {
         const {
             company,
@@ -71,9 +71,9 @@ class Clients extends PureComponent {
         const { dispatch } = this.props;
         dispatch(setClientsFilter(filters));
     };
-    
+
     render() {
-        const { agents, company, stat, isManager, isFetching, isFetchingNext, filters } = this.props;
+        const { agents, company, stat, isManager, isFetching, isFetchingNext, filters, settings } = this.props;
 
         return (
             <section className={cx('fr-content fr-content--clients')}>
@@ -83,6 +83,7 @@ class Clients extends PureComponent {
                     filters={filters}
                     isManager={isManager}
                     onChangeFilter={this.handleChangeFilter}
+                    statusItems={settings.statusItems}
                 />
                 {!company.length && !isFetching
                     ? <EmptyClientsList />
@@ -90,12 +91,14 @@ class Clients extends PureComponent {
                         <ClientsStatsPanel
                             key={0}
                             companiesStat={stat.company}
+                            statusItems={settings.statusItems}
                         />,
                         <ClientsList
                             key={1}
                             list={company}
                             isLoading={isFetching}
                             isLoadingNext={isFetchingNext}
+                            statusItems={settings.statusItems}
                         />,
                     ]}
             </section>
@@ -114,6 +117,7 @@ const mapStateToProps = ({ Agents, Clients, User }) => {
         nextPage: Clients.page + 1,
         hasMorePage: Clients.more,
         agents: Agents.agents,
+        settings: User.settings,
     };
 };
 

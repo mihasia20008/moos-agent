@@ -19,6 +19,7 @@ const AgentCard = ({
     companyCount,
     statList,
     onShowClients,
+    statusItems,
 }) => {
     return (
         <div className={cx('fr-agent-card')} style={{ marginLeft: `${30 * level}px` }}>
@@ -53,7 +54,7 @@ const AgentCard = ({
                     {/*</span>*/}
                 </div>
             </div>
-            <AgentStats items={statList} />
+            <AgentStats items={statList} statusItems={statusItems} />
         </div>
     );
 };

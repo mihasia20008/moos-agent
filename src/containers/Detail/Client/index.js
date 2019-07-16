@@ -9,8 +9,6 @@ import OrderItem from './blocks/OrderItem';
 import {getClientItem, clearClient} from "../../../redux/Client/actions";
 import {authenticationUser} from "../../../redux/User/actions";
 
-import CONTENT from '../../../contentConstants';
-
 import {formatNumber} from '../../../services/utility';
 
 class DetailClient extends PureComponent {
@@ -69,8 +67,8 @@ class DetailClient extends PureComponent {
             orders,
             stats,
             docs,
+            settings,
         } = this.props;
-        const {statusItems} = CONTENT;
 
         return ([
             <div key={0} className={cx('modal-content__header', {
@@ -87,7 +85,7 @@ class DetailClient extends PureComponent {
                 </div>
                 <div>
                     <ul className={cx('stats-list')}>
-                        {statusItems.map(({key, text, className}) => {
+                        {settings.statusItems.map(({key, text, className}) => {
                             if (key === 'total') {
                                 return null;
                             }
@@ -215,10 +213,11 @@ class DetailClient extends PureComponent {
     }
 }
 
-const mapStateToProps = ({Client}) => {
+const mapStateToProps = ({User, Client}) => {
     const {isFetching, company} = Client;
     return {
         isFetching: isFetching,
+        settings: User.settings,
         name: !isFetching && typeof company.displayName !== 'undefined' && company.displayName
             ? company.displayName
             : !isFetching && typeof company.fullName !== 'undefined' && company.fullName

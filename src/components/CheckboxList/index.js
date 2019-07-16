@@ -4,10 +4,7 @@ import cx from "classnames";
 
 import Item from './Item';
 
-import CONTENT from '../../contentConstants';
-
-const CheckboxList = ({ activeValue, onChangeItem }) => {
-    const { statusItems } = CONTENT;
+const CheckboxList = ({ activeValue, onChangeItem, statusItems }) => {
     return (
         <div className={cx('checkbox-list')}>
             {statusItems.map(({ key, text, className }, index) => {
@@ -47,10 +44,16 @@ const CheckboxList = ({ activeValue, onChangeItem }) => {
 
 CheckboxList.propTypes = {
     activeValue: PropTypes.string,
-    onChangeItem: PropTypes.func.isRequired
+    onChangeItem: PropTypes.func.isRequired,
+    statusItems: PropTypes.arrayOf(PropTypes.shape({
+        key: PropTypes.string.isRequired,
+        text: PropTypes.string.isRequired,
+        className: PropTypes.string
+    })),
 };
 CheckboxList.defaultProps = {
     activeValue: '',
+    statusItems: []
 };
 
 export default CheckboxList;

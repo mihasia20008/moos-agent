@@ -3,10 +3,7 @@ import cx from 'classnames';
 
 import StatItem from '../StatItem';
 
-import CONTENT from "../../../../../contentConstants";
-
-const AgentStats = ({ items }) => {
-    const { statusItems } = CONTENT;
+const AgentStats = ({ items, statusItems }) => {
     const sum = statusItems.reduce((acc, { key }) => {
         return typeof items[key] === 'undefined'
             ? acc
@@ -35,5 +32,7 @@ const AgentStats = ({ items }) => {
         }</div>
     );
 };
+
+AgentStats.defaultProps = { statusItems: [] };
 
 export default AgentStats;

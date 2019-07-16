@@ -45,7 +45,7 @@ class Tasks extends PureComponent {
         dispatch(clearAllFilters());
         window.removeEventListener('scroll', this.handleScroll);
     }
-    
+
     handleScroll = () => {
         const {
             list,
@@ -80,7 +80,7 @@ class Tasks extends PureComponent {
             }))
             .catch(err => console.log(err));
     };
-    
+
     render() {
         const {
             list,
@@ -89,6 +89,7 @@ class Tasks extends PureComponent {
             processDefinitionKeys,
             isFetching,
             isFetchingNext,
+            settings,
         } = this.props;
 
         return (
@@ -99,6 +100,7 @@ class Tasks extends PureComponent {
                     filterAmount={filterAmount}
                     processes={processDefinitionKeys}
                     onChangeFilter={this.handleChangeFilter}
+                    statusItems={settings.statusItems}
                 />
                 {!list.length && !isFetching
                     ? <EmptyTasksList />
@@ -107,6 +109,7 @@ class Tasks extends PureComponent {
                             list={list}
                             isLoading={isFetching}
                             isLoadingNext={isFetchingNext}
+                            statusItems={settings.statusItems}
                             onOpenDetail={this.handleOpenDetail}
                         />
                     )}
@@ -128,6 +131,7 @@ const mapStateToProps = ({ Tasks, User }) => {
             from: Tasks.amount_min,
             to: Tasks.amount_max,
         },
+        settings: User.settings,
     };
 };
 

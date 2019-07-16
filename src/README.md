@@ -16,7 +16,6 @@ Contain all source files, that compiling by webpack
     /static/fonts - fonts that used in app
     /static/img - images that used in app
     /static/scss - source files of styles app, write on scss
-    /contentConstants.sample.json - example contents file, before building app copy to contentConstants.json and change values on real text
     /index.js - app root file. Has configuration for using keycloak auth or not
     /routes.js - file with configurations app routes
     /setupProxy.js - config file for setting up proxy for ajax request on server for real data. Used only in development build on local machine

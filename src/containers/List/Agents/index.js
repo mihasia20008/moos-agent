@@ -22,7 +22,7 @@ class AgentsList extends PureComponent {
     };
 
     renderCard = (item, level) => {
-        const { list, onShowClients } = this.props;
+        const { list, onShowClients, statusItems } = this.props;
 
         return (
             <Fragment>
@@ -36,6 +36,7 @@ class AgentsList extends PureComponent {
                     agentsCount={item.agentLogins ? item.agentLogins.length : 0}
                     companyCount={item.company_count}
                     onShowClients={onShowClients}
+                    statusItems={statusItems}
                 />
                 {item.children.map(id => this.renderCard(list[id], level + 1))}
             </Fragment>

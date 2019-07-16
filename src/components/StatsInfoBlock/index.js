@@ -4,10 +4,7 @@ import cx from "classnames";
 
 import StatsInfoItem from '../StatsInfoItem';
 
-import CONTENT from '../../contentConstants';
-
-const StatsInfoBlock = ({ globalColor, infoBlock, indicator }) => {
-    const { statusItems } = CONTENT;
+const StatsInfoBlock = ({ globalColor, infoBlock, indicator, statusItems }) => {
     return (
         <div className={cx('chart-stats__info')}>{
             statusItems.map(({ key, text, className }, index) => {
@@ -43,6 +40,7 @@ StatsInfoBlock.propTypes = {
 
 StatsInfoBlock.defaultProps = {
     globalColor: '',
+    statusItems: [],
 };
 
 export default StatsInfoBlock;
